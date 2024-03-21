@@ -3,11 +3,15 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 interface authState {
   isLoggedIn: boolean;
   isAdmin: boolean;
+  currentUser: string | null;
+  loading: boolean;
 }
 
 const initialState: authState = {
   isLoggedIn: false,
   isAdmin: false,
+  currentUser: null,
+  loading: false,
 };
 
 const authSlice = createSlice({
