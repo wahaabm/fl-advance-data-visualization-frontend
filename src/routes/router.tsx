@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import Signin from "./Signin";
 import Signup from "./Signup";
-import AdminDashboard from "./AdminDashboard";
-import UserDashboard from "./UserDashboard";
+import UserDashboard from "./Dashboard";
 import PrivateRoutes from "./PrivateRoutes";
+import Dashboard from "./Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -21,13 +21,10 @@ const router = createBrowserRouter([
     //errorElement: <ErrorPage />,
     children: [
       {
-        path: "/user",
-        element: <UserDashboard />,
+        path: "/dashboard",
+        element: <Dashboard />,
       },
-      {
-        path: "/admin",
-        element: <AdminDashboard />,
-      },
+
     ],
   },
 ]);

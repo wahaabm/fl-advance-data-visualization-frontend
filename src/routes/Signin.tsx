@@ -37,11 +37,8 @@ export default function Signin() {
       console.log(data);
       dispatch(updateLoggedinState(data.token));
 
-       if (role === "ADMIN_USER"|| role==="EDITOR_USER") {
-      navigate("/admin");
-    } else {
-      navigate("/user");
-    }
+      navigate("/dashboard");
+
     } catch (error) {
       // Handle error
       console.error(error);
