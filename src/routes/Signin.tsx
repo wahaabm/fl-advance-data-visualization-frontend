@@ -6,17 +6,16 @@ import { updateLoggedinState } from "../store/slices/AuthSlice";
 export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error,setError]=useState("")
+  const [error, setError] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const role = useAppSelector((state)=>state.auth.role);
-  async function handleSignIn (e:FormEvent<HTMLFormElement>) {
+  const role = useAppSelector((state) => state.auth.role);
+  async function handleSignIn(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    
+
     try {
-      if(email==""||password=="")
-      {
-        throw new Error("All fields are required")
+      if (email == "" || password == "") {
+        throw new Error("All fields are required");
       }
       const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
@@ -25,20 +24,19 @@ export default function Signin() {
         },
         body: JSON.stringify({ email, password }),
       });
-  
+
       if (!response.ok) {
         const responseData = await response.json();
 
         throw new Error(responseData.message);
       }
-  
+
       // If the response is ok, parse it as JSON
       const data = await response.json();
       console.log(data);
       dispatch(updateLoggedinState(data.token));
 
-      navigate("/dashboard");
-
+      navigate("/dashboard/charts");
     } catch (error) {
       // Handle error
       console.error(error);
@@ -63,8 +61,8 @@ export default function Signin() {
                   className=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400"
                   type="email"
                   placeholder="mail@gmail.com"
-                  value = {email}
-                  onChange={(e)=>setEmail(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
@@ -76,7 +74,7 @@ export default function Signin() {
                   type="password"
                   placeholder="Enter your password"
                   value={password}
-                  onChange={(e)=>setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               {error && (
@@ -86,15 +84,20 @@ export default function Signin() {
               )}
 
               <div>
-
-                <button type="submit" className="w-full flex justify-center bg-red-400  hover:bg-red-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200">
+                <button
+                  type="submit"
+                  className="w-full flex justify-center bg-red-400  hover:bg-red-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
+                >
                   Sign in
                 </button>
                 <p className="text-gray-500 text-center mt-2 text-sm">
                   Don't have an account? Please sign up.
                 </p>
 
-                <button onClick={()=>navigate("/register")} className="mt-2 w-full flex justify-center bg-blue-400  hover:bg-blue-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200">
+                <button
+                  onClick={() => navigate("/register")}
+                  className="mt-2 w-full flex justify-center bg-blue-400  hover:bg-blue-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
+                >
                   Sign up
                 </button>
               </div>
