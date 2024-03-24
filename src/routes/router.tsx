@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import Signin from "./Signin";
 import Signup from "./Signup";
-import UserDashboard from "./Dashboard";
-import PrivateRoutes from "./PrivateRoutes";
 import Dashboard from "./Dashboard";
 import Users from "./Users";
-import HomePage from "./Homepage";
 import ShowCharts from "./charts/ShowCharts";
+import ShowArticles from "./articles/ShowArticles";
+import ApprovalWaiting from "./ApprovalWaiting";
+
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -19,22 +19,23 @@ const router = createBrowserRouter([
 
   {
     path: "/",
-    element: <PrivateRoutes />,
-    //errorElement: <ErrorPage />,
+    element: <Dashboard />,
     children: [
       {
-        path: "dashboard",
-        element: <Dashboard />,
-        children: [
-          {
-            path: "users",
-            element: <Users />,
-          },
-          {
-            path: "charts",
-            element: <ShowCharts />,
-          },
-        ],
+        path: "users",
+        element: <Users />,
+      },
+      {
+        path: "charts",
+        element: <ShowCharts />,
+      },
+      {
+        path: "articles",
+        element: <ShowArticles />,
+      },
+      {
+        path: "waiting",
+        element: <ApprovalWaiting />,
       },
     ],
   },

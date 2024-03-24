@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { useAppDispatch } from "../hooks/hooks";
 import { useNavigate } from "react-router-dom";
 import { updateLoggedinState } from "../store/slices/AuthSlice";
 
@@ -9,7 +9,7 @@ export default function Signin() {
   const [error, setError] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const role = useAppSelector((state) => state.auth.role);
+
   async function handleSignIn(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -36,7 +36,7 @@ export default function Signin() {
       console.log(data);
       dispatch(updateLoggedinState(data.token));
 
-      navigate("/dashboard/charts");
+      navigate("/charts");
     } catch (error) {
       // Handle error
       console.error(error);

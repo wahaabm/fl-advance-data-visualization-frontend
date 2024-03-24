@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch } from "../hooks/hooks";
-import { authorizeUser, revokeUser } from "../store/slices/AuthSlice";
-
+import { authorizeUser, logout, revokeUser } from "../store/slices/AuthSlice";
+import { useNavigate } from "react-router-dom";
 interface user {
   id: string;
   email: string;
@@ -15,6 +15,7 @@ interface user {
 export default function MyComponent() {
   const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [users, setUsers] = useState<user[]>([]);
   ///allowUser/:userId
 
@@ -31,8 +32,9 @@ export default function MyComponent() {
         },
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      if (response.status == 403) {
+        dispatch(logout());
+        navigate("/login");
       }
 
       const usersData = await response.json();
@@ -40,6 +42,7 @@ export default function MyComponent() {
     } catch (error) {
       // Handle errors
       console.error("There was a problem with the fetch operation:", error);
+
       // You may also choose to set an error state here if needed
     }
   }

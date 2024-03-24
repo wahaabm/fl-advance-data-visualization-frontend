@@ -1,8 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { logout } from "../store/slices/AuthSlice";
-import Users from "./Users";
-import { jwtDecode } from "jwt-decode";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -13,14 +11,28 @@ export default function Dashboard() {
     navigate("/login");
   };
   return (
-    <div className="flex flex-col mx-auto w-4/5">
+    <div className="flex flex-col mx-auto w-11/12">
       <div className="flex mx-auto justify-between navbar bg-base-300">
         <div>
           <div className="flex-1">
-            <a className="btn btn-ghost text-xl">Articles</a>
+            <a
+              className="btn btn-ghost text-xl"
+              onClick={() => {
+                navigate("articles");
+              }}
+            >
+              Articles
+            </a>
           </div>
           <div className="flex-1">
-            <a className="btn btn-ghost text-xl">Charts</a>
+            <a
+              className="btn btn-ghost text-xl"
+              onClick={() => {
+                navigate("charts");
+              }}
+            >
+              Charts
+            </a>
           </div>
           {(role === "ADMIN_USER" || role === "EDITOR_USER") && (
             <div className="flex-1">
