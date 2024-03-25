@@ -1,6 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { logout } from "../store/slices/AuthSlice";
+import { useEffect } from "react";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -11,6 +12,14 @@ export default function Dashboard() {
     dispatch(logout());
     navigate("/login");
   };
+
+ 
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      console.log("here");
+      navigate("/login");
+    }
+  }, []); 
 
   return (
     <div className="flex flex-col mx-auto w-11/12">
@@ -58,13 +67,7 @@ export default function Dashboard() {
           )}
         </div>
         <div className="gap-2">
-          <div className="form-control">
-            <input
-              type="text"
-              placeholder="Search"
-              className="input input-bordered w-24 md:w-auto"
-            />
-          </div>
+          
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}

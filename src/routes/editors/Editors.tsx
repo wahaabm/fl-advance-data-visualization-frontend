@@ -132,7 +132,7 @@ export default function ShowEditors() {
                   className="btn btn-sm"
                   onClick={() => handleRemoveEditor(user.id)}
                 >
-                  RemoveEditor
+                  Remove editor
                 </button>
               </td>
             </tr>

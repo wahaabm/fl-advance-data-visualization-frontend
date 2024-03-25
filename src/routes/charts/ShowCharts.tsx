@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import UploadDialogue from "./UploadDialogue";
 import { useNavigate } from "react-router-dom";
+import AddChartData from "./AddChartData";
 
-//TODO add check when charts empty it shouldn't show anything
 interface chartItem {
   [key: string]: string;
 }
@@ -24,6 +24,7 @@ export default function ShowCharts() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [chartData, setChartData] = useState<chartdata[]>([]);
+  const [fields, setFields] = useState();
 
   const parseChartData = (charts: any[]) => {
     console.log("parsed chart data argument", charts);
@@ -32,6 +33,7 @@ export default function ShowCharts() {
     }
     const chartObjects = charts.map((chart) => {
       const dataKeys = Object.keys(chart.data[0]);
+      setFields(dataKeys);
       const dataSeries = dataKeys
         .filter((key) => key !== "date")
         .map((key) => ({
@@ -125,15 +127,33 @@ export default function ShowCharts() {
           Upload new
         </button>
       )}
-      <div className="flex flex-col bg-red-200 justify-center min-h-screen mt-10">
-        {chartData.map((chart, index) => (
-          <Plot
-            key={index}
-            style={{ marginTop: "10px" }}
-            data={chart.data}
-            layout={chart.layout}
-            config={chartConfig}
-          />
+      <div className="flex flex-col bg-red-200 min-h-screen mt-10">
+        {chartData&& chartData.map((chart, index) => (
+          <>
+            <AddChartData fields={fields} />
+
+            <Plot
+              key={index}
+              style={{ marginTop: "10px" }}
+              data={chart.data}
+              layout={chart.layout}
+              config={chartConfig}
+            />
+            {(role === "ADMIN_USER" || role === "EDITOR_USER") && (
+              <button
+                className="btn btn-neutral w-36 ml-5"
+                onClick={() =>
+                  (
+                    document.getElementById(
+                      "add_chart_data"
+                    ) as HTMLDialogElement
+                  )?.showModal()
+                }
+              >
+                add data
+              </button>
+            )}
+          </>
         ))}
       </div>
     </div>

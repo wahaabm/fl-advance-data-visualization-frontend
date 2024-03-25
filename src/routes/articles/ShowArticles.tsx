@@ -61,7 +61,7 @@ export default function ShowArticles() {
           >
             {article.title}
           </p>
-          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+          <div className="prose lg:prose-xl" dangerouslySetInnerHTML={{ __html: article.content }} />
         </div>
       ))}
     </div>

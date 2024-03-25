@@ -28,6 +28,7 @@ export default function CreateArticle() {
           navigate("/login");
           return;
         }
+        navigate("/articles")
       } catch (error) {
         console.log(error);
       }

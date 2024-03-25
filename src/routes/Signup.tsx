@@ -33,7 +33,12 @@ export default function Signup() {
       }
       const data = await response.json();
       setSuccessMessage(data.message);
-      setError;
+      setUserName("")
+      setEmail("")
+      setPassword("")
+      setConfirmPassword("")
+      setError("")
+
     } catch (error) {
       console.error(error);
       setError(error.message);
