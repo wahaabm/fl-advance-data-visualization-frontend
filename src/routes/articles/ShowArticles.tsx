@@ -44,26 +44,36 @@ export default function ShowArticles() {
       </div>
       {(role == "ADMIN_USER" || role === "EDITOR_USER") && (
         <button
-          className="btn btn-neutral w-36 mt-5"
+          className="btn btn-primary w-36 mt-5"
           onClick={() => navigate("/create")}
         >
           Create new
         </button>
       )}
-      {articles.map((article) => (
-        <div key={article.id} className="bg-blue-300 mt-5 mb-5">
-          <p
-            style={{
-              textAlign: "center",
-              fontWeight: "bold",
-              fontSize: "24px",
-            }}
-          >
-            {article.title}
-          </p>
-          <div className="prose lg:prose-xl" dangerouslySetInnerHTML={{ __html: article.content }} />
-        </div>
-      ))}
+
+      <div className="flex flex-wrap gap-4">
+        {articles.map((article) => (
+          <div key={article.id} className="card w-80 bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h2 className="card-title"> {article.title}</h2>
+
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: article.content.substring(0, 127),
+                }}
+              />
+              <div className="card-actions justify-between">
+                <div className="flex gap-x-2">
+                <button className="btn btn-outline btn-info">Edit</button>
+                <button className="btn btn-outline btn-error ">Delete</button>
+                </div>
+                <button className="btn">Read</button>
+
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
