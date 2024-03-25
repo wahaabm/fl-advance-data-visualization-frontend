@@ -17,16 +17,15 @@ export default function Signup() {
       if (email == "" || password == "" || userName == "") {
         throw new Error("All fields are required.");
       }
-      if(password!==confirmPassword)
-      {
-        throw new Error("Passwords don't match.")
+      if (password !== confirmPassword) {
+        throw new Error("Passwords don't match.");
       }
       const response = await fetch("http://localhost:3000/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, username:userName,  }),
+        body: JSON.stringify({ email, password, username: userName }),
       });
       if (!response.ok) {
         const responseData = await response.json();
@@ -34,12 +33,10 @@ export default function Signup() {
       }
       const data = await response.json();
       setSuccessMessage(data.message);
-      setError
-      // Dispatch action or update state based on the response
-      // dispatch(updateAuthState(true));
+      setError;
     } catch (error) {
       console.error(error);
-      setError(error.message); 
+      setError(error.message);
     }
   };
   return (
@@ -123,7 +120,12 @@ export default function Signup() {
                   Already have an account? Sign in
                 </p>
 
-                <button onClick={()=>{navigate("/login")}} className="mt-2 w-full flex justify-center bg-green-400  hover:bg-green-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200">
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  className="mt-2 w-full flex justify-center bg-green-400  hover:bg-green-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
+                >
                   Sign in
                 </button>
               </div>

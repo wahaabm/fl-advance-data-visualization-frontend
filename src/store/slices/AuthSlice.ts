@@ -53,6 +53,12 @@ const authSlice = createSlice({
     revokeUser: (state) => {
       state.isAuthorized = false;
     },
+    makeEditor: (state) => {
+      state.isAuthorized = true;
+    },
+    removeEditor: (state) => {
+      state.isAuthorized = false;
+    },
   },
 });
 

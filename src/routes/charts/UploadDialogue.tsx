@@ -1,16 +1,4 @@
-// ModalDialog.js
-import React, { FormEvent, useState } from "react";
-
-// model Plot {
-//     id          Int      @id @default(autoincrement())
-//     title       String
-//     description String?
-//     data        Json?
-//     author      User     @relation(fields: [authorId], references: [id])
-//     authorId    Int
-//     createdAt   DateTime @default(now())
-//     updatedAt   DateTime @updatedAt
-//   }
+import { FormEvent, useState } from "react";
 
 const UploadDialogue = () => {
   const [title, setTitle] = useState("");
@@ -23,27 +11,24 @@ const UploadDialogue = () => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("csvFile", file!);
+
     try {
       const res = await fetch("http://localhost:3000/admin/csv", {
-        method: "POST", // Specify the HTTP method
-        body: formData, // Pass the FormData object as the request body
+        method: "POST",
+        body: formData,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-          // Add headers if necessary
-          // "Content-Type": "multipart/form-data", // This header is not required when using FormData
         },
       });
-
       if (res.ok) {
-        // Handle success response
-        const data = await res.json();
-        console.log(data);
+        await res.json();
+        (document.getElementById("my_modal_1") as HTMLDialogElement).close();
       } else {
-        // Handle error response
         console.error("Failed to upload CSV file");
+        (document.getElementById("my_modal_1") as HTMLDialogElement).close();
       }
     } catch (error) {
-      // Handle network errors
+      (document.getElementById("my_modal_1") as HTMLDialogElement).close();
       console.error("Error:", error);
     }
   };

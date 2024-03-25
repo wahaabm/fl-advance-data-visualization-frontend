@@ -6,7 +6,6 @@ import UploadDialogue from "./UploadDialogue";
 import { useNavigate } from "react-router-dom";
 
 //TODO add check when charts empty it shouldn't show anything
-//TODO modal box close upon submission.
 interface chartItem {
   [key: string]: string;
 }
@@ -29,11 +28,10 @@ export default function ShowCharts() {
   const parseChartData = (charts: any[]) => {
     console.log("parsed chart data argument", charts);
     if (!charts || !Array.isArray(charts) || charts.length === 0) {
-      return null; // Return null if data is invalid or empty
+      return null;
     }
-
     const chartObjects = charts.map((chart) => {
-      const dataKeys = Object.keys(chart.data[0]); // Get keys of the first data item
+      const dataKeys = Object.keys(chart.data[0]);
       const dataSeries = dataKeys
         .filter((key) => key !== "date")
         .map((key) => ({
@@ -87,23 +85,27 @@ export default function ShowCharts() {
           },
         });
 
-        if (response.status == 403) {
-          navigate("/waiting");
+        if (!response.ok) {
+          if (response.status === 405) {
+            navigate("/waiting");
+          } else if (response.status === 403) {
+            navigate("/login");
+          } else {
+            throw new Error("Failed to fetch articles");
+          }
           return;
         }
-
         const charts = await response.json();
         const parsedData = parseChartData(charts);
         setChartData(parsedData);
       } catch (error) {
-        // Handle errors
         console.error("There was a problem with the fetch operation:", error);
-        // You may also choose to set an error state here if needed
       }
     };
 
-    fetchData(); // Call the fetchData function when the component mounts
-  }, [token]); // Dependency array to ensure useEffect runs only when token changes
+    fetchData();
+  }, [token]);
+
   return (
     <div className="flex flex-col mx-auto">
       {" "}

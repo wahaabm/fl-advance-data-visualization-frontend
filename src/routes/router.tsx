@@ -2,10 +2,12 @@ import { createBrowserRouter } from "react-router-dom";
 import Signin from "./Signin";
 import Signup from "./Signup";
 import Dashboard from "./Dashboard";
-import Users from "./Users";
+import ShowUsers from "./Users";
 import ShowCharts from "./charts/ShowCharts";
 import ShowArticles from "./articles/ShowArticles";
 import ApprovalWaiting from "./ApprovalWaiting";
+import CreateArticle from "./articles/createArticle";
+import ShowEditors from "./editors/Editors";
 
 const router = createBrowserRouter([
   {
@@ -16,14 +18,17 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Signup />,
   },
-
   {
     path: "/",
     element: <Dashboard />,
     children: [
       {
         path: "users",
-        element: <Users />,
+        element: <ShowUsers />,
+      },
+      {
+        path: "editors",
+        element: <ShowEditors />,
       },
       {
         path: "charts",
@@ -36,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "waiting",
         element: <ApprovalWaiting />,
+      },
+      {
+        path: "create",
+        element: <CreateArticle />,
       },
     ],
   },

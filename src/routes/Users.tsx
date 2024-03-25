@@ -12,16 +12,15 @@ interface user {
   updatedAt: string;
 }
 
-export default function MyComponent() {
+export default function ShowUsers() {
   const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [users, setUsers] = useState<user[]>([]);
-  ///allowUser/:userId
 
   async function fetchUsers() {
     if (!token) {
-      return; // or handle the lack of token in some other way
+      return;
     }
 
     try {
@@ -40,15 +39,12 @@ export default function MyComponent() {
       const usersData = await response.json();
       setUsers(usersData);
     } catch (error) {
-      // Handle errors
       console.error("There was a problem with the fetch operation:", error);
-
-      // You may also choose to set an error state here if needed
     }
   }
   useEffect(() => {
     fetchUsers();
-  }, []); // Empty dependency array ensures this effect runs only once after the initial render
+  }, []);
 
   const handleAuthorize = async (id: string) => {
     try {
@@ -91,7 +87,6 @@ export default function MyComponent() {
   return (
     <div className="overflow-x-auto">
       <table className="table">
-        {/* head */}
         <thead>
           <tr>
             <th></th>
@@ -105,7 +100,7 @@ export default function MyComponent() {
         <tbody>
           {users.map((user, index) => (
             <tr key={user.id}>
-              <th>{index + 1}</th> {/* Adjusting the index to start from 2 */}
+              <th>{index + 1}</th>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.createdAt.split("T")[0]}</td>

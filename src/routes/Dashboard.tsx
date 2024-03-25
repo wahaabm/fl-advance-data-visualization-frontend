@@ -6,10 +6,12 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const role = useAppSelector((state) => state.auth.role);
   const dispatch = useAppDispatch();
+
   const handleSignOut = () => {
     dispatch(logout());
     navigate("/login");
   };
+
   return (
     <div className="flex flex-col mx-auto w-11/12">
       <div className="flex mx-auto justify-between navbar bg-base-300">
@@ -41,6 +43,16 @@ export default function Dashboard() {
                 onClick={() => navigate("users")}
               >
                 Users
+              </a>
+            </div>
+          )}
+          {role === "ADMIN_USER" && (
+            <div className="flex-1">
+              <a
+                className="btn btn-ghost text-xl"
+                onClick={() => navigate("editors")}
+              >
+                Editors
               </a>
             </div>
           )}

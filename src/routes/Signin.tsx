@@ -31,16 +31,14 @@ export default function Signin() {
         throw new Error(responseData.message);
       }
 
-      // If the response is ok, parse it as JSON
       const data = await response.json();
       console.log(data);
       dispatch(updateLoggedinState(data.token));
 
       navigate("/charts");
     } catch (error) {
-      // Handle error
       console.error(error);
-      setError(error.message); // Set a user-friendly error message
+      setError(error.message);
     }
   }
   return (
