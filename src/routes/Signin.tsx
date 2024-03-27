@@ -7,12 +7,13 @@ export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   async function handleSignIn(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
+    setLoading(true);
     try {
       if (email == "" || password == "") {
         throw new Error("All fields are required");
@@ -39,6 +40,8 @@ export default function Signin() {
     } catch (error) {
       console.error(error);
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -84,9 +87,14 @@ export default function Signin() {
               <div>
                 <button
                   type="submit"
+                  disabled={loading}
                   className="w-full flex justify-center bg-red-400  hover:bg-red-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
                 >
-                  Sign in
+                  {loading ? (
+                    <span className="loading loading-spinner loading-md"></span>
+                  ) : (
+                    "Sign in"
+                  )}
                 </button>
                 <p className="text-gray-500 text-center mt-2 text-sm">
                   Don't have an account? Please sign up.
@@ -94,6 +102,7 @@ export default function Signin() {
 
                 <button
                   onClick={() => navigate("/register")}
+                  disabled={loading}
                   className="mt-2 w-full flex justify-center bg-blue-400  hover:bg-blue-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
                 >
                   Sign up

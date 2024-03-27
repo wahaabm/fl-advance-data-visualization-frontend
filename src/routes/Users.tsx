@@ -62,6 +62,7 @@ export default function ShowUsers() {
         dispatch(authorizeUser());
         fetchUsers();
       } else {
+        navigate("/login");
         throw new Error("Forbidden");
       }
     } catch (error) {
@@ -81,6 +82,7 @@ export default function ShowUsers() {
         dispatch(revokeUser());
         fetchUsers();
       } else {
+        navigate("/login");
         throw new Error("Forbidden");
       }
     } catch (error) {

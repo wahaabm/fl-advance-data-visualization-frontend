@@ -77,6 +77,7 @@ const UploadDialogue = ({ fetchCharts }) => {
           <div className="flex flex-row mt-2 gap-x-2">
             <button
               className="btn btn-error btn-outline "
+              type="button"
               onClick={() =>
                 (
                   document.getElementById("my_modal_1") as HTMLDialogElement

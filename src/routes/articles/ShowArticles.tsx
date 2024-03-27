@@ -111,7 +111,7 @@ export default function ShowArticles() {
 
               <div
                 dangerouslySetInnerHTML={{
-                  __html: article.content.substring(0, 127),
+                  __html: article.content.substring(0, 250),
                 }}
               />
               <div className="card-actions justify-between">

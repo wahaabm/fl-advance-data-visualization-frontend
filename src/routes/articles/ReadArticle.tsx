@@ -58,6 +58,12 @@ export default function ReadArticle() {
           </div>
         </div>
       </div>
+      <button
+        className="btn btn-outline btn-error mt-2 self-baseline"
+        onClick={() => navigate(-1)}
+      >
+        go back
+      </button>
     </div>
   );
 }

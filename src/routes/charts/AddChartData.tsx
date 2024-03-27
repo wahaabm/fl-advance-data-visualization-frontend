@@ -2,20 +2,37 @@ import React, { FormEvent, useState } from "react";
 
 export default function AddChartData({ chart, onClose, fetchCharts }) {
   const [formData, setFormData] = useState({});
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let parsedValue;
+    if (name !== "date") {
+      parsedValue = parseFloat(value);
+      if (isNaN(parsedValue) && value !== "") {
+        setError(`Invalid value for ${name}`);
+      } else {
+        setError("");
+      }
+    }
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [name]: parsedValue !== undefined ? parsedValue : value,
     }));
   };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    if (error) {
+      return;
+    }
     const formDataToSubmit = {};
-
+    let hasError = false;
     for (const [key, value] of Object.entries(formData)) {
       formDataToSubmit[key] = value;
+    }
+    if (hasError) {
+      return; // Prevent submission if error exists
     }
     try {
       //!TODO: add order to it
@@ -77,12 +94,15 @@ export default function AddChartData({ chart, onClose, fetchCharts }) {
               </label>
             </div>
           ))}
+          {error && <p className="text-red-500">{error}</p>}{" "}
+          {/* Display error message */}
           <div className="flex flex-row gap-x-2 mt-2">
             <button className="btn btn-primary" type="submit">
               Submit
             </button>
             <button
               className="btn btn-error "
+              type="button"
               onClick={() =>
                 (
                   document.getElementById("add_chart_data") as HTMLDialogElement

@@ -33,6 +33,7 @@ export default function EditArticle() {
       const data = await response.json();
       console.log(data);
       setArticle(data);
+      setTitle(data.title);
     } catch (error) {
       console.error("Error fetching articles:", error);
     } finally {
@@ -91,7 +92,7 @@ export default function EditArticle() {
           <span className="label-text text-2xl font-bold mr-5">Title: </span>
           <input
             type="text"
-            value={article.title}
+            value={title}
             className="input input-bordered w-full"
             required
             onChange={(e) => setTitle(e.target.value)}
