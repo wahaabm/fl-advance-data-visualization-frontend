@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 
-const UploadDialogue = () => {
+const UploadDialogue = ({ fetchCharts }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState<File>();
@@ -30,15 +30,17 @@ const UploadDialogue = () => {
     } catch (error) {
       (document.getElementById("my_modal_1") as HTMLDialogElement).close();
       console.error("Error:", error);
+    } finally {
+      fetchCharts();
     }
   };
 
   return (
     <dialog id="my_modal_1" className="modal">
       <div className="modal-box">
-        <h3 className="font-bold text-lg">Upload csv</h3>
-        <form onSubmit={handleSubmit}>
-          <label className="form-control w-full max-w-xs">
+        <h3 className="font-bold text-xl text-center">Upload csv</h3>
+        <form className="w-full" onSubmit={handleSubmit}>
+          <label className="form-control w-full">
             <div className="label">
               <span className="label-text">Title</span>
             </div>
@@ -46,11 +48,11 @@ const UploadDialogue = () => {
               type="text"
               placeholder="Type here"
               onChange={(e) => setTitle(e.target.value)}
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered w-full "
               required
             />
           </label>
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full ">
             <div className="label">
               <span className="label-text">Description</span>
             </div>
@@ -61,31 +63,32 @@ const UploadDialogue = () => {
               required
             ></textarea>
           </label>
-          <label className="form-control w-full max-w-xs">
+          <label className="form-control w-full">
             <div className="label">
               <span className="label-text">Pick a file</span>
             </div>
             <input
               type="file"
-              className="file-input file-input-bordered w-full max-w-xs"
+              className="file-input file-input-bordered w-full"
               onChange={(e) => setFile(e.target.files![0])}
               required
             />
           </label>
-
-          <button
-            className="btn btn-error mt-5 mr-3"
-            onClick={() =>
-              (
-                document.getElementById("my_modal_1") as HTMLDialogElement
-              )?.close()
-            }
-          >
-            Close
-          </button>
-          <button className="btn btn-primary" type="submit">
-            Submit
-          </button>
+          <div className="flex flex-row mt-2 gap-x-2">
+            <button
+              className="btn btn-error btn-outline "
+              onClick={() =>
+                (
+                  document.getElementById("my_modal_1") as HTMLDialogElement
+                )?.close()
+              }
+            >
+              Close
+            </button>
+            <button className="btn btn-success btn-outline" type="submit">
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </dialog>

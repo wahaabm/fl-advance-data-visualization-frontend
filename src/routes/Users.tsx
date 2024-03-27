@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAppDispatch } from "../hooks/hooks";
 import { authorizeUser, logout, revokeUser } from "../store/slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
+import Loading from "../utils/Loading";
 interface user {
   id: string;
   email: string;
@@ -17,6 +18,7 @@ export default function ShowUsers() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [users, setUsers] = useState<user[]>([]);
+  const [loading, setLoading] = useState(true);
 
   async function fetchUsers() {
     if (!token) {
@@ -40,6 +42,8 @@ export default function ShowUsers() {
       setUsers(usersData);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
+    } finally {
+      setLoading(false);
     }
   }
   useEffect(() => {
@@ -83,23 +87,30 @@ export default function ShowUsers() {
       console.log("error");
     }
   };
+  if (loading)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="overflow-x-auto">
-      <table className="table">
+      <div className="text-5xl font-bold mt-2 text-center">Users dashboard</div>
+      <table className="table table-zebra mt-5">
         <thead>
-          <tr>
+          <tr className="text-xl">
             <th></th>
             <th>Name</th>
             <th>Email</th>
             <th>Date created</th>
-            <th>Auhtorization</th>
+            <th>Authorization</th>
             <td>Allow/Revoke</td>
           </tr>
         </thead>
         <tbody>
           {users.map((user, index) => (
-            <tr key={user.id}>
+            <tr className="text-lg" key={user.id}>
               <th>{index + 1}</th>
               <td>{user.name}</td>
               <td>{user.email}</td>
@@ -107,14 +118,18 @@ export default function ShowUsers() {
               <td>{user.isAuthorized ? "Authorized" : "Unauthorized"}</td>
               <td>
                 <button
-                  className="btn btn-sm"
+                  className={
+                    user.isAuthorized
+                      ? "btn btn-outline btn-error"
+                      : "btn btn-outline btn-success"
+                  }
                   onClick={() =>
                     user.isAuthorized
                       ? handleRevoke(user.id)
                       : handleAuthorize(user.id)
                   }
                 >
-                  {user.isAuthorized ? "Revoke" : "Allow"}
+                  {user.isAuthorized ? "Revoke access" : "Allow access"}
                 </button>
               </td>
             </tr>

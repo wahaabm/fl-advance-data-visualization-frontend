@@ -17,43 +17,10 @@ interface user {
   updatedAt: string;
 }
 
-export default function ShowUsersModal() {
+export default function ShowUsersModal({ fetchEditors, fetchUsers, users }) {
   const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [users, setUsers] = useState<user[]>([]);
-
-  async function fetchUsers() {
-    if (!token) {
-      return;
-    }
-
-    try {
-      const response = await fetch("http://localhost:3000/admin/users", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.status == 403) {
-        dispatch(logout());
-        navigate("/login");
-      }
-
-      const usersData = await response.json();
-      const normalUsers = usersData.filter(
-        (user) => user.role === "NORMAL_USER"
-      );
-
-      setUsers(normalUsers);
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
-    }
-  }
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   const handleMakeEditor = async (id: string) => {
     try {
@@ -71,6 +38,8 @@ export default function ShowUsersModal() {
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      fetchEditors();
     }
   };
 
@@ -78,7 +47,7 @@ export default function ShowUsersModal() {
     <dialog id="users_modal" className="modal">
       <div className="modal-box">
         <div className="overflow-x-auto">
-          <p className="text-center font-bold text-2xl mb-5">Users list</p>
+          <p className="font-bold text-2xl text-center">Users list</p>
           <table className="table">
             <thead>
               <tr>
@@ -95,7 +64,7 @@ export default function ShowUsersModal() {
                   <td>{user.email}</td>
                   <td>
                     <button
-                      className="btn btn-sm"
+                      className="btn btn-outline btn-success btn-sm"
                       onClick={() => handleMakeEditor(user.id)}
                     >
                       Make editor
@@ -104,17 +73,17 @@ export default function ShowUsersModal() {
                 </tr>
               ))}
             </tbody>
+            <button
+              className="btn btn-outline btn-error"
+              onClick={() => {
+                (
+                  document.getElementById("users_modal") as HTMLDialogElement
+                )?.close();
+              }}
+            >
+              close
+            </button>
           </table>
-          <button
-            className="btn btn-error"
-            onClick={() => {
-              (
-                document.getElementById("users_modal") as HTMLDialogElement
-              )?.close();
-            }}
-          >
-            close
-          </button>
         </div>
       </div>
     </dialog>

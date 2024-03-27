@@ -2,14 +2,13 @@
 
 import daisyui from "daisyui";
 import typography from "@tailwindcss/typography";
-import forms from "@tailwindcss/forms"
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {},
   },
-  plugins: [daisyui, typography,forms ],
+  plugins: [daisyui, typography],
   daisyui: {
     themes: ["light", "dark", "cupcake"],
   },

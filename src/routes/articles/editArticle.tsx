@@ -1,30 +1,69 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../../utils/Loading";
 
-export default function CreateArticle() {
+export default function EditArticle() {
+  const [article, setArticle] = useState();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const editorRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
   const [title, setTitle] = useState("");
+
+  const fetchArticle = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/article/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 405) {
+          navigate("/waiting");
+        } else if (response.status === 403) {
+          navigate("/login");
+        } else {
+          throw new Error("Failed to fetch articles");
+        }
+        return;
+      }
+      const data = await response.json();
+      console.log(data);
+      setArticle(data);
+    } catch (error) {
+      console.error("Error fetching articles:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchArticle();
+  }, []);
 
   const handleSave = async () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
       const editor = editorRef.current.getContent();
       try {
-        const response = await fetch("http://localhost:3000/admin/article", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            content: editor,
-            title: title,
-            published: true,
-          }),
-        });
+        const response = await fetch(
+          `http://localhost:3000/admin/article/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              content: editor,
+              title: title,
+              published: true,
+            }),
+          }
+        );
         if (response.status == 403) {
           navigate("/login");
           return;
@@ -36,17 +75,23 @@ export default function CreateArticle() {
     }
   };
 
+  if (loading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
   return (
     <>
       <div className="text-5xl font-bold mt-2 mb-5 text-center">
-        Write an article
+        Edit an article
       </div>
       <label className="form-control w-full mb-5">
         <div className="label">
           <span className="label-text text-2xl font-bold mr-5">Title: </span>
           <input
             type="text"
-            placeholder="Type here"
+            value={article.title}
             className="input input-bordered w-full"
             required
             onChange={(e) => setTitle(e.target.value)}
@@ -56,7 +101,7 @@ export default function CreateArticle() {
       <Editor
         tinymceScriptSrc={"/tinymce/tinymce.min.js"}
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue="<h2><strong>Start writing your article here</strong></h2>"
+        initialValue={article.content}
         init={{
           height: 500,
           menubar: false,

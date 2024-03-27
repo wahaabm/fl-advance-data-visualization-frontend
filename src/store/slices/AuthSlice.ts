@@ -12,8 +12,7 @@ interface authState {
   isLoggedIn: boolean;
   isAuthorized: boolean;
   role: UserRole;
-  currentUser: string | null;
-  loading: boolean;
+  userId: string | null;
 }
 
 const initialState: authState = {
@@ -24,8 +23,9 @@ const initialState: authState = {
   role: localStorage.getItem("token")
     ? (jwtDecode(localStorage.getItem("token")!).role as UserRole)
     : UserRole.NONE,
-  currentUser: null,
-  loading: false,
+  userId: localStorage.getItem("token")
+    ? jwtDecode(localStorage.getItem("token")!).id
+    : null,
 };
 
 const authSlice = createSlice({
@@ -35,17 +35,17 @@ const authSlice = createSlice({
     updateLoggedinState: (state, action: PayloadAction<string>) => {
       state.isLoggedIn = true;
       localStorage.setItem("token", action.payload);
-      state.currentUser = jwtDecode(action.payload).email;
       state.role = jwtDecode(action.payload).role as UserRole;
       state.isAuthorized = jwtDecode(action.payload).isAuthorized;
+      state.userId = jwtDecode(action.payload).id;
     },
     logout: (state) => {
       console.log("here");
       state.isLoggedIn = false;
       localStorage.clear();
-      state.currentUser = null;
       state.role = UserRole.USER;
       state.isAuthorized = false;
+      state.userId = null;
     },
     authorizeUser: (state) => {
       state.isAuthorized = true;

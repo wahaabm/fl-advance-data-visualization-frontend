@@ -1,8 +1,7 @@
 import React, { FormEvent, useState } from "react";
 
-export default function AddChartData({ fields }) {
+export default function AddChartData({ chart, onClose, fetchCharts }) {
   const [formData, setFormData] = useState({});
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -16,21 +15,22 @@ export default function AddChartData({ fields }) {
     const formDataToSubmit = {};
 
     for (const [key, value] of Object.entries(formData)) {
-        console.log(key, value);
-        formDataToSubmit[key] = value; 
-      }
-      console.log(formDataToSubmit);
-    console.log(formDataToSubmit);
+      formDataToSubmit[key] = value;
+    }
     try {
-      const res = await fetch(`http://localhost:3000/admin/chart/2`, {
-        method: "PUT",
-        body: JSON.stringify({ formDataToSubmit }), 
-        headers: {
-          "Content-Type": "application/json",
+      //!TODO: add order to it
+      const res = await fetch(
+        `http://localhost:3000/admin/chart/${chart.chartId}`,
+        {
+          method: "PUT",
+          body: JSON.stringify({ formDataToSubmit }),
+          headers: {
+            "Content-Type": "application/json",
 
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       if (res.ok) {
         await res.json();
         (
@@ -45,6 +45,9 @@ export default function AddChartData({ fields }) {
     } catch (error) {
       console.error("Error:", error);
       (document.getElementById("add_chart_data") as HTMLDialogElement).close();
+    } finally {
+      fetchCharts();
+      onClose();
     }
   };
 
@@ -53,32 +56,42 @@ export default function AddChartData({ fields }) {
       <div className="modal-box">
         <h3 className="font-bold text-lg">Add chart data</h3>
         <form onSubmit={handleSubmit}>
-          {fields.map((field, index) => (
+          {chart.dataKeys.map((field, index) => (
             <div key={index}>
-              <label htmlFor={field}>{field}</label>
-              <input
-                type="text"
-                name={field}
-                id={field}
-                value={formData[field] || ""}
-                onChange={handleChange}
-                required
-              />
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">
+                    {field.charAt(0).toUpperCase() + field.slice(1)}
+                  </span>
+                  <input
+                    type="text"
+                    placeholder=""
+                    className="input input-bordered w-1/2 max-w-xs"
+                    name={field}
+                    id={field}
+                    value={formData[field] || ""}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </label>
             </div>
           ))}
-          <button className="btn btn-primary" type="submit">
-            Submit
-          </button>
-          <button
-            className="btn btn-error mt-5 mr-3"
-            onClick={() =>
-              (
-                document.getElementById("add_chart_data") as HTMLDialogElement
-              )?.close()
-            }
-          >
-            Close
-          </button>
+          <div className="flex flex-row gap-x-2 mt-2">
+            <button className="btn btn-primary" type="submit">
+              Submit
+            </button>
+            <button
+              className="btn btn-error "
+              onClick={() =>
+                (
+                  document.getElementById("add_chart_data") as HTMLDialogElement
+                )?.close()
+              }
+            >
+              Close
+            </button>
+          </div>
         </form>
       </div>
     </dialog>

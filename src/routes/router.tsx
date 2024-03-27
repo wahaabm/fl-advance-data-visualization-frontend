@@ -8,6 +8,8 @@ import ShowArticles from "./articles/ShowArticles";
 import ApprovalWaiting from "./ApprovalWaiting";
 import CreateArticle from "./articles/createArticle";
 import ShowEditors from "./editors/Editors";
+import ReadArticle from "./articles/ReadArticle";
+import EditArticle from "./articles/editArticle";
 
 const router = createBrowserRouter([
   {
@@ -43,8 +45,16 @@ const router = createBrowserRouter([
         element: <ApprovalWaiting />,
       },
       {
-        path: "create",
+        path: "create-article",
         element: <CreateArticle />,
+      },
+      {
+        path: "article/:id",
+        element: <ReadArticle />,
+      },
+      {
+        path: "edit-article/:id",
+        element: <EditArticle />,
       },
     ],
   },
