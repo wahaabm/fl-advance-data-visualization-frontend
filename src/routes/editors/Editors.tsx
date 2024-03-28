@@ -118,8 +118,8 @@ export default function ShowEditors() {
     <div className="flex flex-col overflow-x-auto">
       <ShowUsersModal
         fetchEditors={fetchEditors}
+        fetchUsers={fetchUsers}
         users={users}
-        fetchUsers={setUsers}
       />
       <div className="text-5xl font-bold mt-2 text-center">
         Editors dashboard
@@ -127,7 +127,6 @@ export default function ShowEditors() {
       <p className="text-center mt-2 text-lg">
         Grant or revoke editor rights for users with ease.
       </p>
-
       <button
         className="btn btn-primary w-36 mt-5 mx-auto"
         onClick={() => {
