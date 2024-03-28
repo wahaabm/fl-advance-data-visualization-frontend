@@ -32,7 +32,7 @@ export default function AddChartData({ chart, onClose, fetchCharts }) {
       formDataToSubmit[key] = value;
     }
     if (hasError) {
-      return; // Prevent submission if error exists
+      return;
     }
     try {
       //!TODO: add order to it

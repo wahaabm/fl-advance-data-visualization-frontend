@@ -82,13 +82,16 @@ export default function EditArticle() {
         <Loading />
       </>
     );
+
   return (
     <>
       <div className="text-5xl font-bold mt-2 mb-5 text-center">
         Edit an article
       </div>
       <div className="form-control label w-full  mb-5">
-        <span className="label-text text-2xl font-bold mr-5 self-start">Title: </span>
+        <span className="label-text text-2xl font-bold mr-5 self-start">
+          Title:{" "}
+        </span>
         <input
           type="text"
           value={title}
@@ -138,7 +141,7 @@ export default function EditArticle() {
           }}
         />
       </div>
-      
+
       <div className="flex flex-row justify-end gap-x-2">
         <button
           className="btn btn-outline btn-error mt-2 self-baseline"

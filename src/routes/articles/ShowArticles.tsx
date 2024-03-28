@@ -7,18 +7,17 @@ export default function ShowArticles() {
   const navigate = useNavigate();
   const [articles, setArticles] = useState([]);
   const token = localStorage.getItem("token");
-  console.log(token);
   const role = useAppSelector((state) => state.auth.role);
   const userId = useAppSelector((state) => state.auth.userId);
   const [loading, setLoading] = useState(true);
-  console.log(userId);
+
   const handleDelete = async (id) => {
     if (role === "ADMIN_USER" || role === "EDITOR_USER") {
       const confirmed = window.confirm(
         "Are you sure you want to delete this article?"
       );
       if (!confirmed) {
-        return; 
+        return;
       }
       try {
         const url = `http://localhost:3000/admin/article/${id}`;
@@ -89,21 +88,24 @@ export default function ShowArticles() {
   }, [token]);
 
   if (loading) return <Loading />;
+
   return (
     <div className="flex flex-col">
       <div className="text-5xl font-bold mt-2 text-center">
         Articles dashboard
       </div>
-      <p className="text-center mt-2 text-lg">Manage and view all articles at a glance.</p>
+      <p className="text-center mt-2 text-lg">
+        Manage and view all articles at a glance.
+      </p>
       {(role == "ADMIN_USER" || role === "EDITOR_USER") && (
         <button
-          className="btn btn-primary w-36 mt-5 mx-auto"
+          className="btn btn-primary w-36 mt-5 mb-5 mx-auto"
           onClick={() => navigate("/create-article")}
         >
           Create new
         </button>
       )}
-      {articles.length==0 && (
+      {articles.length == 0 && (
         <p className="text-xl mt-20 text-center text-gray-600">
           No articles are currently available. <br />
           You can start by creating a new article using the button above.

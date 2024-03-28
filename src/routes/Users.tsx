@@ -18,9 +18,10 @@ export default function ShowUsers() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [users, setUsers] = useState<user[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   async function fetchUsers() {
+    setLoading(true);
     if (!token) {
       return;
     }
@@ -46,11 +47,13 @@ export default function ShowUsers() {
       setLoading(false);
     }
   }
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const handleAuthorize = async (id: string) => {
+    setLoading(true);
     try {
       const res = await fetch(`http://localhost:3000/admin/allowUser/${id}`, {
         method: "POST",
@@ -67,10 +70,13 @@ export default function ShowUsers() {
       }
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRevoke = async (id: string) => {
+    setLoading(true);
     try {
       const res = await fetch(`http://localhost:3000/admin/revokeUser/${id}`, {
         method: "POST",
@@ -87,8 +93,11 @@ export default function ShowUsers() {
       }
     } catch (error) {
       console.log("error");
+    } finally {
+      setLoading(false);
     }
   };
+
   if (loading)
     return (
       <div>
@@ -140,7 +149,13 @@ export default function ShowUsers() {
                         : handleAuthorize(user.id)
                     }
                   >
-                    {user.isAuthorized ? "Revoke access" : "Allow access"}
+                    {loading ? (
+                      <span className="loading loading-spinner loading-md"></span>
+                    ) : user.isAuthorized ? (
+                      "Revoke access"
+                    ) : (
+                      "Allow access"
+                    )}{" "}
                   </button>
                 </td>
               </tr>

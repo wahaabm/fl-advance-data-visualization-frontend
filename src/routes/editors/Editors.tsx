@@ -25,10 +25,11 @@ export default function ShowEditors() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [editors, setEditors] = useState<user[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<user[]>([]);
 
   async function fetchEditors() {
+    setLoading(true);
     if (!token) {
       return;
     }
@@ -56,6 +57,7 @@ export default function ShowEditors() {
   }
 
   async function fetchUsers() {
+    setLoading(true);
     if (!token) {
       return;
     }
@@ -81,6 +83,8 @@ export default function ShowEditors() {
       setUsers(normalUsers);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -107,8 +111,6 @@ export default function ShowEditors() {
       }
     } catch (error) {
       console.log("error");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -128,12 +130,12 @@ export default function ShowEditors() {
         Grant or revoke editor rights for users with ease.
       </p>
       <button
-        className="btn btn-primary w-36 mt-5 mx-auto"
-        onClick={() => {
+        className="btn btn-primary w-36 mt-5 mb-5 mx-auto"
+        onClick={async () => {
+          await fetchUsers();
           (
             document.getElementById("users_modal") as HTMLDialogElement
           )?.showModal();
-          fetchUsers();
         }}
       >
         Add editor

@@ -8,11 +8,12 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     try {
       if (email == "" || password == "" || userName == "") {
         throw new Error("All fields are required.");
@@ -38,11 +39,15 @@ export default function Signup() {
       setPassword("");
       setConfirmPassword("");
       setError("");
+      navigate("/login");
     } catch (error) {
       console.error(error);
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center bg-green-200">
       <div className="flex justify-center self-center  z-10 ">
@@ -116,9 +121,14 @@ export default function Signup() {
               <div>
                 <button
                   type="submit"
+                  disabled={loading}
                   className="w-full flex justify-center bg-red-400  hover:bg-red-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
                 >
-                  Register
+                  {loading ? (
+                    <span className="loading loading-spinner loading-md"></span>
+                  ) : (
+                    "Register"
+                  )}
                 </button>
                 <p className="text-gray-500 text-center mt-2 text-sm">
                   Already have an account? Sign in

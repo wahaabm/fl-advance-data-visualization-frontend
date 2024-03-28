@@ -28,14 +28,12 @@ export default function Signin() {
 
       if (!response.ok) {
         const responseData = await response.json();
-
         throw new Error(responseData.message);
       }
 
       const data = await response.json();
       console.log(data);
       dispatch(updateLoggedinState(data.token));
-
       navigate("/charts");
     } catch (error) {
       console.error(error);
@@ -44,6 +42,7 @@ export default function Signin() {
       setLoading(false);
     }
   }
+
   return (
     <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center bg-green-200">
       <div className="flex justify-center self-center  z-10 ">

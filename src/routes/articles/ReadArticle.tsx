@@ -10,7 +10,7 @@ export default function ReadArticle() {
   const role = useAppSelector((state) => state.auth.role);
   const [loading, setLoading] = useState(true);
   const { id } = useParams(); // Get the id from the URL params
-  console.log(id);
+
   const fetchArticle = async () => {
     try {
       const response = await fetch(`http://localhost:3000/article/${id}`, {
@@ -43,13 +43,16 @@ export default function ReadArticle() {
   }, []);
 
   if (loading) return <Loading />;
+
   return (
     <div>
       <div className="flex flex-col">
-      <div className="text-5xl font-bold mt-2 text-center">
-        Articles dashboard
-      </div>
-      <p className="text-center mt-2 text-lg">Manage and view all articles at a glance.</p>
+        <div className="text-5xl font-bold mt-2 text-center">
+          Articles dashboard
+        </div>
+        <p className="text-center mt-2 text-lg">
+          Manage and view all articles at a glance.
+        </p>
 
         <div className="text-2xl font-bold mt-10 text-center">
           {article.title}
