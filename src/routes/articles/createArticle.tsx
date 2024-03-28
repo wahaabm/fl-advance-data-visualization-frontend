@@ -6,7 +6,7 @@ export default function CreateArticle() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const editorRef = useRef(null);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState("Title for your article");
 
   const handleSave = async () => {
     if (editorRef.current) {
@@ -41,53 +41,57 @@ export default function CreateArticle() {
       <div className="text-5xl font-bold mt-2 mb-5 text-center">
         Write an article
       </div>
-      <label className="form-control w-full mb-5">
-        <div className="label">
-          <span className="label-text text-2xl font-bold mr-5">Title: </span>
+        <div className="form-control label w-full  mb-5">
+          <span className="label-text text-2xl font-bold mr-5 self-start">Title: </span>
           <input
             type="text"
+            value={title}
             placeholder="Type here"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full h-14"
             required
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-      </label>
-      <Editor
-        tinymceScriptSrc={"/tinymce/tinymce.min.js"}
-        onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue="<h2><strong>Start writing your article here</strong></h2>"
-        init={{
-          height: 500,
-          menubar: false,
-          plugins: [
-            "advlist",
-            "autolink",
-            "lists",
-            "link",
-            "image",
-            "charmap",
-            "anchor",
-            "searchreplace",
-            "visualblocks",
-            "code",
-            "fullscreen",
-            "insertdatetime",
-            "media",
-            "table",
-            "preview",
-            "help",
-            "wordcount",
-          ],
-          toolbar:
-            "undo redo | blocks | " +
-            "bold italic forecolor | alignleft aligncenter " +
-            "alignright alignjustify | bullist numlist outdent indent | " +
-            "removeformat | help",
-          content_style:
-            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-        }}
-      />
+      <div className="form-control label w-full">
+        <span className="label-text text-2xl font-bold mr-5 self-start">Article: </span>
+        <Editor
+          tinymceScriptSrc={"/tinymce/tinymce.min.js"}
+          onInit={(evt, editor) => (editorRef.current = editor)}
+          initialValue="<h2><strong>Start writing your article here</strong></h2>"
+          init={{
+            height: 500,
+            width: "100%",
+            menubar: false,
+            plugins: [
+              "advlist",
+              "autolink",
+              "lists",
+              "link",
+              "image",
+              "charmap",
+              "anchor",
+              "searchreplace",
+              "visualblocks",
+              "code",
+              "fullscreen",
+              "insertdatetime",
+              "media",
+              "table",
+              "preview",
+              "help",
+              "wordcount",
+            ],
+            toolbar:
+              "undo redo | blocks | " +
+              "bold italic forecolor | alignleft aligncenter " +
+              "alignright alignjustify | bullist numlist outdent indent | " +
+              "removeformat | help",
+            content_style:
+              "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+          }}
+        />
+      </div>
+
       <div className="flex flex-row justify-end gap-x-2">
         <button
           className="btn btn-outline btn-error mt-2 self-baseline"

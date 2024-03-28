@@ -177,10 +177,14 @@ export default function ShowCharts() {
       <div className="text-5xl font-bold mt-2 text-center">
         Charts dashboard
       </div>
+      <p className="text-center mt-2 text-lg">
+        Manage and visualize data and insights through interactive charts.
+      </p>
+      
       <UploadDialogue fetchCharts={fetchCharts} />
       {(role === "ADMIN_USER" || role === "EDITOR_USER") && (
         <button
-          className="btn btn-primary w-36 mt-5"
+          className="btn btn-primary w-36 mt-5 mx-auto"
           onClick={() =>
             (
               document.getElementById("my_modal_1") as HTMLDialogElement
@@ -189,6 +193,12 @@ export default function ShowCharts() {
         >
           Upload new
         </button>
+      )}
+      {!chartData && (
+        <p className="text-xl mt-20 text-center text-gray-600">
+          No charts are currently available. <br />
+          You can start by uploading a new chart using the button above.
+        </p>
       )}
       <div className="flex flex-wrap gap-4">
         {chartData &&

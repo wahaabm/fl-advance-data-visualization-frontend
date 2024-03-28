@@ -99,45 +99,55 @@ export default function ShowUsers() {
   return (
     <div className="overflow-x-auto">
       <div className="text-5xl font-bold mt-2 text-center">Users dashboard</div>
-      <table className="table table-zebra mt-5">
-        <thead>
-          <tr className="text-xl">
-            <th></th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Date created</th>
-            <th>Authorization</th>
-            <td>Allow/Revoke</td>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, index) => (
-            <tr className="text-lg" key={user.id}>
-              <th>{index + 1}</th>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.createdAt.split("T")[0]}</td>
-              <td>{user.isAuthorized ? "Authorized" : "Unauthorized"}</td>
-              <td>
-                <button
-                  className={
-                    user.isAuthorized
-                      ? "btn btn-outline btn-error"
-                      : "btn btn-outline btn-success"
-                  }
-                  onClick={() =>
-                    user.isAuthorized
-                      ? handleRevoke(user.id)
-                      : handleAuthorize(user.id)
-                  }
-                >
-                  {user.isAuthorized ? "Revoke access" : "Allow access"}
-                </button>
-              </td>
+      <p className="text-center mt-2 text-lg">
+        Monitor and manage user authorization and profiles.
+      </p>
+      {users.length == 0 ? (
+        <p className="text-xl mt-20 text-center text-gray-600">
+          No editors are currently available. <br />
+          You can start by adding a new editor using the button above.
+        </p>
+      ) : (
+        <table className="table table-zebra mt-5">
+          <thead>
+            <tr className="text-xl">
+              <th></th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Date created</th>
+              <th>Authorization</th>
+              <td>Allow/Revoke</td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <tr className="text-lg" key={user.id}>
+                <th>{index + 1}</th>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.createdAt.split("T")[0]}</td>
+                <td>{user.isAuthorized ? "Authorized" : "Unauthorized"}</td>
+                <td>
+                  <button
+                    className={
+                      user.isAuthorized
+                        ? "btn btn-outline btn-error"
+                        : "btn btn-outline btn-success"
+                    }
+                    onClick={() =>
+                      user.isAuthorized
+                        ? handleRevoke(user.id)
+                        : handleAuthorize(user.id)
+                    }
+                  >
+                    {user.isAuthorized ? "Revoke access" : "Allow access"}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

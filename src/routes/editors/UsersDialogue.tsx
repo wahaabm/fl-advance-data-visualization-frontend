@@ -48,7 +48,8 @@ export default function ShowUsersModal({ fetchEditors, fetchUsers, users }) {
       <div className="modal-box">
         <div className="overflow-x-auto">
           <p className="font-bold text-2xl text-center">Users list</p>
-          <table className="table">
+
+          <table className="table mt-3">
             <thead>
               <tr>
                 <th></th>
@@ -74,7 +75,7 @@ export default function ShowUsersModal({ fetchEditors, fetchUsers, users }) {
               ))}
             </tbody>
             <button
-              className="btn btn-outline btn-error"
+              className="btn btn-outline btn-error mt-3"
               onClick={() => {
                 (
                   document.getElementById("users_modal") as HTMLDialogElement

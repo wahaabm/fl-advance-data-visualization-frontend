@@ -18,7 +18,7 @@ export default function ShowArticles() {
         "Are you sure you want to delete this article?"
       );
       if (!confirmed) {
-        return; // If not confirmed, do nothing
+        return; 
       }
       try {
         const url = `http://localhost:3000/admin/article/${id}`;
@@ -94,15 +94,21 @@ export default function ShowArticles() {
       <div className="text-5xl font-bold mt-2 text-center">
         Articles dashboard
       </div>
+      <p className="text-center mt-2 text-lg">Manage and view all articles at a glance.</p>
       {(role == "ADMIN_USER" || role === "EDITOR_USER") && (
         <button
-          className="btn btn-primary w-36 mt-5"
+          className="btn btn-primary w-36 mt-5 mx-auto"
           onClick={() => navigate("/create-article")}
         >
           Create new
         </button>
       )}
-
+      {articles.length==0 && (
+        <p className="text-xl mt-20 text-center text-gray-600">
+          No articles are currently available. <br />
+          You can start by creating a new article using the button above.
+        </p>
+      )}
       <div className="flex flex-wrap gap-4">
         {articles.map((article) => (
           <div key={article.id} className="card w-80 bg-base-100 shadow-xl">
@@ -114,7 +120,7 @@ export default function ShowArticles() {
                   __html: article.content.substring(0, 250),
                 }}
               />
-              <div className="card-actions justify-between">
+              <div className="card-actions justify-between mt-auto">
                 <div className="flex gap-x-2">
                   {(role === "ADMIN_USER" ||
                     (role === "EDITOR_USER" &&

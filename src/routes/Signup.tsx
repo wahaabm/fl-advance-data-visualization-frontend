@@ -33,12 +33,11 @@ export default function Signup() {
       }
       const data = await response.json();
       setSuccessMessage(data.message);
-      setUserName("")
-      setEmail("")
-      setPassword("")
-      setConfirmPassword("")
-      setError("")
-
+      setUserName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setError("");
     } catch (error) {
       console.error(error);
       setError(error.message);
@@ -126,6 +125,7 @@ export default function Signup() {
                 </p>
 
                 <button
+                  type="button"
                   onClick={() => {
                     navigate("/login");
                   }}

@@ -32,7 +32,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-dvh">
       <div className="flex mx-auto justify-between navbar bg-base-300">
         <div>
           <div className="flex-1">
@@ -120,7 +120,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="container mx-auto">
+      <div className="container mx-auto py-6 h-full">
         <Outlet />
       </div>
     </div>

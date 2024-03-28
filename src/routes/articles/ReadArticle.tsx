@@ -45,25 +45,34 @@ export default function ReadArticle() {
   if (loading) return <Loading />;
   return (
     <div>
-      <div className="text-5xl font-bold mt-2 text-center">{article.title}</div>
+      <div className="flex flex-col">
+      <div className="text-5xl font-bold mt-2 text-center">
+        Articles dashboard
+      </div>
+      <p className="text-center mt-2 text-lg">Manage and view all articles at a glance.</p>
 
-      <div className="flex flex-wrap gap-4">
-        <div key={article.id} className="card w-full bg-base-100 shadow-xl">
-          <div className="card-body">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: article.content,
-              }}
-            />
+        <div className="text-2xl font-bold mt-10 text-center">
+          {article.title}
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          <div key={article.id} className="card w-full bg-base-100 shadow-xl">
+            <div className="card-body">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: article.content,
+                }}
+              />
+            </div>
           </div>
         </div>
+        <button
+          className="btn btn-outline btn-error mt-2 self-baseline"
+          onClick={() => navigate(-1)}
+        >
+          go back
+        </button>
       </div>
-      <button
-        className="btn btn-outline btn-error mt-2 self-baseline"
-        onClick={() => navigate(-1)}
-      >
-        go back
-      </button>
     </div>
   );
 }
