@@ -57,7 +57,6 @@ export default function ShowEditors() {
   }
 
   async function fetchUsers() {
-    setLoading(true);
     if (!token) {
       return;
     }
@@ -83,8 +82,6 @@ export default function ShowEditors() {
       setUsers(normalUsers);
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
-    } finally {
-      setLoading(false);
     }
   }
 
