@@ -1,125 +1,125 @@
-import React, { useState, useEffect } from "react";
-import { useAppDispatch } from "../hooks/hooks";
-import { authorizeUser, logout, revokeUser } from "../store/slices/AuthSlice";
-import { useNavigate } from "react-router-dom";
-import Loading from "../utils/Loading";
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../hooks/hooks'
+import { authorizeUser, logout, revokeUser } from '../store/slices/AuthSlice'
+import Loading from '../utils/Loading'
 interface user {
-  id: string;
-  email: string;
-  name: string;
-  role: string;
-  isAuthorized: boolean;
-  createdAt: string;
-  updatedAt: string;
+  id: string
+  email: string
+  name: string
+  role: string
+  isAuthorized: boolean
+  createdAt: string
+  updatedAt: string
 }
 
 export default function ShowUsers() {
-  const token = localStorage.getItem("token");
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const [users, setUsers] = useState<user[]>([]);
-  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem('token')
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const [users, setUsers] = useState<user[]>([])
+  const [loading, setLoading] = useState(false)
 
   async function fetchUsers() {
-    setLoading(true);
+    setLoading(true)
     if (!token) {
-      return;
+      return
     }
 
     try {
-      const response = await fetch("http://localhost:3000/admin/users", {
-        method: "GET",
+      const response = await fetch('http://localhost:3000/admin/users', {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
 
       if (response.status == 403) {
-        dispatch(logout());
-        navigate("/login");
+        dispatch(logout())
+        navigate('/login')
       }
 
-      const usersData = await response.json();
-      setUsers(usersData);
+      const usersData = await response.json()
+      setUsers(usersData)
     } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
+      console.error('There was a problem with the fetch operation:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    fetchUsers()
+  }, [])
 
   const handleAuthorize = async (id: string) => {
-    setLoading(true);
+    setLoading(true)
     try {
       const res = await fetch(`http://localhost:3000/admin/allowUser/${id}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
       if (res.ok) {
-        dispatch(authorizeUser());
-        fetchUsers();
+        dispatch(authorizeUser())
+        fetchUsers()
       } else {
-        navigate("/login");
-        throw new Error("Forbidden");
+        navigate('/login')
+        throw new Error('Forbidden')
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleRevoke = async (id: string) => {
-    setLoading(true);
+    setLoading(true)
     try {
       const res = await fetch(`http://localhost:3000/admin/revokeUser/${id}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
       if (res.ok) {
-        dispatch(revokeUser());
-        fetchUsers();
+        dispatch(revokeUser())
+        fetchUsers()
       } else {
-        navigate("/login");
-        throw new Error("Forbidden");
+        navigate('/login')
+        throw new Error('Forbidden')
       }
     } catch (error) {
-      console.log("error");
+      console.log('error')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   if (loading)
     return (
       <div>
         <Loading />
       </div>
-    );
+    )
 
   return (
-    <div className="overflow-x-auto">
-      <div className="text-5xl font-bold mt-2 text-center">Users dashboard</div>
-      <p className="text-center mt-2 text-lg">
+    <div className='overflow-x-auto'>
+      <div className='text-5xl font-bold mt-2 text-center'>Users dashboard</div>
+      <p className='text-center mt-2 text-lg'>
         Monitor and manage user authorization and profiles.
       </p>
       {users.length == 0 ? (
-        <p className="text-xl mt-20 text-center text-gray-600">
-          No editors are currently available. <br />
-          You can start by adding a new editor using the button above.
+        <p className='text-xl mt-20 text-center text-gray-600'>
+          No users are currently available. <br />
+          New users will be listed here for approval or role upgrade.
         </p>
       ) : (
-        <table className="table table-zebra mt-5">
+        <table className='table table-zebra mt-5'>
           <thead>
-            <tr className="text-xl">
+            <tr className='text-xl'>
               <th></th>
               <th>Name</th>
               <th>Email</th>
@@ -130,18 +130,21 @@ export default function ShowUsers() {
           </thead>
           <tbody>
             {users.map((user, index) => (
-              <tr className="text-lg" key={user.id}>
+              <tr
+                className='text-lg'
+                key={user.id}
+              >
                 <th>{index + 1}</th>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{user.createdAt.split("T")[0]}</td>
-                <td>{user.isAuthorized ? "Authorized" : "Unauthorized"}</td>
+                <td>{user.createdAt.split('T')[0]}</td>
+                <td>{user.isAuthorized ? 'Authorized' : 'Unauthorized'}</td>
                 <td>
                   <button
                     className={
                       user.isAuthorized
-                        ? "btn btn-outline btn-error"
-                        : "btn btn-outline btn-success"
+                        ? 'btn btn-outline btn-error'
+                        : 'btn btn-outline btn-success'
                     }
                     onClick={() =>
                       user.isAuthorized
@@ -150,12 +153,12 @@ export default function ShowUsers() {
                     }
                   >
                     {loading ? (
-                      <span className="loading loading-spinner loading-md"></span>
+                      <span className='loading loading-spinner loading-md'></span>
                     ) : user.isAuthorized ? (
-                      "Revoke access"
+                      'Revoke access'
                     ) : (
-                      "Allow access"
-                    )}{" "}
+                      'Allow access'
+                    )}{' '}
                   </button>
                 </td>
               </tr>
@@ -164,5 +167,5 @@ export default function ShowUsers() {
         </table>
       )}
     </div>
-  );
+  )
 }
