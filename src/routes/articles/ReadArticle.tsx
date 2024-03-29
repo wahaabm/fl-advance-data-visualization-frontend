@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppSelector } from "../../hooks/hooks";
 import Loading from "../../utils/Loading";
+
+interface articleData {
+  authorId: number;
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  published: boolean;
+}
 
 export default function ReadArticle() {
   const navigate = useNavigate();
-  const [article, setArticle] = useState();
+  const [article, setArticle] = useState<articleData>();
   const token = localStorage.getItem("token");
-  const role = useAppSelector((state) => state.auth.role);
   const [loading, setLoading] = useState(true);
   const { id } = useParams(); // Get the id from the URL params
 
@@ -55,15 +63,15 @@ export default function ReadArticle() {
         </p>
 
         <div className="text-2xl font-bold mt-10 text-center">
-          {article.title}
+          {article?.title}
         </div>
 
         <div className="flex flex-wrap gap-4">
-          <div key={article.id} className="card w-full bg-base-100 shadow-xl">
+          <div key={article?.id} className="card w-full bg-base-100 shadow-xl">
             <div className="card-body">
               <div
                 dangerouslySetInnerHTML={{
-                  __html: article.content,
+                  __html: article?.content || "",
                 }}
               />
             </div>

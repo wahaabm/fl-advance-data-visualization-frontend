@@ -3,15 +3,25 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hooks";
 import Loading from "../../utils/Loading";
 
+interface articleData {
+  authorId: number;
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  published: boolean;
+}
+
 export default function ShowArticles() {
   const navigate = useNavigate();
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState<articleData[]>([]);
   const token = localStorage.getItem("token");
   const role = useAppSelector((state) => state.auth.role);
   const userId = useAppSelector((state) => state.auth.userId);
   const [loading, setLoading] = useState(true);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     if (role === "ADMIN_USER" || role === "EDITOR_USER") {
       const confirmed = window.confirm(
         "Are you sure you want to delete this article?"
@@ -47,11 +57,11 @@ export default function ShowArticles() {
     }
   };
 
-  const handleEdit = async (id) => {
+  const handleEdit = async (id: number) => {
     navigate(`/edit-article/${id}`);
   };
 
-  const handleReadArticle = async (id) => {
+  const handleReadArticle = async (id: number) => {
     navigate(`/article/${id}`);
   };
 
@@ -111,7 +121,7 @@ export default function ShowArticles() {
           You can start by creating a new article using the button above.
         </p>
       )}
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-4 mt-5">
         {articles.map((article) => (
           <div key={article.id} className="card w-80 bg-base-100 shadow-xl">
             <div className="card-body">
@@ -126,7 +136,7 @@ export default function ShowArticles() {
                 <div className="flex gap-x-2">
                   {(role === "ADMIN_USER" ||
                     (role === "EDITOR_USER" &&
-                      article.authorId === userId)) && (
+                      article.authorId.toString() == userId)) && (
                     <>
                       <button
                         onClick={() => handleEdit(article.id)}

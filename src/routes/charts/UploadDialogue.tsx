@@ -1,6 +1,9 @@
 import { FormEvent, useState } from "react";
 
-const UploadDialogue = ({ fetchCharts }) => {
+interface Prop {
+  fetchCharts: () => void;
+}
+const UploadDialogue = ({ fetchCharts }: Prop) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState<File>();

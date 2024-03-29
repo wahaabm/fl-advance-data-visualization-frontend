@@ -1,12 +1,27 @@
-import React, { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
-export default function AddChartData({ chart, onClose, fetchCharts }) {
-  const [formData, setFormData] = useState({});
+interface ChartData {
+  data: any[];
+  layout: any;
+  dataKeys: string[];
+  chartId: number;
+  title: string;
+  authorId: number;
+}
+
+interface Props {
+  chart: ChartData;
+  onClose: () => void;
+  fetchCharts: () => void;
+}
+
+export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
+  const [formData, setFormData] = useState<Record<string, any>>({});
   const [error, setError] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    let parsedValue;
+    let parsedValue: number;
     if (name !== "date") {
       parsedValue = parseFloat(value);
       if (isNaN(parsedValue) && value !== "") {
@@ -26,8 +41,8 @@ export default function AddChartData({ chart, onClose, fetchCharts }) {
     if (error) {
       return;
     }
-    const formDataToSubmit = {};
-    let hasError = false;
+    const formDataToSubmit: Record<string, any> = {};
+    const hasError = false;
     for (const [key, value] of Object.entries(formData)) {
       formDataToSubmit[key] = value;
     }
@@ -35,7 +50,6 @@ export default function AddChartData({ chart, onClose, fetchCharts }) {
       return;
     }
     try {
-      //!TODO: add order to it
       const res = await fetch(
         `http://localhost:3000/admin/chart/${chart.chartId}`,
         {

@@ -18,18 +18,17 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!token) {
-      console.log("here");
       navigate("/login");
     } else {
       const decodedToken = jwtDecode(token);
       const currentTime = Date.now() / 1000;
-      if (parseInt(decodedToken.exp) < currentTime) {
+      if (decodedToken.exp! < currentTime) {
         console.log("Token is expired");
         localStorage.removeItem("token");
         navigate("/login");
       }
     }
-  }, []);
+  }, [token, navigate]);
 
   return (
     <div className="flex flex-col h-dvh">

@@ -1,11 +1,11 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateArticle() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const editorRef = useRef(null);
+  const editorRef = useRef<any>(null);
   const [title, setTitle] = useState("Title for your article");
 
   const handleSave = async () => {
@@ -41,19 +41,23 @@ export default function CreateArticle() {
       <div className="text-5xl font-bold mt-2 mb-5 text-center">
         Write an article
       </div>
-        <div className="form-control label w-full  mb-5">
-          <span className="label-text text-2xl font-bold mr-5 self-start">Title: </span>
-          <input
-            type="text"
-            value={title}
-            placeholder="Type here"
-            className="input input-bordered w-full h-14"
-            required
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
+      <div className="form-control label w-full  mb-5">
+        <span className="label-text text-2xl font-bold mr-5 self-start">
+          Title:{" "}
+        </span>
+        <input
+          type="text"
+          value={title}
+          placeholder="Type here"
+          className="input input-bordered w-full h-14"
+          required
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
       <div className="form-control label w-full">
-        <span className="label-text text-2xl font-bold mr-5 self-start">Article: </span>
+        <span className="label-text text-2xl font-bold mr-5 self-start">
+          Article:{" "}
+        </span>
         <Editor
           tinymceScriptSrc={"/tinymce/tinymce.min.js"}
           onInit={(evt, editor) => (editorRef.current = editor)}

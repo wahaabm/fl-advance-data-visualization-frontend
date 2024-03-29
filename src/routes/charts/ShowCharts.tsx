@@ -5,16 +5,19 @@ import Plot from "react-plotly.js";
 import UploadDialogue from "./UploadDialogue";
 import { useNavigate } from "react-router-dom";
 import AddChartData from "./AddChartData";
-import { title } from "process";
 import Loading from "../../utils/Loading";
 
 interface chartItem {
   [key: string]: string;
 }
 
-interface chartdata {
-  data: any;
+interface chartData {
+  data: any[];
+  dataKeys: string[];
   layout: any;
+  chartId: number;
+  title: string;
+  authorId: number;
 }
 
 const chartConfig = {
@@ -26,10 +29,9 @@ export default function ShowCharts() {
   const userId = useAppSelector((state) => state.auth.userId);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [chartData, setChartData] = useState<chartdata[]>([]);
+  const [chartData, setChartData] = useState<chartData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [fields, setFields] = useState();
-  const [selectedChart, setSelectedChart] = useState(null);
+  const [selectedChart, setSelectedChart] = useState<chartData | null>(null);
 
   const parseChartData = (charts: any[]) => {
     console.log("parsed chart data argument", charts);
@@ -104,7 +106,11 @@ export default function ShowCharts() {
       }
       const charts = await response.json();
       const parsedData = parseChartData(charts);
-      setChartData(parsedData);
+      if (parsedData == null) {
+        setChartData([]);
+      } else {
+        setChartData(parsedData);
+      }
     } catch (error) {
       console.error("There was a problem with the fetch operation:", error);
     } finally {
@@ -117,18 +123,22 @@ export default function ShowCharts() {
     fetchCharts();
   }, [token]);
 
-  const handleAddData = (chart) => {
+  const handleAddData = (chart: chartData) => {
     setSelectedChart(chart);
-    document.getElementById("add_chart_data")?.showModal();
+    (
+      document.getElementById("add_chart_data") as HTMLDialogElement
+    )?.showModal();
   };
 
   useEffect(() => {
     if (selectedChart) {
-      document.getElementById("add_chart_data")?.showModal();
+      (
+        document.getElementById("add_chart_data") as HTMLDialogElement
+      )?.showModal();
     }
   }, [selectedChart]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     if (role === "ADMIN_USER" || role === "EDITOR_USER") {
       const confirmed = window.confirm(
         "Are you sure you want to delete this chart?"
@@ -180,7 +190,7 @@ export default function ShowCharts() {
       <p className="text-center mt-2 text-lg">
         Manage and visualize data and insights through interactive charts.
       </p>
-      
+
       <UploadDialogue fetchCharts={fetchCharts} />
       {(role === "ADMIN_USER" || role === "EDITOR_USER") && (
         <button
@@ -202,13 +212,16 @@ export default function ShowCharts() {
       )}
       <div className="flex flex-wrap gap-4">
         {chartData &&
-          chartData.map((chart, index) => (
-            <div className="card w-100 bg-base-100 shadow-xl">
+          chartData.map((chart) => (
+            <div
+              key={chart.chartId}
+              className="card w-100 bg-base-100 shadow-xl"
+            >
               <div className="card-body">
                 <h2 className="card-title text-3xl"> {chart.title}</h2>
 
                 <Plot
-                  key={index}
+                  key={chart.chartId}
                   style={{ marginTop: "10px" }}
                   data={chart.data}
                   layout={chart.layout}
@@ -216,7 +229,8 @@ export default function ShowCharts() {
                 />
                 <div className="card-actions justify-between">
                   {(role === "ADMIN_USER" ||
-                    (role === "EDITOR_USER" && chart.authorId === userId)) && (
+                    (role === "EDITOR_USER" &&
+                      chart.authorId == Number(userId))) && (
                     <div className="flex gap-x-2">
                       <button
                         className="btn btn-outline btn-info"

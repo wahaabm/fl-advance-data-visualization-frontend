@@ -1,11 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { useAppDispatch } from "../../hooks/hooks";
-import {
-  authorizeUser,
-  logout,
-  revokeUser,
-} from "../../store/slices/AuthSlice";
-import { useNavigate } from "react-router-dom";
+import { authorizeUser } from "../../store/slices/AuthSlice";
 
 interface user {
   id: string;
@@ -17,10 +11,19 @@ interface user {
   updatedAt: string;
 }
 
-export default function ShowUsersModal({ fetchEditors, fetchUsers, users }) {
+interface Props {
+  fetchEditors: () => void;
+  fetchUsers: () => void;
+  users: user[];
+}
+
+export default function ShowUsersModal({
+  fetchEditors,
+  fetchUsers,
+  users,
+}: Props) {
   const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const handleMakeEditor = async (id: string) => {
     try {
@@ -89,5 +92,3 @@ export default function ShowUsersModal({ fetchEditors, fetchUsers, users }) {
     </dialog>
   );
 }
-
-

@@ -1,13 +1,23 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../utils/Loading";
 
+interface articleData {
+  authorId: number;
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  published: boolean;
+}
+
 export default function EditArticle() {
-  const [article, setArticle] = useState();
+  const [article, setArticle] = useState<articleData>();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const editorRef = useRef(null);
+  const editorRef = useRef<any>(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const [title, setTitle] = useState("");
@@ -76,12 +86,7 @@ export default function EditArticle() {
     }
   };
 
-  if (loading)
-    return (
-      <>
-        <Loading />
-      </>
-    );
+  if (loading) return <Loading />;
 
   return (
     <>
@@ -107,7 +112,7 @@ export default function EditArticle() {
         <Editor
           tinymceScriptSrc={"/tinymce/tinymce.min.js"}
           onInit={(evt, editor) => (editorRef.current = editor)}
-          initialValue={article.content}
+          initialValue={article?.content}
           init={{
             height: 500,
             width: "100%",

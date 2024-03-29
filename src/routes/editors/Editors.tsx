@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAppDispatch } from "../../hooks/hooks";
-import {
-  authorizeUser,
-  logout,
-  revokeUser,
-} from "../../store/slices/AuthSlice";
+import { logout, revokeUser } from "../../store/slices/AuthSlice";
 import { useNavigate } from "react-router-dom";
 import ShowUsersModal from "./UsersDialogue";
 import Loading from "../../utils/Loading";
@@ -75,7 +71,7 @@ export default function ShowEditors() {
 
       const usersData = await response.json();
       const normalUsers = usersData.filter(
-        (user) => user.role === "NORMAL_USER"
+        (user: user) => user.role === "NORMAL_USER"
       );
 
       setUsers(normalUsers);
