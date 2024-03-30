@@ -114,8 +114,8 @@ export default function ShowUsers() {
       </p>
       {users.length == 0 ? (
         <p className="text-xl mt-20 text-center text-gray-600">
-          No editors are currently available. <br />
-          You can start by adding a new editor using the button above.
+          No users are currently available. <br />
+          New users will be listed here for approval or role upgrade.
         </p>
       ) : (
         <table className="table table-zebra mt-5">

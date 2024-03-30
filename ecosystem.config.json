@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "args": "dev",
+      "name": "my-react-app",
+      "script": "pnpm",
+      "watch": true
+    }
+  ]
+}
