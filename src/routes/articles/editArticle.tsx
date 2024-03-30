@@ -58,7 +58,6 @@ export default function EditArticle() {
 
   const handleSave = async () => {
     if (editorRef.current) {
-      console.log(editorRef.current.getContent());
       const editor = editorRef.current.getContent();
       try {
         const response = await fetch(`${HOST}/admin/article/${id}`, {
@@ -109,7 +108,10 @@ export default function EditArticle() {
         </span>
         <Editor
           tinymceScriptSrc={"/tinymce/tinymce.min.js"}
-          onInit={(evt, editor) => (editorRef.current = editor)}
+          onInit={(evt, editor) => {
+            evt;
+            editorRef.current = editor;
+          }}
           initialValue={article?.content}
           init={{
             height: 500,

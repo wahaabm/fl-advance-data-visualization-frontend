@@ -61,7 +61,10 @@ export default function CreateArticle() {
         </span>
         <Editor
           tinymceScriptSrc={"/tinymce/tinymce.min.js"}
-          onInit={(evt, editor) => (editorRef.current = editor)}
+          onInit={(evt, editor) => {
+            evt;
+            editorRef.current = editor;
+          }}
           initialValue="<h2><strong>Start writing your article here</strong></h2>"
           init={{
             height: 500,
