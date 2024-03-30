@@ -1,5 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
+import { JwtPayload } from "jwt-decode";
+interface ExtendedJwtPayload extends JwtPayload {
+  isAuthorized: boolean;
+  role: string;
+  id: string;
+}
 
 enum UserRole {
   ADMIN = "ADMIN_USER",
@@ -17,14 +23,16 @@ interface authState {
 
 const initialState: authState = {
   isAuthorized: localStorage.getItem("token")
-    ? jwtDecode(localStorage.getItem("token")!).isAuthorized
+    ? (jwtDecode(localStorage.getItem("token")!) as ExtendedJwtPayload)
+        .isAuthorized
     : false,
   isLoggedIn: false,
   role: localStorage.getItem("token")
-    ? (jwtDecode(localStorage.getItem("token")!).role as UserRole)
+    ? ((jwtDecode(localStorage.getItem("token")!) as ExtendedJwtPayload)
+        .role as UserRole)
     : UserRole.NONE,
   userId: localStorage.getItem("token")
-    ? jwtDecode(localStorage.getItem("token")!).id
+    ? (jwtDecode(localStorage.getItem("token")!) as ExtendedJwtPayload).id
     : null,
 };
 
@@ -35,9 +43,12 @@ const authSlice = createSlice({
     updateLoggedinState: (state, action: PayloadAction<string>) => {
       state.isLoggedIn = true;
       localStorage.setItem("token", action.payload);
-      state.role = jwtDecode(action.payload).role as UserRole;
-      state.isAuthorized = jwtDecode(action.payload).isAuthorized;
-      state.userId = jwtDecode(action.payload).id;
+      state.role = (jwtDecode(action.payload) as ExtendedJwtPayload)
+        .role as UserRole;
+      state.isAuthorized = (
+        jwtDecode(action.payload) as ExtendedJwtPayload
+      ).isAuthorized;
+      state.userId = (jwtDecode(action.payload) as ExtendedJwtPayload).id;
     },
     logout: (state) => {
       console.log("here");
