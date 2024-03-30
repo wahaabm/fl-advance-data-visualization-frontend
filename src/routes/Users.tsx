@@ -19,6 +19,7 @@ export default function ShowUsers() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<user[]>([]);
   const [loading, setLoading] = useState(false);
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   async function fetchUsers() {
     setLoading(true);
@@ -27,7 +28,7 @@ export default function ShowUsers() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/admin/users", {
+      const response = await fetch(`${HOST}/admin/users`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -55,7 +56,7 @@ export default function ShowUsers() {
   const handleAuthorize = async (id: string) => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/admin/allowUser/${id}`, {
+      const res = await fetch(`${HOST}/admin/allowUser/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -78,7 +79,7 @@ export default function ShowUsers() {
   const handleRevoke = async (id: string) => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/admin/revokeUser/${id}`, {
+      const res = await fetch(`${HOST}/admin/revokeUser/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

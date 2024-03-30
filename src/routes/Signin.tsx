@@ -10,6 +10,7 @@ export default function Signin() {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   async function handleSignIn(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,7 +19,7 @@ export default function Signin() {
       if (email == "" || password == "") {
         throw new Error("All fields are required");
       }
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const response = await fetch(`${HOST}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

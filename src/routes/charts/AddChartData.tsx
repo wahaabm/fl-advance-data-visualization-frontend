@@ -18,6 +18,7 @@ interface Props {
 export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [error, setError] = useState("");
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,18 +51,15 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
       return;
     }
     try {
-      const res = await fetch(
-        `http://localhost:3000/admin/chart/${chart.chartId}`,
-        {
-          method: "PUT",
-          body: JSON.stringify({ formDataToSubmit }),
-          headers: {
-            "Content-Type": "application/json",
+      const res = await fetch(`${HOST}/admin/chart/${chart.chartId}`, {
+        method: "PUT",
+        body: JSON.stringify({ formDataToSubmit }),
+        headers: {
+          "Content-Type": "application/json",
 
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       if (res.ok) {
         await res.json();
         (

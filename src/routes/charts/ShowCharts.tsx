@@ -32,6 +32,7 @@ export default function ShowCharts() {
   const [chartData, setChartData] = useState<chartData[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedChart, setSelectedChart] = useState<chartData | null>(null);
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   const parseChartData = (charts: any[]) => {
     console.log("parsed chart data argument", charts);
@@ -87,7 +88,7 @@ export default function ShowCharts() {
 
   const fetchCharts = async () => {
     try {
-      const response = await fetch("http://localhost:3000/charts", {
+      const response = await fetch(`${HOST}/charts`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -147,7 +148,7 @@ export default function ShowCharts() {
         return;
       }
       try {
-        const url = `http://localhost:3000/admin/chart/${id}`;
+        const url = `${HOST}/admin/chart/${id}`;
         const response = await fetch(url, {
           method: "DELETE",
           headers: {

@@ -22,6 +22,7 @@ export default function ShowEditors() {
   const [editors, setEditors] = useState<user[]>([]);
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<user[]>([]);
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   async function fetchEditors() {
     setLoading(true);
@@ -30,7 +31,7 @@ export default function ShowEditors() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/admin/editors", {
+      const response = await fetch(`${HOST}/admin/editors`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -57,7 +58,7 @@ export default function ShowEditors() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/admin/users", {
+      const response = await fetch(`${HOST}/admin/users`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -86,15 +87,12 @@ export default function ShowEditors() {
 
   const handleRemoveEditor = async (id: string) => {
     try {
-      const res = await fetch(
-        `http://localhost:3000/admin/removeEditor/${id}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${HOST}/admin/removeEditor/${id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (res.ok) {
         dispatch(revokeUser());
         fetchEditors();

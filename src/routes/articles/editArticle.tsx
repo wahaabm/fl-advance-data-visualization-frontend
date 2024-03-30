@@ -21,10 +21,11 @@ export default function EditArticle() {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const [title, setTitle] = useState("");
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   const fetchArticle = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/article/${id}`, {
+      const response = await fetch(`${HOST}/article/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -60,21 +61,18 @@ export default function EditArticle() {
       console.log(editorRef.current.getContent());
       const editor = editorRef.current.getContent();
       try {
-        const response = await fetch(
-          `http://localhost:3000/admin/article/${id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              content: editor,
-              title: title,
-              published: true,
-            }),
-          }
-        );
+        const response = await fetch(`${HOST}/admin/article/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            content: editor,
+            title: title,
+            published: true,
+          }),
+        });
         if (response.status == 403) {
           navigate("/login");
           return;

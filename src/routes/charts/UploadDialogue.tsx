@@ -7,6 +7,7 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState<File>();
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -16,7 +17,7 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
     formData.append("csvFile", file!);
 
     try {
-      const res = await fetch("http://localhost:3000/admin/csv", {
+      const res = await fetch(`${HOST}/admin/csv`, {
         method: "POST",
         body: formData,
         headers: {

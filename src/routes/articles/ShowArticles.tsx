@@ -20,6 +20,7 @@ export default function ShowArticles() {
   const role = useAppSelector((state) => state.auth.role);
   const userId = useAppSelector((state) => state.auth.userId);
   const [loading, setLoading] = useState(true);
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   const handleDelete = async (id: number) => {
     if (role === "ADMIN_USER" || role === "EDITOR_USER") {
@@ -30,7 +31,7 @@ export default function ShowArticles() {
         return;
       }
       try {
-        const url = `http://localhost:3000/admin/article/${id}`;
+        const url = `${HOST}/admin/article/${id}`;
         const response = await fetch(url, {
           method: "DELETE",
           headers: {
@@ -67,7 +68,7 @@ export default function ShowArticles() {
 
   const fetchArticles = async () => {
     try {
-      const response = await fetch("http://localhost:3000/articles", {
+      const response = await fetch(`${HOST}/articles`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

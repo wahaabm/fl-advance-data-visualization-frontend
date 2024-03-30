@@ -10,6 +10,7 @@ export default function Signup() {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,7 +22,7 @@ export default function Signup() {
       if (password !== confirmPassword) {
         throw new Error("Passwords don't match.");
       }
-      const response = await fetch("http://localhost:3000/auth/register", {
+      const response = await fetch(`${HOST}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

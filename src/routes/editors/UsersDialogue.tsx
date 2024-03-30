@@ -24,10 +24,11 @@ export default function ShowUsersModal({
 }: Props) {
   const token = localStorage.getItem("token");
   const dispatch = useAppDispatch();
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   const handleMakeEditor = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:3000/admin/makeEditor/${id}`, {
+      const res = await fetch(`${HOST}/admin/makeEditor/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -18,10 +18,11 @@ export default function ReadArticle() {
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(true);
   const { id } = useParams(); // Get the id from the URL params
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   const fetchArticle = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/article/${id}`, {
+      const response = await fetch(`${HOST}/article/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

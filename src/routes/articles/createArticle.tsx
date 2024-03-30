@@ -7,13 +7,14 @@ export default function CreateArticle() {
   const token = localStorage.getItem("token");
   const editorRef = useRef<any>(null);
   const [title, setTitle] = useState("Title for your article");
+  const HOST = import.meta.env.VITE_REACT_API_URL;
 
   const handleSave = async () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
       const editor = editorRef.current.getContent();
       try {
-        const response = await fetch("http://localhost:3000/admin/article", {
+        const response = await fetch(`${HOST}/admin/article`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
