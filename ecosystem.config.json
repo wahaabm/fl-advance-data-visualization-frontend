@@ -1,9 +1,12 @@
 {
   "apps": [
     {
-      "args": "dev",
+      "env": {
+        "PM2_SERVE_PATH": "./dist",
+        "PM2_SERVE_PORT": 80
+      },
       "name": "my-react-app",
-      "script": "pnpm",
+      "script": "serve",
       "watch": true
     }
   ]
