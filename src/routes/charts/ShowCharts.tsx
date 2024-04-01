@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppSelector } from "../../hooks/hooks";
 import { useEffect, useState } from "react";
-import Plot from "react-plotly.js";
+import Plotly from "plotly.js-cartesian-dist";
+import createPlotlyComponent from "react-plotly.js/factory";
+
 import UploadDialogue from "./UploadDialogue";
 import { useNavigate } from "react-router-dom";
 import AddChartData from "./AddChartData";
@@ -33,6 +35,7 @@ export default function ShowCharts() {
   const [loading, setLoading] = useState(true);
   const [selectedChart, setSelectedChart] = useState<chartData | null>(null);
   const HOST = import.meta.env.VITE_REACT_API_URL;
+  const Plot = createPlotlyComponent(Plotly);
 
   const parseChartData = (charts: any[]) => {
     console.log("parsed chart data argument", charts);
