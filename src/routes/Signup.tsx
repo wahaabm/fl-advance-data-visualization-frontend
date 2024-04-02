@@ -1,8 +1,15 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  FaFacebookF,
+  FaXTwitter,
+  FaLinkedin,
+  FaYoutube,
+} from "react-icons/fa6";
 
 export default function Signup() {
   const [userName, setUserName] = useState("");
+  const [displayMode, setDisplayMode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -50,59 +57,76 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen sm:flex sm:flex-row mx-0 justify-center bg-green-200">
-      <div className="flex justify-center self-center  z-10 ">
-        <div className="p-12 bg-white mx-auto rounded-2xl w-100 ">
-          <div className="mb-4">
-            <h3 className="font-semibold text-2xl text-gray-800">
-              Registration{" "}
-            </h3>
-            <p className="text-gray-500">Please enter the following details</p>
+    <div
+      className={`min-h-screen flex flex-col mx-0 justify-center ${
+        displayMode ? "bg-darkmode-black" : "bg-gray-200"
+      }`}
+    >
+      <div className="flex flex-col w-11/12 max-w-lg justify-center items-center self-center z-10">
+        <div
+          className={`px-3 py-5 md:px-10 ${
+            displayMode ? "bg-darkmode-gray" : "bg-white"
+          } mx-auto rounded-xl w-full`}
+        >
+          <div className="flex justify-center">
+            <img src="/finallogo.svg" alt="Macrobourse Logo" width={320} />
+          </div>
+          <p
+            className={`text-3xl md:text-5xl text-center ${
+              displayMode ? "text-white" : "text-black"
+            }`}
+          >
+            Macrobourse
+          </p>
+          <div className="mb-4 mt-10">
+            <p
+              className={`text-xl text-center ${
+                displayMode ? "text-white" : "text-black"
+              }`}
+            >
+              Registration
+            </p>
           </div>
           <form onSubmit={handleSignup}>
-            <div className="space-y-5">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 tracking-wide">
-                  User name
-                </label>
+            <div className="space-y-3">
+              <div>
                 <input
-                  className=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400"
+                  className={`w-full text-base px-4 py-2  rounded-lg focus:outline-none focus:border-green-400 ${
+                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                  }`}
                   type=""
                   placeholder="Enter your username"
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700 tracking-wide">
-                  Email
-                </label>
+              <div>
                 <input
-                  className=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400"
+                  className={`w-full text-base px-4 py-2 rounded-lg focus:outline-none focus:border-green-400 ${
+                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                  }`}
                   type="email"
-                  placeholder="mail@gmail.com"
+                  placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="space-y-2">
-                <label className="mb-5 text-sm font-medium text-gray-700 tracking-wide">
-                  Password
-                </label>
+              <div>
                 <input
-                  className="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400"
+                  className={`w-full text-base px-4 py-2 rounded-lg focus:outline-none focus:border-green-400 ${
+                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                  }`}
                   type="password"
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div className="space-y-2">
-                <label className="mb-5 text-sm font-medium text-gray-700 tracking-wide">
-                  confirm password
-                </label>
+              <div>
                 <input
-                  className="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400"
+                  className={`w-full text-base px-4 py-2 rounded-lg focus:outline-none focus:border-green-400 ${
+                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                  }`}
                   type="password"
                   placeholder="confirm your password"
                   value={confirmPassword}
@@ -123,7 +147,7 @@ export default function Signup() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full flex justify-center bg-red-400  hover:bg-red-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
+                  className="mt-6 w-full flex justify-center bg-signup-blue hover:bg-blue-900 text-white text-black-100 p-2  rounded-lg tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
                 >
                   {loading ? (
                     <span className="loading loading-spinner loading-md"></span>
@@ -131,7 +155,11 @@ export default function Signup() {
                     "Register"
                   )}
                 </button>
-                <p className="text-gray-500 text-center mt-2 text-sm">
+                <p
+                  className={`mt-8 text-center text-sm ${
+                    displayMode ? "text-white" : "text-black"
+                  }`}
+                >
                   Already have an account? Sign in
                 </p>
 
@@ -140,13 +168,66 @@ export default function Signup() {
                   onClick={() => {
                     navigate("/login");
                   }}
-                  className="mt-2 w-full flex justify-center bg-green-400  hover:bg-green-700 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
+                  className="mt-2 w-full flex justify-center bg-login-green text-black  hover:bg-green-600 text-black-100 p-2  rounded-lg tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
                 >
                   Sign in
                 </button>
+                <div className="label flex flex-row justify-end gap-x-3 mt-5">
+                  <span
+                    className={`label-text ${
+                      displayMode ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {displayMode ? "Dark mode" : "Light mode"}
+                  </span>
+
+                  <input
+                    type="checkbox"
+                    className={`toggle ${
+                      displayMode
+                        ? "bg-login-green [--tglbg:#222429] hover:bg-login-green border-none"
+                        : "bg-signup-blue [--tglbg:#E5E7EB] hover:bg-signup-blue border-none"
+                    }`}
+                    onChange={() => {
+                      setDisplayMode((prev) => !prev);
+                    }}
+                    checked={displayMode}
+                  />
+                </div>
               </div>
             </div>
           </form>
+        </div>
+      </div>
+      <div className="flex flex-col justify-center items-center self-center z-10">
+        <p className={`mt-2 ${displayMode ? "text-white" : "text-black"}`}>
+          FIND Macrobourse
+        </p>
+        <div className="flex gap-x-1 mt-2">
+          <FaXTwitter
+            style={{
+              color: displayMode ? "#4AEFAA" : "#3D4AE4",
+              fontSize: "24px",
+            }}
+          />
+          <FaFacebookF
+            style={{
+              color: displayMode ? "#4AEFAA" : "#3D4AE4",
+              fontSize: "24px",
+            }}
+          />
+          <FaLinkedin
+            style={{
+              color: displayMode ? "#4AEFAA" : "#3D4AE4",
+              fontSize: "24px",
+            }}
+          />
+          <FaYoutube
+            style={{
+              color: displayMode ? "#4AEFAA" : "#3D4AE4",
+              fontSize: "24px",
+            }}
+          />
         </div>
       </div>
     </div>
