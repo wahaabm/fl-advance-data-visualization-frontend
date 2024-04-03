@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch } from "../../hooks/hooks";
 import { logout, revokeUser } from "../../store/slices/AuthSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import ShowUsersModal from "./UsersDialogue";
 import Loading from "../../utils/Loading";
 
@@ -23,6 +23,16 @@ export default function ShowEditors() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<user[]>([]);
   const HOST = import.meta.env.VITE_REACT_API_URL;
+  const [, setTitle, setDescription] = useOutletContext() as [
+    Boolean,
+    Function,
+    Function
+  ];
+
+  useEffect(() => {
+    setTitle("Editors dashboard");
+    setDescription("Grant or revoke editor rights for users with ease.");
+  }, []);
 
   async function fetchEditors() {
     setLoading(true);
@@ -113,12 +123,7 @@ export default function ShowEditors() {
         fetchUsers={fetchUsers}
         users={users}
       />
-      <div className="text-5xl font-bold mt-2 text-center">
-        Editors dashboard
-      </div>
-      <p className="text-center mt-2 text-lg">
-        Grant or revoke editor rights for users with ease.
-      </p>
+
       <button
         className="btn btn-primary w-36 mt-5 mb-5 mx-auto"
         onClick={async () => {

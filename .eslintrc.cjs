@@ -15,5 +15,6 @@ module.exports = {
       { allowConstantExport: true },
     ],
     "@typescript-eslint/no-explicit-any": "off", // Allow the explicit use of `any`
+    "@typescript-eslint/ban-types": "off",
   },
 };

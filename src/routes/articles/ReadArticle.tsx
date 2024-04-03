@@ -56,13 +56,6 @@ export default function ReadArticle() {
   return (
     <div>
       <div className="flex flex-col">
-        <div className="text-5xl font-bold mt-2 text-center">
-          Articles dashboard
-        </div>
-        <p className="text-center mt-2 text-lg">
-          Manage and view all articles at a glance.
-        </p>
-
         <div className="text-2xl font-bold mt-10 text-center">
           {article?.title}
         </div>

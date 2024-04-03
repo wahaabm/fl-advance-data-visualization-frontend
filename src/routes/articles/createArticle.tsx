@@ -39,9 +39,7 @@ export default function CreateArticle() {
 
   return (
     <>
-      <div className="text-5xl font-bold mt-2 mb-5 text-center">
-        Write an article
-      </div>
+      <div className="text-3xl mt-2 mb-5 text-left">Write an article</div>
       <div className="form-control label w-full  mb-5">
         <span className="label-text text-2xl font-bold mr-5 self-start">
           Title:{" "}

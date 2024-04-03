@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch } from "../hooks/hooks";
 import { authorizeUser, logout, revokeUser } from "../store/slices/AuthSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Loading from "../utils/Loading";
 interface user {
   id: string;
@@ -20,6 +20,15 @@ export default function ShowUsers() {
   const [users, setUsers] = useState<user[]>([]);
   const [loading, setLoading] = useState(false);
   const HOST = import.meta.env.VITE_REACT_API_URL;
+  const [, setTitle, setDescription] = useOutletContext() as [
+    boolean,
+    Function,
+    Function
+  ];
+  useEffect(() => {
+    setTitle("Users dashboard");
+    setDescription("Monitor and manage user authorization and profiles.");
+  }, []);
 
   async function fetchUsers() {
     setLoading(true);
@@ -108,10 +117,6 @@ export default function ShowUsers() {
 
   return (
     <div className="overflow-x-auto">
-      <div className="text-5xl font-bold mt-2 text-center">Users dashboard</div>
-      <p className="text-center mt-2 text-lg">
-        Monitor and manage user authorization and profiles.
-      </p>
       {users.length == 0 ? (
         <p className="text-xl mt-20 text-center text-gray-600">
           No users are currently available. <br />

@@ -5,7 +5,7 @@ import Plotly from "plotly.js-cartesian-dist";
 import createPlotlyComponent from "react-plotly.js/factory";
 
 import UploadDialogue from "./UploadDialogue";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import AddChartData from "./AddChartData";
 import Loading from "../../utils/Loading";
 
@@ -24,6 +24,8 @@ interface chartData {
 
 const chartConfig = {
   displaylogo: false,
+  responsive: true,
+  displayModeBar: true,
 };
 
 export default function ShowCharts() {
@@ -36,6 +38,25 @@ export default function ShowCharts() {
   const [selectedChart, setSelectedChart] = useState<chartData | null>(null);
   const HOST = import.meta.env.VITE_REACT_API_URL;
   const Plot = createPlotlyComponent(Plotly);
+  const [displayMode, setTitle, setDescription] = useOutletContext() as [
+    boolean,
+    Function,
+    Function
+  ];
+
+  useEffect(() => {
+    setTitle("Charts dashboard");
+    setDescription(
+      "Manage and visualize data and insights through interactive charts."
+    );
+  }, []);
+
+  const scrollToChart = (chartId) => {
+    const element = document.getElementById(chartId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const parseChartData = (charts: any[]) => {
     console.log("parsed chart data argument", charts);
@@ -46,9 +67,12 @@ export default function ShowCharts() {
       const dataKeys = Object.keys(chart.data[0]);
       console.log(dataKeys);
       const dataSeries = dataKeys
-        .filter((key) => key !== "date")
+        .filter((key) => key.toLowerCase() !== "date")
         .map((key) => ({
-          x: chart.data.map((item: chartItem) => item["date"]),
+          x: chart.data.map((item: chartItem) => {
+            const dateValue = item["Date"] || item["date"];
+            return dateValue;
+          }),
           y: chart.data.map((item: chartItem) => parseFloat(item[key])),
           type: "scatter",
           mode: "lines",
@@ -65,15 +89,15 @@ export default function ShowCharts() {
           modebar: {
             orientation: "v",
           },
-          legend: { x: 0.4, y: 1.3 },
+          legend: { x: 0, y: 1, xanchor: "left", yanchor: "top" },
+          plot_bgcolor: !displayMode ? "#5A5A5A" : "#ffffff",
+          paper_bgcolor: !displayMode ? "#5A5A5A" : "#ffffff",
 
-          width: 600,
-          height: 400,
           margin: {
             l: 50,
             r: 70,
             b: 70,
-            t: 50,
+            t: 10,
             pad: 4,
           },
           xaxis: {
@@ -181,87 +205,94 @@ export default function ShowCharts() {
   if (loading) return <Loading />;
 
   return (
-    <div className="flex flex-col mx-auto">
-      <img
-        src="/images/header-picture.png"
-        width={300}
-        className="mx-auto"
-        alt=""
-      />
-      <div className="text-5xl font-bold mt-2 text-center">
-        Charts dashboard
-      </div>
-      <p className="text-center mt-2 text-lg">
-        Manage and visualize data and insights through interactive charts.
-      </p>
-
+    <div className="flex flex-row justify-between">
       <UploadDialogue fetchCharts={fetchCharts} />
-      {(role === "ADMIN_USER" || role === "EDITOR_USER") && (
-        <button
-          className="btn btn-primary w-36 mt-5 mx-auto"
-          onClick={() =>
-            (
-              document.getElementById("my_modal_1") as HTMLDialogElement
-            )?.showModal()
-          }
-        >
-          Upload new
-        </button>
-      )}
-      {!chartData && (
-        <p className="text-xl mt-20 text-center text-gray-600">
-          No charts are currently available. <br />
-          You can start by uploading a new chart using the button above.
-        </p>
-      )}
-      <div className="flex flex-wrap gap-4">
-        {chartData &&
-          chartData.map((chart) => (
-            <div
-              key={chart.chartId}
-              className="card w-100 bg-base-100 shadow-xl"
-            >
-              <div className="card-body">
-                <h2 className="card-title text-3xl"> {chart.title}</h2>
+      <div className="flex flex-col w-3/4 px-5 h-screen overflow-y-auto">
+        <div className="flex flex-col gap-4 justify-center">
+          {!chartData.length && (
+            <div className="text-xl mt-20 text-gray-600">
+              No charts are currently available. <br />
+              You can start by uploading a new chart using the button above.
+            </div>
+          )}
+          {chartData &&
+            chartData.map((chart) => (
+              <div className="carousel-vertical h-full w-full">
+                <h2 className="card-title text-3xl mb-3"> {chart.title}</h2>
 
-                <Plot
+                <div
+                  id={chart.chartId.toString()}
                   key={chart.chartId}
-                  style={{ marginTop: "10px" }}
-                  data={chart.data}
-                  layout={chart.layout}
-                  config={chartConfig}
-                />
-                <div className="card-actions justify-between">
-                  {(role === "ADMIN_USER" ||
-                    (role === "EDITOR_USER" &&
-                      chart.authorId == Number(userId))) && (
-                    <div className="flex gap-x-2">
-                      <button
-                        className="btn btn-outline btn-info"
-                        onClick={() => handleAddData(chart)}
-                      >
-                        add data
-                      </button>
-                      <button
-                        onClick={() => handleDelete(chart.chartId)}
-                        className="btn btn-outline btn-error"
-                      >
-                        Delete
-                      </button>
+                  className="carousel-item w-full rounded-lg bg-base-100 shadow-xl"
+                >
+                  <div className="p-2 w-full">
+                    <Plot
+                      key={chart.chartId}
+                      style={{ marginTop: "10px" }}
+                      data={chart.data}
+                      layout={chart.layout}
+                      config={chartConfig}
+                    />
+                    <div className="card-actions justify-between">
+                      {(role === "ADMIN_USER" ||
+                        (role === "EDITOR_USER" &&
+                          chart.authorId == Number(userId))) && (
+                        <div className="flex gap-x-2">
+                          <button
+                            className="btn btn-outline btn-info"
+                            onClick={() => handleAddData(chart)}
+                          >
+                            add data
+                          </button>
+                          <button
+                            onClick={() => handleDelete(chart.chartId)}
+                            className="btn btn-outline btn-error"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          {selectedChart && (
+            <AddChartData
+              chart={selectedChart}
+              onClose={() => setSelectedChart(null)}
+              fetchCharts={fetchCharts}
+            />
+          )}
+        </div>
       </div>
-      {selectedChart && (
-        <AddChartData
-          chart={selectedChart}
-          onClose={() => setSelectedChart(null)}
-          fetchCharts={fetchCharts}
-        />
-      )}
+      <div className="flex flex-col min-w-80 gap-y-5 h-full overflow-hidden">
+        {(role === "ADMIN_USER" || role === "EDITOR_USER") && (
+          <button
+            className="btn btn-primary w-36"
+            onClick={() =>
+              (
+                document.getElementById("my_modal_1") as HTMLDialogElement
+              )?.showModal()
+            }
+          >
+            Upload new
+          </button>
+        )}
+        <div className="flex flex-col">
+          <ul className="max-w-md space-y-1 text-black list-none list-inside dark:text-gray-400">
+            {chartData.map((chart) => (
+              <li
+                key={chart.chartId}
+                className="hover:cursor-pointer"
+                onClick={() => scrollToChart(chart.chartId.toString())}
+              >
+                {chart.title}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

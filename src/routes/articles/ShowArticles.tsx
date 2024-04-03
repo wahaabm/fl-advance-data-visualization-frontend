@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hooks";
 import Loading from "../../utils/Loading";
 
@@ -21,6 +21,16 @@ export default function ShowArticles() {
   const userId = useAppSelector((state) => state.auth.userId);
   const [loading, setLoading] = useState(true);
   const HOST = import.meta.env.VITE_REACT_API_URL;
+  const [, setTitle, setDescription] = useOutletContext() as [
+    Boolean,
+    Function,
+    Function
+  ];
+
+  useEffect(() => {
+    setTitle("Articles dashboard");
+    setDescription("Manage and view all articles at a glance.");
+  }, []);
 
   const handleDelete = async (id: number) => {
     if (role === "ADMIN_USER" || role === "EDITOR_USER") {
@@ -102,12 +112,6 @@ export default function ShowArticles() {
 
   return (
     <div className="flex flex-col">
-      <div className="text-5xl font-bold mt-2 text-center">
-        Articles dashboard
-      </div>
-      <p className="text-center mt-2 text-lg">
-        Manage and view all articles at a glance.
-      </p>
       {(role == "ADMIN_USER" || role === "EDITOR_USER") && (
         <button
           className="btn btn-primary w-36 mt-5 mb-5 mx-auto"
