@@ -4,7 +4,36 @@
 
 @layer base {
   @font-face {
-    font-family: "Avenir";
+    font-family: 'Avenir';
     src: url(./assets/fonts/Avenir.ttf);
   }
+}
+
+body {
+  @apply min-h-screen bg-base-200 dark:bg-gray-800 dark:text-gray-200;
+}
+
+.list-item {
+  position: relative;
+  padding-left: 12px;
+}
+
+.list-item:before {
+  content: '';
+  width: 3px;
+  height: 6px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  border-radius: 3px;
+}
+
+.list-item.active:before {
+  background-color: #226bd5;
+}
+
+.list-item:not(.active):hover:before {
+  background-color: lightgray;
 }
