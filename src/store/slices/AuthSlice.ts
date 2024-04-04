@@ -5,6 +5,7 @@ interface ExtendedJwtPayload extends JwtPayload {
   isAuthorized: boolean;
   role: string;
   id: string;
+  name: string;
 }
 
 enum UserRole {
@@ -19,21 +20,18 @@ interface authState {
   isAuthorized: boolean;
   role: UserRole;
   userId: string | null;
+  userName:string;
 }
 
+const token = localStorage.getItem("token");
+const decodedToken = token ? jwtDecode<ExtendedJwtPayload>(token) : null;
+
 const initialState: authState = {
-  isAuthorized: localStorage.getItem("token")
-    ? (jwtDecode(localStorage.getItem("token")!) as ExtendedJwtPayload)
-        .isAuthorized
-    : false,
-  isLoggedIn: false,
-  role: localStorage.getItem("token")
-    ? ((jwtDecode(localStorage.getItem("token")!) as ExtendedJwtPayload)
-        .role as UserRole)
-    : UserRole.NONE,
-  userId: localStorage.getItem("token")
-    ? (jwtDecode(localStorage.getItem("token")!) as ExtendedJwtPayload).id
-    : null,
+  isLoggedIn: !!token,
+  isAuthorized: decodedToken ? decodedToken.isAuthorized : false,
+  role: decodedToken ? decodedToken.role as UserRole : UserRole.NONE,
+  userId: decodedToken ? decodedToken.id : null,
+  userName: decodedToken ? decodedToken.name : "",
 };
 
 const authSlice = createSlice({
@@ -49,7 +47,9 @@ const authSlice = createSlice({
         jwtDecode(action.payload) as ExtendedJwtPayload
       ).isAuthorized;
       state.userId = (jwtDecode(action.payload) as ExtendedJwtPayload).id;
+      state.userName = (jwtDecode(action.payload) as ExtendedJwtPayload).name;
     },
+
     logout: (state) => {
       console.log("here");
       state.isLoggedIn = false;

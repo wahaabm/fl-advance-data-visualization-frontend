@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [selectedOption, setSelectedOption] = useState(location.pathname);
   const navigate = useNavigate();
   const role = useAppSelector((state) => state.auth.role);
+  const userName = useAppSelector((state)=> state.auth.userName);
   const dispatch = useAppDispatch();
   const token = localStorage.getItem("token");
 
@@ -107,16 +108,21 @@ export default function Dashboard() {
           </div>
 
           <div className="dropdown dropdown-end self-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
+            <div className="flex flex-row-reverse md:flex-row gap-x-5 items-center text-lg">
+              <div>
+                Hello, {userName}
+              </div>
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  />
+                </div>
               </div>
             </div>
             <ul

@@ -116,31 +116,33 @@ export default function ShowUsers() {
     );
 
   return (
-    <div className="overflow-x-auto">
+    <div className="flex flex-col overflow-x-auto justify-center max-w-fit mx-auto md:pr-20">
       {users.length == 0 ? (
         <p className="text-xl mt-20 text-center text-gray-600">
           No users are currently available. <br />
           New users will be listed here for approval or role upgrade.
         </p>
       ) : (
-        <table className="table table-zebra mt-5">
+        <table className="w-full md:w-3/4 mx-auto table table-sm md:table-lg  table-zebra mt-5">
           <thead>
-            <tr className="text-xl">
-              <th></th>
+            <tr className="text-lg md:text-xl text-black dark:text-white text-center">
+              <th className="hidden md:table-cell"></th>
               <th>Name</th>
-              <th>Email</th>
-              <th>Date created</th>
+              <th className="hidden md:table-cell">Email</th>
+              <th className="hidden md:table-cell">Date created</th>
               <th>Authorization</th>
               <td>Allow/Revoke</td>
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => (
-              <tr className="text-lg" key={user.id}>
-                <th>{index + 1}</th>
+              <tr className="hover text-lg md:text-xl text-center" key={user.id}>
+                <td className="hidden md:table-cell">{index + 1}</td>
                 <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.createdAt.split("T")[0]}</td>
+                <td className="hidden md:table-cell">{user.email}</td>
+                <td className="hidden md:table-cell">
+                  {user.createdAt.split("T")[0]}
+                </td>
                 <td>{user.isAuthorized ? "Authorized" : "Unauthorized"}</td>
                 <td>
                   <button

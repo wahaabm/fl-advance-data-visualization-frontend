@@ -117,15 +117,23 @@ export default function ShowEditors() {
   if (loading) return <Loading />;
 
   return (
-    <div className="flex flex-col overflow-x-auto">
+    <div className="flex flex-col overflow-x-auto justify-center max-w-fit mx-auto md:pr-20">
       <ShowUsersModal
         fetchEditors={fetchEditors}
         fetchUsers={fetchUsers}
         users={users}
       />
+      
 
-      <button
-        className="btn btn-primary w-36 mt-5 mb-5 mx-auto"
+      {editors.length == 0 ? (
+        <p className="text-xl mt-20 text-center text-gray-600">
+          No editors are currently available. <br />
+          You can start by adding a new editor using the button above.
+        </p>
+      ) : (
+        <>
+        <button
+        className="btn btn-primary w-36 self-center"
         onClick={async () => {
           await fetchUsers();
           (
@@ -135,30 +143,25 @@ export default function ShowEditors() {
       >
         Add editor
       </button>
-      {editors.length == 0 ? (
-        <p className="text-xl mt-20 text-center text-gray-600">
-          No editors are currently available. <br />
-          You can start by adding a new editor using the button above.
-        </p>
-      ) : (
-        <table className="table table-zebra">
+        <table className="w-full md:w-3/4 mx-auto table table-sm md:table-lg  table-zebra ">
+          
           <thead>
-            <tr className="text-xl">
-              <th></th>
+            <tr className="text-lg md:text-xl text-black dark:text-white text-center">
+              <th className="hidden md:table-cell"></th>
               <th>Name</th>
-              <th>Email</th>
-              <th>Date created</th>
+              <th className="hidden md:table-cell">Email</th>
+              <th className="hidden md:table-cell">Date created</th>
               <th>Authorization</th>
               <td>Revoke</td>
             </tr>
           </thead>
           <tbody>
             {editors.map((user, index) => (
-              <tr className="text-lg" key={user.id}>
-                <th>{index + 1}</th>
+              <tr className="hover text-lg md:text-xl text-center" key={user.id}>
+                <th className="hidden md:table-cell">{index + 1}</th>
                 <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.createdAt.split("T")[0]}</td>
+                <td className="hidden md:table-cell">{user.email}</td>
+                <td className="hidden md:table-cell">{user.createdAt.split("T")[0]}</td>
                 <td>{user.isAuthorized ? "Authorized" : "Unauthorized"}</td>
                 <td>
                   <button
@@ -172,6 +175,7 @@ export default function ShowEditors() {
             ))}
           </tbody>
         </table>
+        </>
       )}
     </div>
   );
