@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useNavigate } from "react-router-dom";
 
+declare const tinymce: any;
+
 export default function CreateArticle() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -65,6 +67,7 @@ export default function CreateArticle() {
           }}
           initialValue="<h2><strong>Start writing your article here</strong></h2>"
           init={{
+            image_caption: true,
             height: 500,
             width: "100%",
             menubar: false,
@@ -72,13 +75,12 @@ export default function CreateArticle() {
               "advlist",
               "autolink",
               "lists",
-              "link",
               "image",
+              "code",
               "charmap",
               "anchor",
               "searchreplace",
               "visualblocks",
-              "code",
               "fullscreen",
               "insertdatetime",
               "media",
@@ -91,7 +93,38 @@ export default function CreateArticle() {
               "undo redo | blocks | " +
               "bold italic forecolor | alignleft aligncenter " +
               "alignright alignjustify | bullist numlist outdent indent | " +
-              "removeformat | help",
+              "removeformat | help" +
+              " | image",
+
+            image_title: true,
+            automatic_uploads: true,
+
+            file_picker_types: "image",
+            file_picker_callback: function (cb, value, meta) {
+              value;
+              meta;
+              const input = document.createElement("input");
+              input.setAttribute("type", "file");
+              input.setAttribute("accept", "image/*");
+
+              input.onchange = function (this: HTMLInputElement) {
+                const file = this.files ? this.files[0] : null;
+
+                const reader = new FileReader();
+                reader.onload = function () {
+                  const id = "blobid" + new Date().getTime();
+                  const blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                  const base64 = (reader.result as string).split(",")[1];
+                  const blobInfo = blobCache.create(id, file, base64);
+                  blobCache.add(blobInfo);
+
+                  cb(blobInfo.blobUri(), { title: file.name });
+                };
+                reader.readAsDataURL(file);
+              };
+
+              input.click();
+            },
             content_style:
               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
           }}

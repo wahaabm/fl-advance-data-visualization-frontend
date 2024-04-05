@@ -116,7 +116,7 @@ export default function ShowUsers() {
     );
 
   return (
-    <div className="flex flex-col overflow-x-auto justify-center max-w-fit mx-auto md:pr-20">
+    <div className="flex flex-col overflow-x-auto justify-center max-w-min mx-auto md:pr-20">
       {users.length == 0 ? (
         <p className="text-xl mt-20 text-center text-gray-600">
           No users are currently available. <br />

@@ -56,7 +56,7 @@ export default function ReadArticle() {
   return (
     <div>
       <div className="flex flex-col">
-        <div className="text-2xl font-bold mt-10 text-center">
+        <div className="text-3xl font-bold mt-5 text-center mb-5 md:pr-20">
           {article?.title}
         </div>
 

@@ -117,7 +117,7 @@ export default function ShowEditors() {
   if (loading) return <Loading />;
 
   return (
-    <div className="flex flex-col overflow-x-auto justify-center max-w-fit mx-auto md:pr-20">
+    <div className="flex flex-col overflow-x-auto justify-center max-w-min mx-auto md:pr-20">
       <ShowUsersModal
         fetchEditors={fetchEditors}
         fetchUsers={fetchUsers}
@@ -152,7 +152,7 @@ export default function ShowEditors() {
               <th className="hidden md:table-cell">Email</th>
               <th className="hidden md:table-cell">Date created</th>
               <th>Authorization</th>
-              <td>Revoke</td>
+              <td>Remove editor</td>
             </tr>
           </thead>
           <tbody>
