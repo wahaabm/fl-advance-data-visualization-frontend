@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 import Loading from "../../utils/Loading";
 
 interface articleData {
@@ -14,6 +14,8 @@ interface articleData {
 }
 
 export default function EditArticle() {
+  const [displayMode, ,] = useOutletContext() as [Boolean, Function, Function];
+
   const [article, setArticle] = useState<articleData>();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -106,6 +108,7 @@ export default function EditArticle() {
           Article:
         </span>
         <Editor
+          key={displayMode + ""}
           tinymceScriptSrc={"/tinymce/tinymce.min.js"}
           onInit={(evt, editor) => {
             evt;
@@ -116,6 +119,9 @@ export default function EditArticle() {
             height: 500,
             width: "100%",
             menubar: false,
+            skin: `${displayMode ? "oxide-dark" : "oxide"}`,
+            content_css: `${displayMode ? "dark" : "transparent"}`,
+
             plugins: [
               "advlist",
               "autolink",
@@ -140,8 +146,9 @@ export default function EditArticle() {
               "bold italic forecolor | alignleft aligncenter " +
               "alignright alignjustify | bullist numlist outdent indent | " +
               "removeformat | help",
-            content_style:
-              "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+            content_style: `body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: ${
+              displayMode ? "#1D232A" : "white"
+            } ; color: ${displayMode ? "white" : "dark"} ; }`,
           }}
         />
       </div>
