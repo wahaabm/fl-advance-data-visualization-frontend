@@ -9,7 +9,10 @@ import {
 
 export default function Signup() {
   const [userName, setUserName] = useState("");
-  const [displayMode, setDisplayMode] = useState(false);
+  const [displayMode, setDisplayMode] = useState<boolean>(() => {
+    const localDisplayMode = localStorage.getItem("displayMode");
+    return localDisplayMode === "dark" ? true : false;
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,6 +28,9 @@ export default function Signup() {
     try {
       if (email == "" || password == "" || userName == "") {
         throw new Error("All fields are required.");
+      }
+      if (password.length < 8) {
+        throw new Error("Password should at least be 8 characters long");
       }
       if (password !== confirmPassword) {
         throw new Error("Passwords don't match.");
@@ -92,7 +98,9 @@ export default function Signup() {
               <div>
                 <input
                   className={`w-full text-base px-4 py-2  rounded-lg focus:outline-none focus:border-green-400 ${
-                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                    displayMode
+                      ? "bg-darkmode-input text-white"
+                      : "bg-gray-200 text-black"
                   }`}
                   type=""
                   placeholder="Enter your username"
@@ -103,7 +111,9 @@ export default function Signup() {
               <div>
                 <input
                   className={`w-full text-base px-4 py-2 rounded-lg focus:outline-none focus:border-green-400 ${
-                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                    displayMode
+                      ? "bg-darkmode-input text-white"
+                      : "bg-gray-200 text-black"
                   }`}
                   type="email"
                   placeholder="Enter your email"
@@ -114,7 +124,9 @@ export default function Signup() {
               <div>
                 <input
                   className={`w-full text-base px-4 py-2 rounded-lg focus:outline-none focus:border-green-400 ${
-                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                    displayMode
+                      ? "bg-darkmode-input text-white"
+                      : "bg-gray-200 text-black"
                   }`}
                   type="password"
                   placeholder="Enter your password"
@@ -125,7 +137,9 @@ export default function Signup() {
               <div>
                 <input
                   className={`w-full text-base px-4 py-2 rounded-lg focus:outline-none focus:border-green-400 ${
-                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                    displayMode
+                      ? "bg-darkmode-input text-white"
+                      : "bg-gray-200 text-black"
                   }`}
                   type="password"
                   placeholder="confirm your password"
@@ -160,7 +174,10 @@ export default function Signup() {
                     displayMode ? "text-white" : "text-black"
                   }`}
                 >
-                  Already have an account? Sign in
+                  Already have an account?{" "}
+                  <a href="/login" className="text-blue-700">
+                    Sign in
+                  </a>
                 </p>
 
                 <button
@@ -204,30 +221,38 @@ export default function Signup() {
           FIND Macrobourse
         </p>
         <div className="flex gap-x-1 mt-2">
-          <FaXTwitter
-            style={{
-              color: displayMode ? "#4AEFAA" : "#3D4AE4",
-              fontSize: "24px",
-            }}
-          />
-          <FaFacebookF
-            style={{
-              color: displayMode ? "#4AEFAA" : "#3D4AE4",
-              fontSize: "24px",
-            }}
-          />
-          <FaLinkedin
-            style={{
-              color: displayMode ? "#4AEFAA" : "#3D4AE4",
-              fontSize: "24px",
-            }}
-          />
-          <FaYoutube
-            style={{
-              color: displayMode ? "#4AEFAA" : "#3D4AE4",
-              fontSize: "24px",
-            }}
-          />
+          <a href="">
+            <FaXTwitter
+              style={{
+                color: displayMode ? "#4AEFAA" : "#3D4AE4",
+                fontSize: "24px",
+              }}
+            />
+          </a>
+          <a href="">
+            <FaFacebookF
+              style={{
+                color: displayMode ? "#4AEFAA" : "#3D4AE4",
+                fontSize: "24px",
+              }}
+            />
+          </a>
+          <a href="">
+            <FaLinkedin
+              style={{
+                color: displayMode ? "#4AEFAA" : "#3D4AE4",
+                fontSize: "24px",
+              }}
+            />
+          </a>
+          <a href="">
+            <FaYoutube
+              style={{
+                color: displayMode ? "#4AEFAA" : "#3D4AE4",
+                fontSize: "24px",
+              }}
+            />
+          </a>
         </div>
       </div>
     </div>

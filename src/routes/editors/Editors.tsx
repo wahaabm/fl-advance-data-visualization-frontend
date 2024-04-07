@@ -117,64 +117,88 @@ export default function ShowEditors() {
   if (loading) return <Loading />;
 
   return (
-    <div className="flex flex-col overflow-x-auto justify-center max-w-min mx-auto md:pr-20">
+    <div className="overflow-x-auto justify-center max-w-min mx-auto md:pr-20">
       <ShowUsersModal
         fetchEditors={fetchEditors}
         fetchUsers={fetchUsers}
         users={users}
       />
-      
 
       {editors.length == 0 ? (
-        <p className="text-xl mt-20 text-center text-gray-600">
-          No editors are currently available. <br />
-          You can start by adding a new editor using the button above.
-        </p>
+        <div className="flex flex-col w-72 mt-20 md:w-max items-center">
+          <p className="text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400">
+            No editors are currently available. <br />
+            <span className="text-lg md:text-xl text-center text-gray-600 dark:text-gray-400">
+              You can start by adding a new editor using the button below.
+            </span>
+          </p>
+          <button
+            className="btn btn-primary w-36 mt-5"
+            onClick={async () => {
+              await fetchUsers();
+              (
+                document.getElementById("users_modal") as HTMLDialogElement
+              )?.showModal();
+            }}
+          >
+            Add editor
+          </button>
+        </div>
       ) : (
         <>
-        <button
-        className="btn btn-primary w-36 self-center"
-        onClick={async () => {
-          await fetchUsers();
-          (
-            document.getElementById("users_modal") as HTMLDialogElement
-          )?.showModal();
-        }}
-      >
-        Add editor
-      </button>
-        <table className="w-full md:w-3/4 mx-auto table table-sm md:table-lg  table-zebra ">
-          
-          <thead>
-            <tr className="text-lg md:text-xl text-black dark:text-white text-center">
-              <th className="hidden md:table-cell"></th>
-              <th>Name</th>
-              <th className="hidden md:table-cell">Email</th>
-              <th className="hidden md:table-cell">Date created</th>
-              <th>Authorization</th>
-              <td>Remove editor</td>
-            </tr>
-          </thead>
-          <tbody>
-            {editors.map((user, index) => (
-              <tr className="hover text-lg md:text-xl text-center" key={user.id}>
-                <th className="hidden md:table-cell">{index + 1}</th>
-                <td>{user.name}</td>
-                <td className="hidden md:table-cell">{user.email}</td>
-                <td className="hidden md:table-cell">{user.createdAt.split("T")[0]}</td>
-                <td>{user.isAuthorized ? "Authorized" : "Unauthorized"}</td>
-                <td>
-                  <button
-                    className="btn btn-outline btn-error"
-                    onClick={() => handleRemoveEditor(user.id)}
-                  >
-                    Remove editor
-                  </button>
-                </td>
+          <button
+            className="btn btn-primary w-36"
+            onClick={async () => {
+              await fetchUsers();
+              (
+                document.getElementById("users_modal") as HTMLDialogElement
+              )?.showModal();
+            }}
+          >
+            Add editor
+          </button>
+          <table className="border-2 border-gray-500 w-full md:w-3/4 mx-auto table table-sm md:table-sm  table-zebra mt-5 table-pin-rows">
+            <thead>
+              <tr className="bg-base-200 text-lg md:text-xl text-black dark:text-white text-center border-b-2 border-gray-500 dark:border-white">
+                <th className="hidden md:table-cell"></th>
+                <th>Name</th>
+                <th className="hidden md:table-cell">Email</th>
+                <th className="hidden md:table-cell">Date created</th>
+                <th>Authorization</th>
+                <td>Remove editor</td>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {editors.map((user, index) => (
+                <tr
+                  className="hover text-lg md:text-xl text-center"
+                  key={user.id}
+                >
+                  <td className="hidden md:table-cell text-md md:text-lg">
+                    {index + 1}
+                  </td>
+                  <td className="text-md md:text-lg">{user.name}</td>
+                  <td className="hidden md:table-cell text-md md:text-lg">
+                    {user.email}
+                  </td>
+                  <td className="hidden md:table-cell text-md md:text-lg">
+                    {user.createdAt.split("T")[0]}
+                  </td>
+                  <td className="text-md md:text-lg">
+                    {user.isAuthorized ? "Authorized" : "Unauthorized"}
+                  </td>
+                  <td className="text-md md:text-lg">
+                    <button
+                      className="btn btn-outline btn-error"
+                      onClick={() => handleRemoveEditor(user.id)}
+                    >
+                      Remove editor
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </>
       )}
     </div>

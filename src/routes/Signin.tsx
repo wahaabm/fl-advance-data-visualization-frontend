@@ -11,11 +11,15 @@ import {
 } from "react-icons/fa6";
 
 export default function Signin() {
+  const [rememberMeChecked, setRememberMeChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [displayMode, setDisplayMode] = useState(false);
+  const [displayMode, setDisplayMode] = useState<boolean>(() => {
+    const localDisplayMode = localStorage.getItem("displayMode");
+    return localDisplayMode === "dark" ? true : false;
+  });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const HOST = import.meta.env.VITE_REACT_API_URL;
@@ -51,6 +55,10 @@ export default function Signin() {
       setLoading(false);
     }
   }
+
+  const handleRememberMeClick = () => {
+    setRememberMeChecked((prevChecked) => !prevChecked);
+  };
 
   return (
     <div
@@ -90,7 +98,9 @@ export default function Signin() {
               <div>
                 <input
                   className={`w-full text-base px-4 py-2  rounded-lg focus:outline-none focus:border-green-400 ${
-                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                    displayMode
+                      ? "bg-darkmode-input text-white"
+                      : "bg-gray-200 text-black"
                   }`}
                   type="email"
                   placeholder="Email address"
@@ -101,7 +111,9 @@ export default function Signin() {
               <div>
                 <input
                   className={`w-full text-base px-4 py-2 rounded-lg focus:outline-none focus:border-green-400 ${
-                    displayMode ? "bg-darkmode-input" : "bg-gray-200"
+                    displayMode
+                      ? "bg-darkmode-input text-white"
+                      : "bg-gray-200 text-black"
                   }`}
                   type="password"
                   placeholder="Password"
@@ -111,26 +123,30 @@ export default function Signin() {
               </div>
               <div className="flex items-center justify-between">
                 <div>
-                  <p
-                    className={`underline text-sm ${
-                      displayMode ? "text-white" : "text-black"
-                    }`}
-                  >
-                    Forgot your password?
-                  </p>
+                  <a href="">
+                    <p
+                      className={`underline text-sm ${
+                        displayMode ? "text-white" : "text-black"
+                      }`}
+                    >
+                      Forgot your password?
+                    </p>
+                  </a>
                 </div>
                 <div className="flex gap-x-1 items-center">
                   <input
                     type="checkbox"
-                    defaultChecked
+                    checked={rememberMeChecked}
                     className={`checkbox size-5 ${
                       displayMode ? "bg-darkmode-black" : "bg-white"
                     }`}
+                    onChange={handleRememberMeClick}
                   />
                   <p
                     className={` text-sm ${
                       displayMode ? "text-white" : "text-black"
-                    }`}
+                    } cursor-pointer`}
+                    onClick={handleRememberMeClick}
                   >
                     Remember me
                   </p>
@@ -146,7 +162,7 @@ export default function Signin() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full flex justify-center bg-login-green  hover:bg-green-600 text-black-100 p-2  rounded-lg tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
+                  className="w-full flex justify-center bg-login-green  hover:bg-green-600 text-black p-2  rounded-lg tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200"
                 >
                   {loading ? (
                     <span className="loading loading-spinner loading-md"></span>
@@ -187,7 +203,12 @@ export default function Signin() {
                         : "bg-signup-blue [--tglbg:#E5E7EB] hover:bg-signup-blue border-none"
                     }`}
                     onChange={() => {
-                      setDisplayMode((prev) => !prev);
+                      const newDisplayMode = !displayMode;
+                      setDisplayMode(newDisplayMode);
+                      localStorage.setItem(
+                        "displayMode",
+                        newDisplayMode ? "dark" : "light"
+                      );
                     }}
                     checked={displayMode}
                   />
@@ -202,30 +223,38 @@ export default function Signin() {
           FIND Macrobourse
         </p>
         <div className="flex gap-x-1 mt-2">
-          <FaXTwitter
-            style={{
-              color: displayMode ? "#4AEFAA" : "#3D4AE4",
-              fontSize: "24px",
-            }}
-          />
-          <FaFacebookF
-            style={{
-              color: displayMode ? "#4AEFAA" : "#3D4AE4",
-              fontSize: "24px",
-            }}
-          />
-          <FaLinkedin
-            style={{
-              color: displayMode ? "#4AEFAA" : "#3D4AE4",
-              fontSize: "24px",
-            }}
-          />
-          <FaYoutube
-            style={{
-              color: displayMode ? "#4AEFAA" : "#3D4AE4",
-              fontSize: "24px",
-            }}
-          />
+          <a href="">
+            <FaXTwitter
+              style={{
+                color: displayMode ? "#4AEFAA" : "#3D4AE4",
+                fontSize: "24px",
+              }}
+            />
+          </a>
+          <a href="">
+            <FaFacebookF
+              style={{
+                color: displayMode ? "#4AEFAA" : "#3D4AE4",
+                fontSize: "24px",
+              }}
+            />
+          </a>
+          <a href="">
+            <FaLinkedin
+              style={{
+                color: displayMode ? "#4AEFAA" : "#3D4AE4",
+                fontSize: "24px",
+              }}
+            />
+          </a>
+          <a href="">
+            <FaYoutube
+              style={{
+                color: displayMode ? "#4AEFAA" : "#3D4AE4",
+                fontSize: "24px",
+              }}
+            />
+          </a>
         </div>
       </div>
     </div>

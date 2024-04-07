@@ -29,6 +29,7 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
         (document.getElementById("my_modal_1") as HTMLDialogElement).close();
       } else {
         console.error("Failed to upload CSV file");
+        alert("Failed to upload chart");
         (document.getElementById("my_modal_1") as HTMLDialogElement).close();
       }
     } catch (error) {
@@ -36,6 +37,19 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
       console.error("Error:", error);
     } finally {
       fetchCharts();
+    }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files![0];
+    // Check if the file type is CSV
+    if (selectedFile && selectedFile.type === "text/csv") {
+      setFile(selectedFile);
+    } else {
+      // Reset the file input if the selected file is not a CSV
+      event.target.value = "";
+      setFile(undefined);
+      alert("Please select a CSV file.");
     }
   };
 
@@ -74,7 +88,7 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
             <input
               type="file"
               className="file-input file-input-bordered w-full"
-              onChange={(e) => setFile(e.target.files![0])}
+              onChange={handleFileChange}
               required
             />
           </label>

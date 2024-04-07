@@ -20,7 +20,7 @@ interface authState {
   isAuthorized: boolean;
   role: UserRole;
   userId: string | null;
-  userName:string;
+  userName: string;
 }
 
 const token = localStorage.getItem("token");
@@ -29,7 +29,7 @@ const decodedToken = token ? jwtDecode<ExtendedJwtPayload>(token) : null;
 const initialState: authState = {
   isLoggedIn: !!token,
   isAuthorized: decodedToken ? decodedToken.isAuthorized : false,
-  role: decodedToken ? decodedToken.role as UserRole : UserRole.NONE,
+  role: decodedToken ? (decodedToken.role as UserRole) : UserRole.NONE,
   userId: decodedToken ? decodedToken.id : null,
   userName: decodedToken ? decodedToken.name : "",
 };
@@ -53,7 +53,7 @@ const authSlice = createSlice({
     logout: (state) => {
       console.log("here");
       state.isLoggedIn = false;
-      localStorage.clear();
+      localStorage.removeItem("token");
       state.role = UserRole.USER;
       state.isAuthorized = false;
       state.userId = null;

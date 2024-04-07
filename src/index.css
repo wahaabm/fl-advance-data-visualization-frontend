@@ -4,7 +4,7 @@
 
 @layer base {
   @font-face {
-    font-family: 'Avenir';
+    font-family: "Avenir";
     src: url(./assets/fonts/Avenir.ttf);
   }
 }
@@ -19,7 +19,7 @@ body {
 }
 
 .list-item:before {
-  content: '';
+  content: "";
   width: 3px;
   height: 6px;
   height: 100%;
@@ -36,4 +36,13 @@ body {
 
 .list-item:not(.active):hover:before {
   background-color: lightgray;
+}
+
+select {
+  font-size: large;
+  padding: 10px;
+}
+
+option {
+  @apply text-sm md:text-lg mt-5;
 }

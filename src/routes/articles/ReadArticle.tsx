@@ -56,14 +56,15 @@ export default function ReadArticle() {
   return (
     <div>
       <div className="flex flex-col">
-        <div className="text-3xl font-bold mt-5 text-center mb-5 md:pr-20">
+        <div className="text-5xl font-bold mt-5 text-center mb-5 md:pr-20">
           {article?.title}
         </div>
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-col gap-4">
           <div key={article?.id} className="card w-full bg-base-100 shadow-xl">
             <div className="card-body">
               <div
+                className="w-full prose-sm"
                 dangerouslySetInnerHTML={{
                   __html: article?.content || "",
                 }}

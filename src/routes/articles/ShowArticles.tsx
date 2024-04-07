@@ -29,7 +29,6 @@ export default function ShowArticles() {
   const activeArticleId = useRef<number>();
   const toc = useRef<HTMLUListElement>(null);
 
-
   useEffect(() => {
     setTitle("Articles dashboard");
     setDescription("Manage and view all articles at a glance.");
@@ -111,24 +110,22 @@ export default function ShowArticles() {
     fetchArticles();
   }, [token]);
 
-  
   const scrollToArticle = (articleId) => {
-    console.log("here")
+    console.log("here");
     activeArticleId.current = articleId;
 
     const element = document.getElementById(articleId);
 
     if (element) {
-      console.log(element)
+      console.log(element);
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
-  
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
 
-      // Find the active section based on scroll position
       const active = Array.from(document.querySelectorAll(".article")).find(
         ({ id }) => {
           const element = document.getElementById(id);
@@ -148,16 +145,13 @@ export default function ShowArticles() {
         return;
       }
 
-      // Update the active section
       activeArticleId.current = parseInt(active.id, 10);
 
       toc.current.querySelectorAll("li").forEach((li) => {
-
         li.classList.remove("active");
 
         if (li.id === `li-${activeArticleId.current}`) {
           li.classList.add("active");
-
         }
       });
     };
@@ -168,20 +162,42 @@ export default function ShowArticles() {
 
   if (loading) return <Loading />;
 
+  if (articles.length == 0) {
+    return (
+      <>
+        <div className="flex flex-col w-72 md:w-full mt-20 items-center mx-auto md:pr-20">
+          <p className="text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400">
+            No articles are currently available. <br />
+          </p>
+          {(role == "ADMIN_USER" || role === "EDITOR_USER") && (
+            <>
+              <p className="text-lg md:text-xl text-center text-gray-600 dark:text-gray-400">
+                You can start by creating a new article using the button below.
+              </p>
+              <button
+                className="btn btn-primary w-36 mt-5 mx-auto"
+                onClick={() => navigate("/create-article")}
+              >
+                Create new
+              </button>
+            </>
+          )}
+        </div>
+      </>
+    );
+  }
   return (
     <div className="flex flex-row gap-6 justify-between">
       <div className="flex flex-col w-full md:w-3/4">
         <div className="flex flex-col gap-4 justify-center">
-          {articles.length == 0 && (
-            <p className="text-xl my-20 text-center text-gray-600">
-              No articles are currently available. <br />
-              You can start by creating a new article using the button above.
-            </p>
-          )}
           {articles.map((article) => (
-            <div key={article.id} id={article.id.toString()} className="card w-full bg-base-100 shadow-xl overflow-auto article">
+            <div
+              key={article.id}
+              id={article.id.toString()}
+              className="card w-full bg-base-100 shadow-xl overflow-auto article"
+            >
               <div className="card-body rounded-lg">
-                <h2 className="card-title text-3xl"> {article.title}</h2>
+                <h2 className="card-title text-3xl text"> {article.title}</h2>
 
                 <div
                   dangerouslySetInnerHTML={{
@@ -211,7 +227,7 @@ export default function ShowArticles() {
                   </div>
                   <button
                     onClick={() => handleReadArticle(article.id)}
-                    className="btn"
+                    className="btn btn-outline btn-success"
                   >
                     Read
                   </button>
@@ -223,33 +239,33 @@ export default function ShowArticles() {
       </div>
 
       <div className="gap-y-5 fixed right-0 hidden md:block md:w-1/4">
-      {(role == 'ADMIN_USER' || role === 'EDITOR_USER') && (
-        <button
-          className='btn btn-primary w-36 mb-5 mx-auto'
-          onClick={() => navigate('/create-article')}
-        >
-          Create new
-        </button>
-      )}
-      <div className="">
-            <ul
-              className="max-w-md space-y-1 text-black list-none list-inside dark:text-gray-400"
-              ref={toc}
-            >
-              {articles.map((article) => (
-                <li
-                  key={article.id}
-                  id={`li-${article.id}`}
-                  className={`uppercase hover:cursor-pointer list-item ${
-                    activeArticleId.current === article.id ? "active" : ""
-                  }`}
-                  onClick={() => scrollToArticle(article.id.toString())}
-                >
-                  {article.title}
-                </li>
-              ))}
-            </ul>
-          </div>
+        {(role == "ADMIN_USER" || role === "EDITOR_USER") && (
+          <button
+            className="btn btn-primary w-36 mb-5 mx-auto"
+            onClick={() => navigate("/create-article")}
+          >
+            Create new
+          </button>
+        )}
+        <div className="">
+          <ul
+            className="max-w-md space-y-1 text-black list-none list-inside dark:text-gray-400"
+            ref={toc}
+          >
+            {articles.map((article) => (
+              <li
+                key={article.id}
+                id={`li-${article.id}`}
+                className={`uppercase hover:cursor-pointer list-item ${
+                  activeArticleId.current === article.id ? "active" : ""
+                }`}
+                onClick={() => scrollToArticle(article.id.toString())}
+              >
+                {article.title}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

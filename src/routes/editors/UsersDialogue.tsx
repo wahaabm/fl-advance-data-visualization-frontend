@@ -52,10 +52,10 @@ export default function ShowUsersModal({
       <div className="modal-box">
         <div className="overflow-x-auto">
           <p className="font-bold text-2xl text-center">Users list</p>
-          <table className="table">
-            <thead>
+          <table className="table table-zebra table-xs md:table-sm">
+            <thead className="text-lg">
               <tr>
-                <th></th>
+                <th className="hidden md:block"></th>
                 <th>Name</th>
                 <th>Email</th>
                 <td>Make editor</td>
@@ -64,7 +64,8 @@ export default function ShowUsersModal({
             <tbody>
               {users.map((user, index) => (
                 <tr key={user.id}>
-                  <th>{index + 1}</th> <td>{user.name}</td>
+                  <th className="hidden md:block">{index + 1}</th>{" "}
+                  <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>
                     <button

@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 declare const tinymce: any;
 
 export default function CreateArticle() {
+  const [displayMode, ,] = useOutletContext() as [Boolean, Function, Function];
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const editorRef = useRef<any>(null);
@@ -60,6 +61,7 @@ export default function CreateArticle() {
           Article:{" "}
         </span>
         <Editor
+          key={displayMode + ""}
           tinymceScriptSrc={"/tinymce/tinymce.min.js"}
           onInit={(evt, editor) => {
             evt;
@@ -70,7 +72,10 @@ export default function CreateArticle() {
             image_caption: true,
             height: 500,
             width: "100%",
-            menubar: false,
+            menubar: true,
+            body_class: "mceBody",
+            skin: `${displayMode ? "oxide-dark" : "oxide"}`,
+            content_css: `${displayMode ? "dark" : "transparent"}`,
             plugins: [
               "advlist",
               "autolink",
@@ -125,8 +130,9 @@ export default function CreateArticle() {
 
               input.click();
             },
-            content_style:
-              "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+            content_style: `body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: ${
+              displayMode ? "#1D232A" : "white"
+            } ; color: ${displayMode ? "white" : "dark"} ; }`,
           }}
         />
       </div>
