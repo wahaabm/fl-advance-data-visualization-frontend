@@ -218,7 +218,7 @@ export default function ShowArticles() {
   }
   return (
     <div className='flex flex-row gap-6 justify-between'>
-      if (articles.length == 0)
+      if (pinnedArticles.length !== 0)
       {
         <div className='my-6'>
           <div className='flex-col flex-1 text-center'>
