@@ -1,19 +1,18 @@
 import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState } from 'react'
-import { FaFacebookF, FaLinkedin, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import SocialLinks from '../components/SocialLinks'
 import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import { logout } from '../store/slices/AuthSlice'
 
 export default function Dashboard() {
-  const settings = useAppSelector((state) => state.settings.settings)
   const [displayMode, setDisplayMode] = useState<boolean>(() => {
     const localDisplayMode = localStorage.getItem('displayMode')
     return localDisplayMode === 'dark' ? true : false
   })
   const [title, setTitle] = useState('')
-  const location = useLocation()
   const [description, setDescription] = useState('')
+  const location = useLocation()
   const [selectedOption, setSelectedOption] = useState(location.pathname)
   const navigate = useNavigate()
   const role = useAppSelector((state) => state.auth.role)
@@ -224,40 +223,7 @@ export default function Dashboard() {
           <p>Copyright © 2024 - All right reserved</p>
         </aside>
 
-        <div className='flex gap-x-1 mt-2'>
-          <a href={settings.twitter}>
-            <FaXTwitter
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-          <a href={settings.facebook}>
-            <FaFacebookF
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-          <a href={settings.linkedIn}>
-            <FaLinkedin
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-          <a href={settings.youtube}>
-            <FaYoutube
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-        </div>
+        <SocialLinks />
       </footer>
     </div>
   )

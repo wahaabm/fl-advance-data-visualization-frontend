@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import { useAppDispatch } from '../../hooks/hooks'
 import { logout } from '../../store/slices/AuthSlice'
 import { refreshSettings } from '../../store/slices/SettingsSlice'
@@ -22,6 +22,11 @@ export default function SettingsForm() {
     previous: '',
     actual: '',
   })
+  const [, setTitle, setDescription] = useOutletContext() as [
+    Boolean,
+    Function,
+    Function
+  ]
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -91,6 +96,11 @@ export default function SettingsForm() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    setTitle('Settings dashboard')
+    setDescription('Setup site links and settings')
+  }, [])
 
   useEffect(() => {
     fetchSettings()

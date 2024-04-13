@@ -1,10 +1,8 @@
 import { FormEvent, useState } from 'react'
-import { FaFacebookF, FaLinkedin, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 import { useNavigate } from 'react-router-dom'
-import { useAppSelector } from '../hooks/hooks'
+import SocialLinks from '../components/SocialLinks'
 
 export default function Signup() {
-  const settings = useAppSelector((state) => state.settings.settings)
   const [userName, setUserName] = useState('')
   const [displayMode, setDisplayMode] = useState<boolean>(() => {
     const localDisplayMode = localStorage.getItem('displayMode')
@@ -221,40 +219,7 @@ export default function Signup() {
           FIND Macrobourse
         </p>
 
-        <div className='flex gap-x-1 mt-2'>
-          <a href={settings.twitter}>
-            <FaXTwitter
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-          <a href={settings.facebook}>
-            <FaFacebookF
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-          <a href={settings.linkedIn}>
-            <FaLinkedin
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-          <a href={settings.youtube}>
-            <FaYoutube
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-        </div>
+        <SocialLinks />
       </div>
     </div>
   )

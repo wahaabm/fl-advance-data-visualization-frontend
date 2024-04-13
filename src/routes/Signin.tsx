@@ -1,18 +1,12 @@
 import { FormEvent, useState } from 'react'
-import {
-  FaFacebookF,
-  FaLinkedin,
-  FaUserPlus,
-  FaXTwitter,
-  FaYoutube,
-} from 'react-icons/fa6'
+import { FaUserPlus } from 'react-icons/fa6'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../hooks/hooks'
+import SocialLinks from '../components/SocialLinks'
+import { useAppDispatch } from '../hooks/hooks'
 import { updateLoggedinState } from '../store/slices/AuthSlice'
 import { refreshSettings } from '../store/slices/SettingsSlice'
 
 export default function Signin() {
-  const settings = useAppSelector((state) => state.settings.settings)
   const [rememberMeChecked, setRememberMeChecked] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -226,40 +220,7 @@ export default function Signin() {
           FIND Macrobourse
         </p>
 
-        <div className='flex gap-x-1 mt-2'>
-          <a href={settings.twitter}>
-            <FaXTwitter
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-          <a href={settings.facebook}>
-            <FaFacebookF
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-          <a href={settings.linkedIn}>
-            <FaLinkedin
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-          <a href={settings.youtube}>
-            <FaYoutube
-              style={{
-                color: displayMode ? '#4AEFAA' : '#3D4AE4',
-                fontSize: '24px',
-              }}
-            />
-          </a>
-        </div>
+        <SocialLinks />
       </div>
     </div>
   )
