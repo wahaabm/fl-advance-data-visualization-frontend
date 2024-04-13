@@ -278,7 +278,7 @@ export default function ShowArticles() {
 
           <hr className='my-12 dark:border-gray-900' />
 
-          <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6'>
             {articles.map((article) => (
               <div
                 key={article.id}

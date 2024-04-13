@@ -19,6 +19,13 @@ export default function Dashboard() {
   const dispatch = useAppDispatch()
   const token = localStorage.getItem('token')
 
+  const gotoSettings = () => {
+    setSelectedOption('Settings')
+    setTitle('Settings Dashboard')
+    setDescription('Manage and view site settings.')
+    navigate('/settings')
+  }
+
   const handleSignOut = () => {
     const confirmed = window.confirm('Are you sure you want to logout?')
     if (!confirmed) return
@@ -83,6 +90,10 @@ export default function Dashboard() {
       setTitle('Editors dashboard')
       setDescription('Grant or revoke editor rights for users with ease.')
       navigate('/editors')
+    } else if (value === 'Settings' && role === 'ADMIN_USER') {
+      setTitle('Settings')
+      setDescription('Setup site links and settings')
+      navigate('/settings')
     }
   }
 
@@ -124,6 +135,9 @@ export default function Dashboard() {
                 )}
                 {role === 'ADMIN_USER' && (
                   <option value='Editors'>Editors</option>
+                )}
+                {role === 'ADMIN_USER' && (
+                  <option value='Settings'>Settings</option>
                 )}
               </select>
             </label>
@@ -174,6 +188,11 @@ export default function Dashboard() {
                     checked={displayMode}
                   />
                 </label>
+              </li>
+              <li>
+                {(role === 'ADMIN_USER' || role === 'EDITOR_USER') && (
+                  <a onClick={gotoSettings}>Settings</a>
+                )}
               </li>
               <li>
                 <a

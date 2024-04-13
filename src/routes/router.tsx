@@ -11,6 +11,7 @@ import CreateArticle from './articles/createArticle'
 import EditArticle from './articles/editArticle'
 import ShowCharts from './charts/ShowCharts'
 import ShowEditors from './editors/Editors'
+import Settings from './settings/Index'
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <Home />,
+      },
+      {
+        path: 'settings',
+        element: <Settings />,
       },
       {
         path: 'users',
