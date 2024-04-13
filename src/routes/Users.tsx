@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { useAppDispatch } from "../hooks/hooks";
-import { authorizeUser, logout, revokeUser } from "../store/slices/AuthSlice";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import Loading from "../utils/Loading";
+import { useEffect, useState } from "react"
+import { useNavigate, useOutletContext } from "react-router-dom"
+import { useAppDispatch } from "../hooks/hooks"
+import { authorizeUser, logout, revokeUser } from "../store/slices/AuthSlice"
+import Loading from "../utils/Loading"
 interface user {
   id: string;
   email: string;
@@ -102,7 +102,7 @@ export default function ShowUsers() {
         throw new Error("Forbidden");
       }
     } catch (error) {
-      console.log("error");
+      console.log(error);
     } finally {
       setLoading(false);
     }

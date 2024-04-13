@@ -1,14 +1,14 @@
-import { FormEvent, useState } from "react";
-import { useAppDispatch } from "../hooks/hooks";
-import { useNavigate } from "react-router-dom";
-import { updateLoggedinState } from "../store/slices/AuthSlice";
+import { FormEvent, useState } from "react"
 import {
   FaFacebookF,
-  FaXTwitter,
   FaLinkedin,
-  FaYoutube,
   FaUserPlus,
-} from "react-icons/fa6";
+  FaXTwitter,
+  FaYoutube,
+} from "react-icons/fa6"
+import { useNavigate } from "react-router-dom"
+import { useAppDispatch } from "../hooks/hooks"
+import { updateLoggedinState } from "../store/slices/AuthSlice"
 
 export default function Signin() {
   const [rememberMeChecked, setRememberMeChecked] = useState(false);
@@ -45,7 +45,6 @@ export default function Signin() {
       }
 
       const data = await response.json();
-      console.log(data);
       dispatch(updateLoggedinState(data.token));
       navigate("/charts");
     } catch (error) {

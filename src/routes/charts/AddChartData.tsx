@@ -1,104 +1,107 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from 'react'
 
 interface ChartData {
-  data: any[];
-  layout: any;
-  dataKeys: string[];
-  chartId: number;
-  title: string;
-  authorId: number;
+  data: any[]
+  layout: any
+  dataKeys: string[]
+  chartId: number
+  title: string
+  authorId: number
 }
 
 interface Props {
-  chart: ChartData;
-  onClose: () => void;
-  fetchCharts: () => void;
+  chart: ChartData
+  onClose: () => void
+  fetchCharts: () => void
 }
 
 export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
-  const [formData, setFormData] = useState<Record<string, any>>({});
-  const [error, setError] = useState("");
-  const HOST = import.meta.env.VITE_REACT_API_URL;
+  const [formData, setFormData] = useState<Record<string, any>>({})
+  const [error, setError] = useState('')
+  const HOST = import.meta.env.VITE_REACT_API_URL
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    let parsedValue: number;
-    if (name !== "date") {
-      parsedValue = parseFloat(value);
-      if (isNaN(parsedValue) && value !== "") {
-        setError(`Invalid value for ${name}`);
+    const { name, value } = e.target
+    let parsedValue: number
+    if (name !== 'date') {
+      parsedValue = parseFloat(value)
+      if (isNaN(parsedValue) && value !== '') {
+        setError(`Invalid value for ${name}`)
       } else {
-        setError("");
+        setError('')
       }
     }
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: parsedValue !== undefined ? parsedValue : value,
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
+    event.preventDefault()
     if (error) {
-      return;
+      return
     }
-    const formDataToSubmit: Record<string, any> = {};
-    const hasError = false;
+    const formDataToSubmit: Record<string, any> = {}
+    const hasError = false
     for (const [key, value] of Object.entries(formData)) {
-      formDataToSubmit[key] = value;
+      formDataToSubmit[key] = value
     }
     if (hasError) {
-      return;
+      return
     }
     try {
       const res = await fetch(`${HOST}/admin/chart/${chart.chartId}`, {
-        method: "PUT",
+        method: 'PUT',
         body: JSON.stringify({ formDataToSubmit }),
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
 
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-      });
+      })
       if (res.ok) {
-        await res.json();
-        (
-          document.getElementById("add_chart_data") as HTMLDialogElement
-        ).close();
+        await res.json()
+        ;(
+          document.getElementById('add_chart_data') as HTMLDialogElement
+        ).close()
       } else {
-        console.error("Failed to upload chart data");
-        (
-          document.getElementById("add_chart_data") as HTMLDialogElement
-        ).close();
+        console.error('Failed to upload chart data')
+        ;(
+          document.getElementById('add_chart_data') as HTMLDialogElement
+        ).close()
       }
     } catch (error) {
-      console.error("Error:", error);
-      (document.getElementById("add_chart_data") as HTMLDialogElement).close();
+      console.error('Error:', error)
+      ;(document.getElementById('add_chart_data') as HTMLDialogElement).close()
     } finally {
-      fetchCharts();
-      onClose();
+      fetchCharts()
+      onClose()
     }
-  };
+  }
 
   return (
-    <dialog id="add_chart_data" className="modal">
-      <div className="modal-box">
-        <h3 className="font-bold text-lg">Add chart data</h3>
+    <dialog
+      id='add_chart_data'
+      className='modal'
+    >
+      <div className='modal-box'>
+        <h3 className='font-bold text-lg'>Add chart data</h3>
         <form onSubmit={handleSubmit}>
           {chart.dataKeys.map((field, index) => (
             <div key={index}>
-              <label className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text">
+              <label className='form-control'>
+                <div className='label'>
+                  <span className='label-text'>
                     {field.charAt(0).toUpperCase() + field.slice(1)}
                   </span>
                   <input
-                    type="text"
-                    placeholder=""
-                    className="input input-bordered w-1/2 max-w-xs"
+                    type='text'
+                    placeholder=''
+                    className='input'
                     name={field}
                     id={field}
-                    value={formData[field] || ""}
+                    value={formData[field] || ''}
                     onChange={handleChange}
                     required
                   />
@@ -106,18 +109,21 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
               </label>
             </div>
           ))}
-          {error && <p className="text-red-500">{error}</p>}{" "}
+          {error && <p className='text-red-500'>{error}</p>}{' '}
           {/* Display error message */}
-          <div className="flex flex-row gap-x-2 mt-2">
-            <button className="btn btn-primary" type="submit">
+          <div className='flex flex-row gap-x-2 mt-2'>
+            <button
+              className='btn btn-primary'
+              type='submit'
+            >
               Submit
             </button>
             <button
-              className="btn btn-error "
-              type="button"
+              className='btn btn-error '
+              type='button'
               onClick={() =>
                 (
-                  document.getElementById("add_chart_data") as HTMLDialogElement
+                  document.getElementById('add_chart_data') as HTMLDialogElement
                 )?.close()
               }
             >
@@ -127,5 +133,5 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
         </form>
       </div>
     </dialog>
-  );
+  )
 }

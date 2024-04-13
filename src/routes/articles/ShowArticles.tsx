@@ -135,19 +135,16 @@ export default function ShowArticles() {
   }
 
   useEffect(() => {
-    console.log('fetching articles')
     fetchArticles()
     fetchPinnedArticles()
   }, [token])
 
   const scrollToArticle = (articleId) => {
-    console.log('here')
     activeArticleId.current = articleId
 
     const element = document.getElementById(articleId)
 
     if (element) {
-      console.log(element)
       element.scrollIntoView({ behavior: 'smooth' })
     }
   }
@@ -216,31 +213,88 @@ export default function ShowArticles() {
       </>
     )
   }
-  return (
-    <div className='flex flex-row gap-6 justify-between'>
-      if (pinnedArticles.length !== 0)
-      {
-        <div className='my-6'>
-          <div className='flex-col flex-1 text-center'>
-            <h1 className='text-xl font-bold'>Pinned Articles</h1>
-          </div>
 
-          <div>
-            {pinnedArticles.map((article) => (
+  return (
+    <div>
+      <div className='flex'>
+        <div className='flex flex-col w-full md:w-3/4'>
+          {pinnedArticles.length !== 0 && (
+            <div className='block my-6'>
+              <div className='flex-col flex-1 mb-6'>
+                <h1 className='text-xl font-bold'>Pinned Articles</h1>
+              </div>
+
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+                {pinnedArticles.map((article) => (
+                  <div
+                    key={article.id}
+                    id={article.id.toString()}
+                    className='card w-full min-w-48 max-w-sm bg-base-100 shadow-xl overflow-auto article'
+                  >
+                    <div className='card-body'>
+                      <h2 className='card-title text-3xl text'>
+                        {' '}
+                        {article.title}
+                      </h2>
+
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: article.content.substring(0, 250),
+                        }}
+                      />
+                      <div className='card-actions justify-between mt-8'>
+                        <div className='flex gap-x-2'>
+                          {(role === 'ADMIN_USER' ||
+                            (role === 'EDITOR_USER' &&
+                              article.authorId.toString() == userId)) && (
+                            <>
+                              <button
+                                onClick={() => handleEdit(article.id)}
+                                className='btn btn-outline btn-info'
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => handleDelete(article.id)}
+                                className='btn btn-outline btn-error'
+                              >
+                                Delete
+                              </button>
+                            </>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => handleReadArticle(article.id)}
+                          className='btn btn-outline btn-success'
+                        >
+                          Read
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <hr className='my-12' />
+
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+            {articles.map((article) => (
               <div
                 key={article.id}
                 id={article.id.toString()}
-                className='card w-full bg-base-200 shadow-xl overflow-auto article rounded-lg'
+                className='card w-full max-w-sm bg-base-100 shadow-xl overflow-auto article'
               >
                 <div className='card-body rounded-lg'>
                   <h2 className='card-title text-3xl text'> {article.title}</h2>
 
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: article.content.substring(0, 250),
+                      __html: article.content.substring(0, 255),
                     }}
                   />
-                  <div className='card-actions justify-between mt-auto'>
+                  <div className='card-actions justify-between mt-8'>
                     <div className='flex gap-x-2'>
                       {(role === 'ADMIN_USER' ||
                         (role === 'EDITOR_USER' &&
@@ -273,83 +327,35 @@ export default function ShowArticles() {
             ))}
           </div>
         </div>
-      }
-      <div className='flex flex-col w-full md:w-3/4'>
-        <div className='flex flex-col gap-4 justify-center'>
-          {articles.map((article) => (
-            <div
-              key={article.id}
-              id={article.id.toString()}
-              className='card w-full bg-base-100 shadow-xl overflow-auto article'
-            >
-              <div className='card-body rounded-lg'>
-                <h2 className='card-title text-3xl text'> {article.title}</h2>
 
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: article.content.substring(0, 250),
-                  }}
-                />
-                <div className='card-actions justify-between mt-auto'>
-                  <div className='flex gap-x-2'>
-                    {(role === 'ADMIN_USER' ||
-                      (role === 'EDITOR_USER' &&
-                        article.authorId.toString() == userId)) && (
-                      <>
-                        <button
-                          onClick={() => handleEdit(article.id)}
-                          className='btn btn-outline btn-info'
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(article.id)}
-                          className='btn btn-outline btn-error'
-                        >
-                          Delete
-                        </button>
-                      </>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => handleReadArticle(article.id)}
-                    className='btn btn-outline btn-success'
-                  >
-                    Read
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className='gap-y-5 fixed right-0 hidden md:block md:w-1/4'>
-        {(role == 'ADMIN_USER' || role === 'EDITOR_USER') && (
-          <button
-            className='btn btn-primary w-36 mb-5 mx-auto'
-            onClick={() => navigate('/create-article')}
-          >
-            Create new
-          </button>
-        )}
-        <div className=''>
-          <ul
-            className='max-w-md space-y-1 text-black list-none list-inside dark:text-gray-400'
-            ref={toc}
-          >
-            {articles.map((article) => (
-              <li
-                key={article.id}
-                id={`li-${article.id}`}
-                className={`uppercase hover:cursor-pointer list-item ${
-                  activeArticleId.current === article.id ? 'active' : ''
-                }`}
-                onClick={() => scrollToArticle(article.id.toString())}
-              >
-                {article.title}
-              </li>
-            ))}
-          </ul>
+        <div className='gap-y-5 fixed right-0 hidden md:block md:w-1/4'>
+          {(role == 'ADMIN_USER' || role === 'EDITOR_USER') && (
+            <button
+              className='btn btn-primary w-36 mb-5 mx-auto'
+              onClick={() => navigate('/create-article')}
+            >
+              Create new
+            </button>
+          )}
+          <div className=''>
+            <ul
+              className='max-w-md space-y-1 text-black list-none list-inside dark:text-gray-400'
+              ref={toc}
+            >
+              {articles.map((article) => (
+                <li
+                  key={article.id}
+                  id={`li-${article.id}`}
+                  className={`uppercase hover:cursor-pointer list-item ${
+                    activeArticleId.current === article.id ? 'active' : ''
+                  }`}
+                  onClick={() => scrollToArticle(article.id.toString())}
+                >
+                  {article.title}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

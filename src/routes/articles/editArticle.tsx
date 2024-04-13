@@ -1,29 +1,31 @@
-import { useRef, useState, useEffect } from "react";
-import { Editor } from "@tinymce/tinymce-react";
-import { useNavigate, useParams, useOutletContext } from "react-router-dom";
-import Loading from "../../utils/Loading";
+import { Editor } from '@tinymce/tinymce-react'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
+import Loading from '../../utils/Loading'
 
 interface articleData {
-  authorId: number;
-  id: number;
-  title: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  published: boolean;
+  authorId: number
+  id: number
+  title: string
+  content: string
+  createdAt: string
+  updatedAt: string
+  published: boolean
 }
 
 export default function EditArticle() {
-  const [displayMode, ,] = useOutletContext() as [Boolean, Function, Function];
+  const [displayMode, ,] = useOutletContext() as [Boolean, Function, Function]
 
-  const [article, setArticle] = useState<articleData>();
-  const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const editorRef = useRef<any>(null);
-  const [loading, setLoading] = useState(true);
-  const { id } = useParams();
-  const [title, setTitle] = useState("");
-  const HOST = import.meta.env.VITE_REACT_API_URL;
+  const [article, setArticle] = useState<articleData>()
+  const navigate = useNavigate()
+  const token = localStorage.getItem('token')
+  const editorRef = useRef<any>(null)
+  const [loading, setLoading] = useState(true)
+  const { id } = useParams()
+  const [title, setTitle] = useState('')
+  const [pinned, setPinned] = useState(false)
+  const [published, setPublished] = useState(false)
+  const HOST = import.meta.env.VITE_REACT_API_URL
 
   const fetchArticle = async () => {
     try {
@@ -31,142 +33,165 @@ export default function EditArticle() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
 
       if (!response.ok) {
         if (response.status === 405) {
-          navigate("/waiting");
+          navigate('/waiting')
         } else if (response.status === 403) {
-          navigate("/login");
+          navigate('/login')
         } else {
-          throw new Error("Failed to fetch articles");
+          throw new Error('Failed to fetch articles')
         }
-        return;
+        return
       }
-      const data = await response.json();
-      console.log(data);
-      setArticle(data);
-      setTitle(data.title);
+      const data = await response.json()
+      setArticle(data)
+      setTitle(data.title)
+      setPinned(data.pinned)
+      setPublished(data.published)
     } catch (error) {
-      console.error("Error fetching articles:", error);
+      console.error('Error fetching articles:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchArticle();
-  }, []);
+    fetchArticle()
+  }, [])
 
   const handleSave = async () => {
     if (editorRef.current) {
-      const editor = editorRef.current.getContent();
+      const editor = editorRef.current.getContent()
       try {
         const response = await fetch(`${HOST}/admin/article/${id}`, {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             content: editor,
             title: title,
-            published: true,
+            published: published,
+            pinned: pinned,
           }),
-        });
+        })
         if (response.status == 403) {
-          navigate("/login");
-          return;
+          navigate('/login')
+          return
         }
-        navigate("/articles");
+        navigate('/articles')
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     }
-  };
+  }
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading />
 
   return (
     <>
-      <div className="text-3xl mt-2 mb-5 text-left">Edit an article</div>
+      <div className='text-3xl mt-2 mb-5 text-left'>Edit an article</div>
 
-      <div className="form-control label w-full  mb-5">
-        <span className="label-text text-2xl font-bold mr-5 self-start">
-          Title:{" "}
-        </span>
+      <div className='form-control'>
+        <span className='label'>Title: </span>
         <input
-          type="text"
+          type='text'
           value={title}
-          className="input input-bordered w-full"
+          className='input '
           required
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
-      <div className="form-control label w-full">
-        <span className="label-text text-2xl font-bold mr-5 self-start">
-          Article:
-        </span>
+
+      <div className='form-control'>
+        <span className='label'>Is Pinned?</span>
+        <input
+          type='checkbox'
+          checked={pinned}
+          placeholder='Title of article'
+          className='checkbox'
+          required
+          onChange={(e) => setPinned(e.target.checked)}
+        />
+      </div>
+
+      <div className='form-control'>
+        <span className='label'>Is Published?</span>
+        <input
+          type='checkbox'
+          checked={published}
+          placeholder='Title of article'
+          className='checkbox'
+          required
+          onChange={(e) => setPublished(e.target.checked)}
+        />
+      </div>
+
+      <div className='form-control'>
+        <span className='label'>Article:</span>
         <Editor
-          key={displayMode + ""}
-          tinymceScriptSrc={"/tinymce/tinymce.min.js"}
+          key={displayMode + ''}
+          tinymceScriptSrc={'/tinymce/tinymce.min.js'}
           onInit={(evt, editor) => {
-            evt;
-            editorRef.current = editor;
+            evt
+            editorRef.current = editor
           }}
           initialValue={article?.content}
           init={{
             height: 500,
-            width: "100%",
+            width: '100%',
             menubar: false,
-            skin: `${displayMode ? "oxide-dark" : "oxide"}`,
-            content_css: `${displayMode ? "dark" : "transparent"}`,
+            skin: `${displayMode ? 'oxide-dark' : 'oxide'}`,
+            content_css: `${displayMode ? 'dark' : 'transparent'}`,
 
             plugins: [
-              "advlist",
-              "autolink",
-              "lists",
-              "link",
-              "image",
-              "charmap",
-              "anchor",
-              "searchreplace",
-              "visualblocks",
-              "code",
-              "fullscreen",
-              "insertdatetime",
-              "media",
-              "table",
-              "preview",
-              "help",
-              "wordcount",
+              'advlist',
+              'autolink',
+              'lists',
+              'link',
+              'image',
+              'charmap',
+              'anchor',
+              'searchreplace',
+              'visualblocks',
+              'code',
+              'fullscreen',
+              'insertdatetime',
+              'media',
+              'table',
+              'preview',
+              'help',
+              'wordcount',
             ],
             toolbar:
-              "undo redo | blocks | " +
-              "bold italic forecolor | alignleft aligncenter " +
-              "alignright alignjustify | bullist numlist outdent indent | " +
-              "removeformat | help",
+              'undo redo | blocks | ' +
+              'bold italic forecolor | alignleft aligncenter ' +
+              'alignright alignjustify | bullist numlist outdent indent | ' +
+              'removeformat | help',
             content_style: `body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: ${
-              displayMode ? "#1D232A" : "white"
-            } ; color: ${displayMode ? "white" : "dark"} ; }`,
+              displayMode ? '#1D232A' : 'white'
+            } ; color: ${displayMode ? 'white' : 'dark'} ; }`,
           }}
         />
       </div>
 
-      <div className="flex flex-row justify-end gap-x-2">
+      <div className='flex flex-row justify-end gap-x-2'>
         <button
-          className="btn btn-outline btn-error mt-2 self-baseline"
+          className='btn btn-outline btn-error mt-2 self-baseline'
           onClick={() => navigate(-1)}
         >
           Cancel
         </button>
         <button
-          className="btn btn-outline btn-primary mt-2 self-baseline"
+          className='btn btn-outline btn-primary mt-2 self-baseline'
           onClick={handleSave}
         >
           Save
         </button>
       </div>
     </>
-  );
+  )
 }
