@@ -84,7 +84,7 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
       id='add_chart_data'
       className='modal '
     >
-      <div className='modal-box bg-gray-100 dark:bg-gray-800'>
+      <div className='modal-box'>
         <h3 className='font-bold text-lg'>Add Chart Data</h3>
         <form onSubmit={handleSubmit}>
           {chart.dataKeys.map((field, index) => (

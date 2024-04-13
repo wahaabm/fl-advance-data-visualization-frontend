@@ -116,9 +116,9 @@ export default function ShowUsers() {
     )
 
   return (
-    <div className='overflow-x-auto justify-center max-w-min mx-auto md:pr-20'>
+    <div>
       {users.length == 0 ? (
-        <div className='flex flex-col w-72 mt-20 md:w-max items-center'>
+        <div className='flex flex-col w-72 md:w-max items-center'>
           <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400'>
             No users are currently available. <br />
             <span className='text-lg md:text-xl text-center text-gray-600 dark:text-gray-400'>
@@ -127,13 +127,13 @@ export default function ShowUsers() {
           </p>
         </div>
       ) : (
-        <table className='border-2 border-gray-500 w-full md:w-3/4 mx-auto table table-sm md:table-sm  table-zebra mt-5 table-pin-rows'>
+        <table className='w-full max-w-5xl mx-auto table bg-white dark:bg-darkmode-gray my-6'>
           <thead>
-            <tr className='text-lg md:text-xl text-black dark:text-white text-center border-b-2 border-gray-500 dark:border-white bg-base-200 '>
-              <th className='hidden md:table-cell'></th>
+            <tr>
+              <th>#</th>
               <th>Name</th>
-              <th className='hidden md:table-cell'>Email</th>
-              <th className='hidden md:table-cell'>Date created</th>
+              <th>Email</th>
+              <th>Date created</th>
               <th>Authorization</th>
               <th>Allow/Revoke</th>
             </tr>
@@ -141,25 +141,23 @@ export default function ShowUsers() {
           <tbody>
             {users.map((user, index) => (
               <tr
-                className='hover text-lg md:text-xl text-center border-gray-300 border-b-2 dark:border-gray-500'
+                className='hover'
                 key={user.id}
               >
-                <td className='hidden md:table-cell text-md md:text-lg'>
-                  {index + 1}
-                </td>
-                <td className='text-md md:text-lg'>{user.name}</td>
-                <td className='hidden md:table-cell text-md md:text-lg'>
-                  {user.email}
-                </td>
-                <td className='hidden md:table-cell text-md md:text-lg '>
+                <td>{index + 1}.</td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td className='hidden md:table-cell '>
                   {user.createdAt.split('T')[0]}
                 </td>
-                <td className='text-md md:text-lg'>
-                  {user.isAuthorized ? 'Authorized' : 'Unauthorized'}
-                </td>
-                <td className='text-md md:text-lg'>
+                <td>{user.isAuthorized ? 'Authorized' : 'Unauthorized'}</td>
+                <td>
                   <button
-                    className={user.isAuthorized ? 'btn btn-ghost' : 'btn'}
+                    className={
+                      user.isAuthorized
+                        ? 'btn btn-ghost btn-sm'
+                        : 'btn btn-primary btn-sm'
+                    }
                     onClick={() =>
                       user.isAuthorized
                         ? handleRevoke(user.id)

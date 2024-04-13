@@ -52,22 +52,23 @@ export default function ShowUsersModal({
       id='users_modal'
       className='modal'
     >
-      <div className='modal-box bg-gray-100 dark:bg-gray-800'>
+      <div className='modal-box'>
         <div className='overflow-x-auto'>
-          <p className='font-bold text-2xl text-center'>Users list</p>
-          <table className='table table-zebra table-xs md:table-sm'>
-            <thead className='text-lg'>
+          <p className='font-bold text-2xl text-center'>Available Users</p>
+          <br />
+          <table className='table'>
+            <thead>
               <tr>
-                <th className='hidden md:block'></th>
+                <th>#</th>
                 <th>Name</th>
                 <th>Email</th>
-                <td>Make editor</td>
+                <td></td>
               </tr>
             </thead>
             <tbody>
               {users.map((user, index) => (
                 <tr key={user.id}>
-                  <th className='hidden md:block'>{index + 1}</th>{' '}
+                  <th>{index + 1}.</th>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>
@@ -81,18 +82,19 @@ export default function ShowUsersModal({
                 </tr>
               ))}
             </tbody>
-            <button
-              className='btn btn-ghost'
-              onClick={() => {
-                ;(
-                  document.getElementById('users_modal') as HTMLDialogElement
-                )?.close()
-              }}
-            >
-              close
-            </button>
           </table>
         </div>
+
+        <button
+          className='btn mt-8'
+          onClick={() => {
+            ;(
+              document.getElementById('users_modal') as HTMLDialogElement
+            )?.close()
+          }}
+        >
+          Close
+        </button>
       </div>
     </dialog>
   )
