@@ -48,7 +48,6 @@ const authSlice = createSlice({
       state.userId = (jwtDecode(action.payload) as ExtendedJwtPayload).id
       state.userName = (jwtDecode(action.payload) as ExtendedJwtPayload).name
     },
-
     logout: (state) => {
       state.isLoggedIn = false
       localStorage.removeItem('token')

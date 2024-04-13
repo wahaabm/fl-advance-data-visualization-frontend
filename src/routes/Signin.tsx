@@ -7,10 +7,12 @@ import {
   FaYoutube,
 } from 'react-icons/fa6'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import { updateLoggedinState } from '../store/slices/AuthSlice'
+import { refreshSettings } from '../store/slices/SettingsSlice'
 
 export default function Signin() {
+  const settings = useAppSelector((state) => state.settings.settings)
   const [rememberMeChecked, setRememberMeChecked] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -34,6 +36,7 @@ export default function Signin() {
       const response = await fetch(`${HOST}/auth/login`, {
         method: 'POST',
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
@@ -46,6 +49,7 @@ export default function Signin() {
 
       const data = await response.json()
       dispatch(updateLoggedinState(data.token))
+      dispatch(refreshSettings(data.settings))
       navigate('/charts')
     } catch (error) {
       console.error(error)
@@ -221,8 +225,9 @@ export default function Signin() {
         <p className={`mt-2 ${displayMode ? 'text-white' : 'text-black'}`}>
           FIND Macrobourse
         </p>
+
         <div className='flex gap-x-1 mt-2'>
-          <a href=''>
+          <a href={settings.twitter}>
             <FaXTwitter
               style={{
                 color: displayMode ? '#4AEFAA' : '#3D4AE4',
@@ -230,7 +235,7 @@ export default function Signin() {
               }}
             />
           </a>
-          <a href=''>
+          <a href={settings.facebook}>
             <FaFacebookF
               style={{
                 color: displayMode ? '#4AEFAA' : '#3D4AE4',
@@ -238,7 +243,7 @@ export default function Signin() {
               }}
             />
           </a>
-          <a href=''>
+          <a href={settings.linkedIn}>
             <FaLinkedin
               style={{
                 color: displayMode ? '#4AEFAA' : '#3D4AE4',
@@ -246,7 +251,7 @@ export default function Signin() {
               }}
             />
           </a>
-          <a href=''>
+          <a href={settings.youtube}>
             <FaYoutube
               style={{
                 color: displayMode ? '#4AEFAA' : '#3D4AE4',

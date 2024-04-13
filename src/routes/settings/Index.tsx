@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../hooks/hooks'
 import { logout } from '../../store/slices/AuthSlice'
+import { refreshSettings } from '../../store/slices/SettingsSlice'
 import Loading from '../../utils/Loading'
 
 export default function SettingsForm() {
@@ -45,6 +46,9 @@ export default function SettingsForm() {
       })
       if (res.ok) {
         console.log('settings saved')
+        const settingsData = await res.json()
+        setSettings(settingsData)
+        dispatch(refreshSettings(settingsData))
       } else {
         navigate('/login')
         throw new Error('Forbidden')
@@ -79,6 +83,7 @@ export default function SettingsForm() {
 
       if (settingsData) {
         setSettings(settingsData)
+        dispatch(refreshSettings(settingsData))
       }
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error)

@@ -35,13 +35,7 @@ export default function ShowCharts() {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const [chartData, setChartData] = useState<chartData[]>([])
-  const [quadrants, setQuadrants] = useState<{
-    previous: string
-    actual: string
-  }>({
-    previous: 'Prev: Q1',
-    actual: 'Actual: Q4',
-  })
+  const settings = useAppSelector((state) => state.settings.settings)
   const [loading, setLoading] = useState(true)
   const activeChartId = useRef<number>()
   const toc = useRef<HTMLUListElement>(null)
@@ -170,42 +164,8 @@ export default function ShowCharts() {
     }
   }
 
-  const fetchSettings = async () => {
-    try {
-      const response = await fetch(`${HOST}/settings`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-      if (!response.ok) {
-        if (response.status === 405) {
-          navigate('/waiting')
-        } else if (response.status === 403) {
-          navigate('/login')
-        } else {
-          throw new Error('Failed to fetch articles')
-        }
-        return
-      }
-      const settings = await response.json()
-
-      if (settings) {
-        setQuadrants({
-          previous: settings.previous || 'Prev: Q1',
-          actual: settings.actual || 'Actual: Q4',
-        })
-      }
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   useEffect(() => {
-    fetchSettings().then(fetchCharts)
+    fetchCharts()
   }, [token])
 
   const handleAddData = (chart: chartData) => {
@@ -370,10 +330,10 @@ export default function ShowCharts() {
                 </div>
                 <div className='flex justify-stretch'>
                   <div className='w-full bg-gradient-to-r from-red-500 to-red-200 border border-gray-500 p-2 font-semibold dark:text-white rounded-bl-3xl'>
-                    Prev: Q1
+                    {settings.previous}
                   </div>
                   <div className='w-full bg-gradient-to-r from-violet-500 to-blue-300 border border-gray-500 p-2 font-semibold dark:text-white rounded-br-3xl'>
-                    Actual: Q4
+                    {settings.actual}
                   </div>
                 </div>
               </div>
