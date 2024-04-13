@@ -135,8 +135,7 @@ export default function ShowArticles() {
   }
 
   useEffect(() => {
-    fetchArticles()
-    fetchPinnedArticles()
+    fetchPinnedArticles().then(fetchArticles)
   }, [token])
 
   const scrollToArticle = (articleId) => {
@@ -202,7 +201,7 @@ export default function ShowArticles() {
                 You can start by creating a new article using the button below.
               </p>
               <button
-                className='btn btn-primary w-36 mt-5 mx-auto'
+                className='btn btn-primary mt-5 mx-auto'
                 onClick={() => navigate('/create-article')}
               >
                 Create new
@@ -224,12 +223,12 @@ export default function ShowArticles() {
                 <h1 className='text-xl font-bold'>Pinned Articles</h1>
               </div>
 
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 {pinnedArticles.map((article) => (
                   <div
                     key={article.id}
                     id={article.id.toString()}
-                    className='card w-full min-w-48 max-w-sm bg-base-100 shadow-xl overflow-auto article'
+                    className='card w-full min-w-48 bg-base-100 shadow-xl overflow-auto article'
                   >
                     <div className='card-body'>
                       <h2 className='card-title text-3xl text'>
@@ -250,13 +249,13 @@ export default function ShowArticles() {
                             <>
                               <button
                                 onClick={() => handleEdit(article.id)}
-                                className='btn btn-outline btn-info'
+                                className='btn btn-ghost'
                               >
                                 Edit
                               </button>
                               <button
                                 onClick={() => handleDelete(article.id)}
-                                className='btn btn-outline btn-error'
+                                className='btn btn-ghost'
                               >
                                 Delete
                               </button>
@@ -265,9 +264,9 @@ export default function ShowArticles() {
                         </div>
                         <button
                           onClick={() => handleReadArticle(article.id)}
-                          className='btn btn-outline btn-success'
+                          className='btn btn-neutral'
                         >
-                          Read
+                          Read More
                         </button>
                       </div>
                     </div>
@@ -277,7 +276,7 @@ export default function ShowArticles() {
             </div>
           )}
 
-          <hr className='my-12' />
+          <hr className='my-12 dark:border-gray-900' />
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
             {articles.map((article) => (
@@ -302,13 +301,13 @@ export default function ShowArticles() {
                         <>
                           <button
                             onClick={() => handleEdit(article.id)}
-                            className='btn btn-outline btn-info'
+                            className='btn btn-ghost'
                           >
                             Edit
                           </button>
                           <button
                             onClick={() => handleDelete(article.id)}
-                            className='btn btn-outline btn-error'
+                            className='btn btn-ghost'
                           >
                             Delete
                           </button>
@@ -317,9 +316,9 @@ export default function ShowArticles() {
                     </div>
                     <button
                       onClick={() => handleReadArticle(article.id)}
-                      className='btn btn-outline btn-success'
+                      className='btn btn-neutral'
                     >
-                      Read
+                      Read More
                     </button>
                   </div>
                 </div>
@@ -328,16 +327,16 @@ export default function ShowArticles() {
           </div>
         </div>
 
-        <div className='gap-y-5 fixed right-0 hidden md:block md:w-1/4'>
+        <div className='gap-y-5 fixed top-44 right-0 hidden md:block md:w-1/4'>
           {(role == 'ADMIN_USER' || role === 'EDITOR_USER') && (
             <button
-              className='btn btn-primary w-36 mb-5 mx-auto'
+              className='btn btn-primary mx-auto'
               onClick={() => navigate('/create-article')}
             >
               Create new
             </button>
           )}
-          <div className=''>
+          <div className='mt-6'>
             <ul
               className='max-w-md space-y-1 text-black list-none list-inside dark:text-gray-400'
               ref={toc}

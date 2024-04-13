@@ -93,104 +93,110 @@ export default function EditArticle() {
 
   return (
     <>
-      <div className='text-3xl mt-2 mb-5 text-left'>Edit an article</div>
+      <div className='max-w-3xl mx-auto'>
+        <div className='text-3xl mt-2 mb-5 text-left'>Edit an article</div>
 
-      <div className='form-control'>
-        <span className='label'>Title: </span>
-        <input
-          type='text'
-          value={title}
-          className='input '
-          required
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
+        <div className='form-control'>
+          <span className='label'>Title: </span>
+          <input
+            type='text'
+            value={title}
+            className='input input-bordered '
+            required
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
 
-      <div className='form-control'>
-        <span className='label'>Is Pinned?</span>
-        <input
-          type='checkbox'
-          checked={pinned}
-          placeholder='Title of article'
-          className='checkbox'
-          required
-          onChange={(e) => setPinned(e.target.checked)}
-        />
-      </div>
+        <div className='form-control'>
+          <label className='label cursor-pointer'>
+            <span className='label-text'>Is Pinned?</span>
+            <input
+              type='checkbox'
+              checked={pinned}
+              placeholder='Title of article'
+              className='checkbox'
+              required
+              onChange={(e) => setPinned(e.target.checked)}
+            />
+          </label>
+        </div>
 
-      <div className='form-control'>
-        <span className='label'>Is Published?</span>
-        <input
-          type='checkbox'
-          checked={published}
-          placeholder='Title of article'
-          className='checkbox'
-          required
-          onChange={(e) => setPublished(e.target.checked)}
-        />
-      </div>
+        <div className='form-control'>
+          <label className='label cursor-pointer'>
+            <span className='label-text'>Is Published?</span>
+            <input
+              type='checkbox'
+              checked={published}
+              placeholder='Title of article'
+              className='checkbox'
+              required
+              onChange={(e) => setPublished(e.target.checked)}
+            />
+          </label>
+        </div>
 
-      <div className='form-control'>
-        <span className='label'>Article:</span>
-        <Editor
-          key={displayMode + ''}
-          tinymceScriptSrc={'/tinymce/tinymce.min.js'}
-          onInit={(evt, editor) => {
-            evt
-            editorRef.current = editor
-          }}
-          initialValue={article?.content}
-          init={{
-            height: 500,
-            width: '100%',
-            menubar: false,
-            skin: `${displayMode ? 'oxide-dark' : 'oxide'}`,
-            content_css: `${displayMode ? 'dark' : 'transparent'}`,
+        <div className='form-control'>
+          <span className='label'>Article:</span>
+          <Editor
+            key={displayMode + ''}
+            tinymceScriptSrc={'/tinymce/tinymce.min.js'}
+            onInit={(evt, editor) => {
+              evt
+              editorRef.current = editor
+            }}
+            initialValue={article?.content}
+            init={{
+              height: 500,
+              width: '100%',
+              menubar: false,
+              skin: `${displayMode ? 'oxide-dark' : 'oxide'}`,
+              content_css: `${displayMode ? 'dark' : 'transparent'}`,
 
-            plugins: [
-              'advlist',
-              'autolink',
-              'lists',
-              'link',
-              'image',
-              'charmap',
-              'anchor',
-              'searchreplace',
-              'visualblocks',
-              'code',
-              'fullscreen',
-              'insertdatetime',
-              'media',
-              'table',
-              'preview',
-              'help',
-              'wordcount',
-            ],
-            toolbar:
-              'undo redo | blocks | ' +
-              'bold italic forecolor | alignleft aligncenter ' +
-              'alignright alignjustify | bullist numlist outdent indent | ' +
-              'removeformat | help',
-            content_style: `body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: ${
-              displayMode ? '#1D232A' : 'white'
-            } ; color: ${displayMode ? 'white' : 'dark'} ; }`,
-          }}
-        />
-      </div>
+              plugins: [
+                'advlist',
+                'autolink',
+                'lists',
+                'link',
+                'image',
+                'charmap',
+                'anchor',
+                'searchreplace',
+                'visualblocks',
+                'code',
+                'fullscreen',
+                'insertdatetime',
+                'media',
+                'table',
+                'preview',
+                'help',
+                'wordcount',
+              ],
+              toolbar:
+                'undo redo | blocks | ' +
+                'bold italic forecolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+              content_style: `body { font-family:Helvetica,Arial,sans-serif; font-size:14px; background-color: ${
+                displayMode ? '#1D232A' : 'white'
+              } ; color: ${displayMode ? 'white' : 'dark'} ; }`,
+            }}
+          />
+        </div>
 
-      <div className='flex flex-row justify-end gap-x-2'>
-        <button
-          className='btn btn-outline btn-error mt-2 self-baseline'
-          onClick={() => navigate(-1)}
-        >
-          Cancel
-        </button>
-        <button
-          className='btn btn-outline btn-primary mt-2 self-baseline'
-          onClick={handleSave}
-        >
-          Save
-        </button>
+        <div className='flex flex-row justify-end gap-x-2 mt-6'>
+          <button
+            className='btn btn-ghost mt-2 self-baseline'
+            onClick={() => navigate(-1)}
+          >
+            Cancel
+          </button>
+          <button
+            className='btn btn-primary mt-2 self-baseline'
+            onClick={handleSave}
+          >
+            Update Article
+          </button>
+        </div>
       </div>
     </>
   )

@@ -35,6 +35,13 @@ export default function ShowCharts() {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const [chartData, setChartData] = useState<chartData[]>([])
+  const [quadrants, setQuadrants] = useState<{
+    previous: string
+    actual: string
+  }>({
+    previous: 'Prev: Q1',
+    actual: 'Actual: Q4',
+  })
   const [loading, setLoading] = useState(true)
   const activeChartId = useRef<number>()
   const toc = useRef<HTMLUListElement>(null)
@@ -163,8 +170,42 @@ export default function ShowCharts() {
     }
   }
 
+  const fetchSettings = async () => {
+    try {
+      const response = await fetch(`${HOST}/settings`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) {
+        if (response.status === 405) {
+          navigate('/waiting')
+        } else if (response.status === 403) {
+          navigate('/login')
+        } else {
+          throw new Error('Failed to fetch articles')
+        }
+        return
+      }
+      const settings = await response.json()
+
+      if (settings) {
+        setQuadrants({
+          previous: settings.previous || 'Prev: Q1',
+          actual: settings.actual || 'Actual: Q4',
+        })
+      }
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
-    fetchCharts()
+    fetchSettings().then(fetchCharts)
   }, [token])
 
   const handleAddData = (chart: chartData) => {
@@ -307,7 +348,7 @@ export default function ShowCharts() {
                 You can start by uploading a new chart using the button below.
               </p>
               <button
-                className='btn btn-primary w-36 mt-5'
+                className='btn btn-primary'
                 onClick={() =>
                   (
                     document.getElementById('my_modal_1') as HTMLDialogElement
@@ -340,7 +381,7 @@ export default function ShowCharts() {
           </div>
           <div>
             <div className='flex flex-col w-full md:w-3/4'>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <div className='grid grid-cols-1 md:grid-cols-1 gap-6'>
                 {chartData &&
                   chartData.map((chart) => (
                     <div
@@ -372,14 +413,14 @@ export default function ShowCharts() {
                                 chart.authorId == Number(userId))) && (
                               <div className='flex gap-x-2'>
                                 <button
-                                  className='btn btn-outline btn-info'
+                                  className='btn'
                                   onClick={() => handleAddData(chart)}
                                 >
-                                  add data
+                                  Add data
                                 </button>
                                 <button
                                   onClick={() => handleDelete(chart.chartId)}
-                                  className='btn btn-outline btn-error'
+                                  className='btn btn-red'
                                 >
                                   Delete
                                 </button>
@@ -399,10 +440,10 @@ export default function ShowCharts() {
                 )}
               </div>
             </div>
-            <div className='gap-y-5 fixed top-80 right-0 hidden md:block md:w-1/4'>
+            <div className='gap-y-5 fixed top-44 right-0 hidden md:block md:w-1/4'>
               {(role === 'ADMIN_USER' || role === 'EDITOR_USER') && (
                 <button
-                  className='btn btn-primary w-36'
+                  className='btn btn-primary'
                   onClick={() =>
                     (
                       document.getElementById('my_modal_1') as HTMLDialogElement

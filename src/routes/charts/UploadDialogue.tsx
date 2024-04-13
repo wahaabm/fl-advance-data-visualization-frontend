@@ -58,7 +58,7 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
       id='my_modal_1'
       className='modal'
     >
-      <div className='modal-box'>
+      <div className='modal-box bg-gray-100 dark:bg-gray-800'>
         <h3 className='font-bold text-xl text-center'>Upload csv</h3>
         <form
           className='w-full'
@@ -72,7 +72,7 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
               type='text'
               placeholder='Type here'
               onChange={(e) => setTitle(e.target.value)}
-              className='input  '
+              className='input input-bordered  '
               required
             />
           </label>
@@ -98,9 +98,15 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
               required
             />
           </label>
-          <div className='flex flex-row mt-2 gap-x-2'>
+          <div className='flex flex-row gap-x-2 mt-8 justify-center'>
             <button
-              className='btn btn-error btn-outline '
+              className='btn btn-primary'
+              type='submit'
+            >
+              Submit
+            </button>
+            <button
+              className='btn '
               type='button'
               onClick={() =>
                 (
@@ -108,13 +114,7 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
                 )?.close()
               }
             >
-              Close
-            </button>
-            <button
-              className='btn btn-success btn-outline'
-              type='submit'
-            >
-              Submit
+              Cancel
             </button>
           </div>
         </form>

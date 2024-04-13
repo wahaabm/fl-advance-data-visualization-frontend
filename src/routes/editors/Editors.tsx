@@ -125,15 +125,16 @@ export default function ShowEditors() {
       />
 
       {editors.length == 0 ? (
-        <div className='flex flex-col w-72 mt-20 md:w-max items-center'>
-          <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400'>
+        <div className='flex flex-col w-72 md:w-max items-center'>
+          <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400 mb-8'>
             No editors are currently available. <br />
             <span className='text-lg md:text-xl text-center text-gray-600 dark:text-gray-400'>
               You can start by adding a new editor using the button below.
             </span>
           </p>
+
           <button
-            className='btn btn-primary w-36 mt-5'
+            className='btn btn-primary'
             onClick={async () => {
               await fetchUsers()
               ;(
@@ -141,13 +142,13 @@ export default function ShowEditors() {
               )?.showModal()
             }}
           >
-            Add editor
+            Add Editor
           </button>
         </div>
       ) : (
         <>
           <button
-            className='btn btn-primary w-36'
+            className='btn btn-primary'
             onClick={async () => {
               await fetchUsers()
               ;(
@@ -189,7 +190,7 @@ export default function ShowEditors() {
                   </td>
                   <td className='text-md md:text-lg'>
                     <button
-                      className='btn btn-outline btn-error'
+                      className='btn btn-ghost'
                       onClick={() => handleRemoveEditor(user.id)}
                     >
                       Remove editor

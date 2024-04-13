@@ -56,7 +56,6 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
         body: JSON.stringify({ formDataToSubmit }),
         headers: {
           'Content-Type': 'application/json',
-
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
@@ -83,10 +82,10 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
   return (
     <dialog
       id='add_chart_data'
-      className='modal'
+      className='modal '
     >
-      <div className='modal-box'>
-        <h3 className='font-bold text-lg'>Add chart data</h3>
+      <div className='modal-box bg-gray-100 dark:bg-gray-800'>
+        <h3 className='font-bold text-lg'>Add Chart Data</h3>
         <form onSubmit={handleSubmit}>
           {chart.dataKeys.map((field, index) => (
             <div key={index}>
@@ -95,31 +94,32 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
                   <span className='label-text'>
                     {field.charAt(0).toUpperCase() + field.slice(1)}
                   </span>
-                  <input
-                    type='text'
-                    placeholder=''
-                    className='input'
-                    name={field}
-                    id={field}
-                    value={formData[field] || ''}
-                    onChange={handleChange}
-                    required
-                  />
                 </div>
+
+                <input
+                  type='text'
+                  placeholder={field}
+                  className='input input-bordered'
+                  name={field}
+                  id={field}
+                  value={formData[field] || ''}
+                  onChange={handleChange}
+                  required
+                />
               </label>
             </div>
           ))}
           {error && <p className='text-red-500'>{error}</p>}{' '}
           {/* Display error message */}
-          <div className='flex flex-row gap-x-2 mt-2'>
+          <div className='flex flex-row gap-x-2 mt-8 justify-center'>
             <button
               className='btn btn-primary'
               type='submit'
             >
-              Submit
+              Add Data
             </button>
             <button
-              className='btn btn-error '
+              className='btn  '
               type='button'
               onClick={() =>
                 (
@@ -127,7 +127,7 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
                 )?.close()
               }
             >
-              Close
+              Cancel
             </button>
           </div>
         </form>

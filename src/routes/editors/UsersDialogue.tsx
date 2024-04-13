@@ -1,20 +1,20 @@
-import { useAppDispatch } from "../../hooks/hooks";
-import { authorizeUser } from "../../store/slices/AuthSlice";
+import { useAppDispatch } from '../../hooks/hooks'
+import { authorizeUser } from '../../store/slices/AuthSlice'
 
 interface user {
-  id: string;
-  email: string;
-  name: string;
-  role: string;
-  isAuthorized: boolean;
-  createdAt: string;
-  updatedAt: string;
+  id: string
+  email: string
+  name: string
+  role: string
+  isAuthorized: boolean
+  createdAt: string
+  updatedAt: string
 }
 
 interface Props {
-  fetchEditors: () => void;
-  fetchUsers: () => void;
-  users: user[];
+  fetchEditors: () => void
+  fetchUsers: () => void
+  users: user[]
 }
 
 export default function ShowUsersModal({
@@ -22,40 +22,43 @@ export default function ShowUsersModal({
   fetchUsers,
   users,
 }: Props) {
-  const token = localStorage.getItem("token");
-  const dispatch = useAppDispatch();
-  const HOST = import.meta.env.VITE_REACT_API_URL;
+  const token = localStorage.getItem('token')
+  const dispatch = useAppDispatch()
+  const HOST = import.meta.env.VITE_REACT_API_URL
 
   const handleMakeEditor = async (id: string) => {
     try {
       const res = await fetch(`${HOST}/admin/makeEditor/${id}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
       if (res.ok) {
-        dispatch(authorizeUser());
-        fetchUsers();
+        dispatch(authorizeUser())
+        fetchUsers()
       } else {
-        throw new Error("Forbidden");
+        throw new Error('Forbidden')
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error.message)
     } finally {
-      fetchEditors();
+      fetchEditors()
     }
-  };
+  }
 
   return (
-    <dialog id="users_modal" className="modal">
-      <div className="modal-box">
-        <div className="overflow-x-auto">
-          <p className="font-bold text-2xl text-center">Users list</p>
-          <table className="table table-zebra table-xs md:table-sm">
-            <thead className="text-lg">
+    <dialog
+      id='users_modal'
+      className='modal'
+    >
+      <div className='modal-box bg-gray-100 dark:bg-gray-800'>
+        <div className='overflow-x-auto'>
+          <p className='font-bold text-2xl text-center'>Users list</p>
+          <table className='table table-zebra table-xs md:table-sm'>
+            <thead className='text-lg'>
               <tr>
-                <th className="hidden md:block"></th>
+                <th className='hidden md:block'></th>
                 <th>Name</th>
                 <th>Email</th>
                 <td>Make editor</td>
@@ -64,12 +67,12 @@ export default function ShowUsersModal({
             <tbody>
               {users.map((user, index) => (
                 <tr key={user.id}>
-                  <th className="hidden md:block">{index + 1}</th>{" "}
+                  <th className='hidden md:block'>{index + 1}</th>{' '}
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>
                     <button
-                      className="btn btn-outline btn-success btn-sm"
+                      className='btn btn-sm'
                       onClick={() => handleMakeEditor(user.id)}
                     >
                       Make editor
@@ -79,11 +82,11 @@ export default function ShowUsersModal({
               ))}
             </tbody>
             <button
-              className="btn btn-outline btn-error"
+              className='btn btn-ghost'
               onClick={() => {
-                (
-                  document.getElementById("users_modal") as HTMLDialogElement
-                )?.close();
+                ;(
+                  document.getElementById('users_modal') as HTMLDialogElement
+                )?.close()
               }}
             >
               close
@@ -92,5 +95,5 @@ export default function ShowUsersModal({
         </div>
       </div>
     </dialog>
-  );
+  )
 }
