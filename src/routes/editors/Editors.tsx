@@ -124,21 +124,23 @@ export default function ShowEditors() {
         users={users}
       />
 
-      <button
-        className='btn btn-primary mb-6 float-right'
-        onClick={async () => {
-          await fetchUsers()
-          ;(
-            document.getElementById('users_modal') as HTMLDialogElement
-          )?.showModal()
-        }}
-      >
-        Add Editor
-      </button>
+      <div className='flex gap-x-4 justify-end mb-6'>
+        <button
+          className='btn btn-primary'
+          onClick={async () => {
+            await fetchUsers()
+            ;(
+              document.getElementById('users_modal') as HTMLDialogElement
+            )?.showModal()
+          }}
+        >
+          Add Editor
+        </button>
+      </div>
 
       <div>
         {editors.length == 0 ? (
-          <div className='flex flex-col w-72 md:w-max items-center'>
+          <div>
             <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400 mb-8'>
               No editors are currently available. <br />
               <span className='text-lg md:text-xl text-center text-gray-600 dark:text-gray-400'>

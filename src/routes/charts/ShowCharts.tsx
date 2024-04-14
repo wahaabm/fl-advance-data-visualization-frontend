@@ -322,7 +322,7 @@ export default function ShowCharts() {
         </div>
       ) : (
         <div>
-          <div>
+          {/* <div>
             <div className='w-full md:max-w-60 text-center mx-auto mb-8'>
               <div>
                 <div className='p-2 text-2xl text-white bg-black rounded-t-3xl'>
@@ -338,7 +338,7 @@ export default function ShowCharts() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div>
             <div className='flex flex-col w-full md:w-3/4'>
               <div className='grid grid-cols-1 md:grid-cols-1 gap-6'>
@@ -401,6 +401,24 @@ export default function ShowCharts() {
               </div>
             </div>
             <div className='gap-y-5 fixed top-44 right-0 hidden md:block md:w-1/4'>
+              <div>
+                <div className='w-full md:max-w-60 text-center mb-8'>
+                  <div>
+                    <div className='p-2 text-2xl text-white bg-black rounded-t-lg'>
+                      Quadrant
+                    </div>
+                    <div className='flex justify-stretch'>
+                      <div className='w-full bg-gradient-to-r from-red-500 to-red-200 border border-gray-500 p-2 font-semibold dark:text-white rounded-bl-lg'>
+                        {settings.previous}
+                      </div>
+                      <div className='w-full bg-gradient-to-r from-violet-500 to-blue-300 border border-gray-500 p-2 font-semibold dark:text-white rounded-br-lg'>
+                        {settings.actual}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {(role === 'ADMIN_USER' || role === 'EDITOR_USER') && (
                 <button
                   className='btn btn-primary'

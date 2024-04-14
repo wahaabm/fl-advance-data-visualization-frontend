@@ -204,7 +204,7 @@ export default function ShowArticles() {
                 className='btn btn-primary mt-5 mx-auto'
                 onClick={() => navigate('/create-article')}
               >
-                Create new
+                <span>Create new</span>
               </button>
             </>
           )}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
-import { useAppDispatch } from '../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import { authorizeUser, logout, revokeUser } from '../store/slices/AuthSlice'
 import Loading from '../utils/Loading'
 interface user {
@@ -17,6 +17,7 @@ export default function ShowUsers() {
   const token = localStorage.getItem('token')
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const role = useAppSelector((state) => state.auth.role)
   const [users, setUsers] = useState<user[]>([])
   const [selectedIds, setSelectedIds] = useState<Array<string>>([])
   const [loading, setLoading] = useState(false)
@@ -89,6 +90,52 @@ export default function ShowUsers() {
     setBulkLoading(false)
   }
 
+  const allowAllUsers = async () => {
+    setBulkLoading(true)
+
+    try {
+      const res = await fetch(`${HOST}/admin/allowAllUser`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (res.ok) {
+        fetchUsers()
+      } else {
+        alert(res.statusText)
+      }
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setBulkLoading(false)
+    }
+  }
+
+  const revokeAllUsers = async () => {
+    setBulkLoading(true)
+
+    try {
+      const res = await fetch(`${HOST}/admin/revokeAllUser`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (res.ok) {
+        fetchUsers()
+      } else {
+        alert(res.statusText)
+      }
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setBulkLoading(false)
+    }
+  }
+
   const handleAuthorize = async (id: string) => {
     setLoading(true)
     try {
@@ -154,7 +201,7 @@ export default function ShowUsers() {
   return (
     <div className='w-full max-w-5xl mx-auto'>
       {users.length == 0 ? (
-        <div className='flex flex-col w-72 md:w-max items-center'>
+        <div>
           <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400'>
             No users are currently available. <br />
             <span className='text-lg md:text-xl text-center text-gray-600 dark:text-gray-400'>
@@ -164,18 +211,46 @@ export default function ShowUsers() {
         </div>
       ) : (
         <>
-          <div>
-            <button
-              className='btn btn-primary mb-6 float-right'
-              onClick={handleBulkAuthorize}
-              disabled={loading || selectedIds.length === 0}
-            >
-              {loading ? (
-                <span className='loading loading-spinner loading-md'></span>
-              ) : (
-                'Allow Access'
-              )}{' '}
-            </button>
+          <div className='flex gap-x-4 justify-end mb-6'>
+            {(role == 'ADMIN_USER' || role === 'EDITOR_USER') && (
+              <>
+                <button
+                  className='btn btn-primary'
+                  onClick={handleBulkAuthorize}
+                  disabled={loading || selectedIds.length === 0}
+                >
+                  {loading ? (
+                    <span className='loading loading-spinner loading-md'></span>
+                  ) : (
+                    'Allow Selected Users'
+                  )}{' '}
+                </button>
+
+                <button
+                  className='btn btn-primary'
+                  onClick={allowAllUsers}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span className='loading loading-spinner loading-md'></span>
+                  ) : (
+                    'Allow All Users'
+                  )}{' '}
+                </button>
+
+                <button
+                  className='btn btn-primary'
+                  onClick={revokeAllUsers}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span className='loading loading-spinner loading-md'></span>
+                  ) : (
+                    'Revoke All Users'
+                  )}{' '}
+                </button>
+              </>
+            )}
           </div>
           <table className='table w-full bg-white dark:bg-darkmode-gray shadow-md'>
             <thead>
