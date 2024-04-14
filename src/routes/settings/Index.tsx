@@ -127,7 +127,7 @@ export default function SettingsForm() {
           onChange={handleInputChange}
           type='text'
           className='input input-bordered w-full'
-          placeholder='Enter Google Tag Manager ID'
+          placeholder='GTM-XXXXXX'
         />
       </div>
 
@@ -141,7 +141,7 @@ export default function SettingsForm() {
           onChange={handleInputChange}
           type='text'
           className='input input-bordered w-full'
-          placeholder='Enter Facebook Pixel ID'
+          placeholder='167505060126596'
         />
       </div>
 
