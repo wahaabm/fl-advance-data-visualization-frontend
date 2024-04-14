@@ -63,7 +63,7 @@ export default function ReadArticle() {
         <div className='flex flex-col gap-4'>
           <div
             key={article?.id}
-            className='card w-full bg-base-100 shadow-xl'
+            className='card w-full bg-base-100 shadow-md'
           >
             <div className='card-body'>
               <div

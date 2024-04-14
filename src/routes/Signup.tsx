@@ -160,7 +160,7 @@ export default function Signup() {
                 <button
                   type='submit'
                   disabled={loading}
-                  className='mt-6 w-full flex justify-center bg-signup-blue hover:bg-blue-900 text-white text-black-100 p-2  rounded-lg tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200'
+                  className='mt-6 w-full flex justify-center bg-signup-blue hover:bg-blue-900 text-white text-black-100 p-2  rounded-lg tracking-wide font-semibold  shadow-md cursor-pointer transition ease-in duration-200'
                 >
                   {loading ? (
                     <span className='loading loading-spinner loading-md'></span>
@@ -187,7 +187,7 @@ export default function Signup() {
                   onClick={() => {
                     navigate('/login')
                   }}
-                  className='mt-2 w-full flex justify-center bg-login-green text-black  hover:bg-green-600 text-black-100 p-2  rounded-lg tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200'
+                  className='mt-2 w-full flex justify-center bg-login-green text-black  hover:bg-green-600 text-black-100 p-2  rounded-lg tracking-wide font-semibold  shadow-md cursor-pointer transition ease-in duration-200'
                 >
                   Sign in
                 </button>

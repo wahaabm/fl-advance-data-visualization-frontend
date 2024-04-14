@@ -357,7 +357,7 @@ export default function ShowCharts() {
                       <div
                         id={chart.chartId.toString()}
                         key={chart.chartId}
-                        className='carousel-item w-full rounded-lg bg-base-100 shadow-xl mt-6 dark:bg-black'
+                        className='carousel-item w-full rounded-lg bg-base-100 shadow-md mt-6 dark:bg-black'
                       >
                         <div className='p-2 w-full'>
                           <Plot

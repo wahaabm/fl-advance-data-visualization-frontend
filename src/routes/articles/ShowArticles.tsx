@@ -228,7 +228,7 @@ export default function ShowArticles() {
                   <div
                     key={article.id}
                     id={article.id.toString()}
-                    className='card w-full max-w-xl bg-base-100 shadow-xl overflow-auto article'
+                    className='card w-full max-w-xl bg-base-100 shadow-md overflow-auto article'
                   >
                     <div className='card-body'>
                       <h2 className='card-title text-3xl text'>
@@ -283,7 +283,7 @@ export default function ShowArticles() {
               <div
                 key={article.id}
                 id={article.id.toString()}
-                className='card w-full max-w-xl bg-base-100 shadow-xl overflow-auto article'
+                className='card w-full max-w-xl bg-base-100 shadow-md overflow-auto article'
               >
                 <div className='card-body'>
                   <h2 className='card-title text-3xl text'> {article.title}</h2>

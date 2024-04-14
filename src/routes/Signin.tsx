@@ -163,7 +163,7 @@ export default function Signin() {
                 <button
                   type='submit'
                   disabled={loading}
-                  className='w-full flex justify-center bg-login-green  hover:bg-green-600 text-black p-2  rounded-lg tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200'
+                  className='w-full flex justify-center bg-login-green  hover:bg-green-600 text-black p-2  rounded-lg tracking-wide font-semibold  shadow-md cursor-pointer transition ease-in duration-200'
                 >
                   {loading ? (
                     <span className='loading loading-spinner loading-md'></span>
@@ -182,7 +182,7 @@ export default function Signin() {
                 <button
                   onClick={() => navigate('/register')}
                   disabled={loading}
-                  className='gap-x-2 mt-2 w-full flex items-center justify-center bg-signup-blue  hover:bg-blue-900 text-gray-100 p-2  rounded-lg tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-200'
+                  className='gap-x-2 mt-2 w-full flex items-center justify-center bg-signup-blue  hover:bg-blue-900 text-gray-100 p-2  rounded-lg tracking-wide font-semibold  shadow-md cursor-pointer transition ease-in duration-200'
                 >
                   <FaUserPlus />
                   Sign up

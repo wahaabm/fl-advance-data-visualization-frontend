@@ -129,7 +129,7 @@ export default function ShowUsers() {
       ) : (
         <>
           <div></div>
-          <table className='table w-full bg-white dark:bg-darkmode-gray'>
+          <table className='table w-full bg-white dark:bg-darkmode-gray shadow-md'>
             <thead>
               <tr>
                 <th>#</th>
