@@ -18,17 +18,32 @@ export default function ShowUsers() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [users, setUsers] = useState<user[]>([])
+  const [selectedIds, setSelectedIds] = useState<Array<string>>([])
   const [loading, setLoading] = useState(false)
+  const [bulkLoading, setBulkLoading] = useState(false)
   const HOST = import.meta.env.VITE_REACT_API_URL
   const [, setTitle, setDescription] = useOutletContext() as [
     boolean,
     Function,
     Function
   ]
-  useEffect(() => {
-    setTitle('Users dashboard')
-    setDescription('Monitor and manage user authorization and profiles.')
-  }, [])
+
+  const handleCheckboxChange = (id: string, isChecked: boolean) => {
+    if (isChecked) {
+      if (selectedIds.includes(id)) {
+        return
+      } else {
+        setSelectedIds([...selectedIds, id])
+      }
+    } else {
+      if (selectedIds.includes(id)) {
+        const updatedList = selectedIds.filter((sid) => sid !== id)
+        setSelectedIds(updatedList)
+      } else {
+        return
+      }
+    }
+  }
 
   async function fetchUsers() {
     setLoading(true)
@@ -58,9 +73,21 @@ export default function ShowUsers() {
     }
   }
 
-  useEffect(() => {
-    fetchUsers()
-  }, [])
+  const handleBulkAuthorize = async () => {
+    setBulkLoading(true)
+
+    try {
+      for (let i = 0; i < selectedIds.length; i += 1) {
+        const id = selectedIds[i]
+        await handleAuthorize(id)
+      }
+    } catch (err) {
+      console.log(err)
+      alert(err)
+    }
+
+    setBulkLoading(false)
+  }
 
   const handleAuthorize = async (id: string) => {
     setLoading(true)
@@ -108,6 +135,15 @@ export default function ShowUsers() {
     }
   }
 
+  useEffect(() => {
+    setTitle('Users dashboard')
+    setDescription('Monitor and manage user authorization and profiles.')
+  }, [])
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
   if (loading)
     return (
       <div>
@@ -128,10 +164,23 @@ export default function ShowUsers() {
         </div>
       ) : (
         <>
-          <div></div>
+          <div>
+            <button
+              className='btn btn-primary mb-6 float-right'
+              onClick={handleBulkAuthorize}
+              disabled={loading || selectedIds.length === 0}
+            >
+              {loading ? (
+                <span className='loading loading-spinner loading-md'></span>
+              ) : (
+                'Allow Access'
+              )}{' '}
+            </button>
+          </div>
           <table className='table w-full bg-white dark:bg-darkmode-gray shadow-md'>
             <thead>
               <tr>
+                <th></th>
                 <th>#</th>
                 <th>Name</th>
                 <th>Email</th>
@@ -146,6 +195,14 @@ export default function ShowUsers() {
                   className='hover'
                   key={user.id}
                 >
+                  <td>
+                    <input
+                      type='checkbox'
+                      onChange={(e) =>
+                        handleCheckboxChange(user.id, e.target.checked)
+                      }
+                    />
+                  </td>
                   <td>{index + 1}.</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>

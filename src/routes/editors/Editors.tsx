@@ -117,7 +117,7 @@ export default function ShowEditors() {
   if (loading) return <Loading />
 
   return (
-    <div className='w-full max-w-5xl mx-auto my-6'>
+    <div className='w-full max-w-5xl mx-auto'>
       <ShowUsersModal
         fetchEditors={fetchEditors}
         fetchUsers={fetchUsers}
@@ -125,7 +125,7 @@ export default function ShowEditors() {
       />
 
       <button
-        className='btn btn-primary mb-6'
+        className='btn btn-primary mb-6 float-right'
         onClick={async () => {
           await fetchUsers()
           ;(
