@@ -100,6 +100,7 @@ export default function CreateArticle() {
             }}
             initialValue='<h2><strong>Start writing your article here</strong></h2>'
             init={{
+              licenseKey: 'gpl',
               image_caption: true,
               height: 500,
               width: '100%',

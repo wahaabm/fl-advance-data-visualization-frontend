@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import ShowUsersModal from '../../components/UsersDialogue'
 import { useAppDispatch } from '../../hooks/hooks'
 import { logout, revokeUser } from '../../store/slices/AuthSlice'
 import Loading from '../../utils/Loading'
-import ShowUsersModal from './UsersDialogue'
 
 interface user {
   id: string

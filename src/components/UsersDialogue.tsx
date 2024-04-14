@@ -1,5 +1,5 @@
-import { useAppDispatch } from '../../hooks/hooks'
-import { authorizeUser } from '../../store/slices/AuthSlice'
+import { useAppDispatch } from '../hooks/hooks'
+import { authorizeUser } from '../store/slices/AuthSlice'
 
 interface user {
   id: string

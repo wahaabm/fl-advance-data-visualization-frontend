@@ -146,12 +146,12 @@ export default function EditArticle() {
             }}
             initialValue={article?.content}
             init={{
+              licenseKey: 'gpl',
               height: 500,
               width: '100%',
               menubar: false,
               skin: `${displayMode ? 'oxide-dark' : 'oxide'}`,
               content_css: `${displayMode ? 'dark' : 'transparent'}`,
-
               plugins: [
                 'advlist',
                 'autolink',

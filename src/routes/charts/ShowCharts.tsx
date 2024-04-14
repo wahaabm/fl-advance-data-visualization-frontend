@@ -5,9 +5,9 @@ import createPlotlyComponent from 'react-plotly.js/factory'
 import { useAppSelector } from '../../hooks/hooks'
 
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import AddChartData from '../../components/AddChartData'
+import UploadDialogue from '../../components/UploadDialogue'
 import Loading from '../../utils/Loading'
-import AddChartData from './AddChartData'
-import UploadDialogue from './UploadDialogue'
 
 interface chartItem {
   [key: string]: string

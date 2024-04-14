@@ -1,4 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import ReactPixel from 'react-facebook-pixel'
+import TagManager from 'react-gtm-module'
+
+export async function initializeFacebookPixel() {
+  const { facebookPixelId } = initialState.settings
+
+  ReactPixel.init(facebookPixelId, null, {
+    autoConfig: true,
+    debug: false,
+  })
+}
+
+export async function initializeGoogleTagManager() {
+  const { googleTagManager } = initialState.settings
+
+  TagManager.initialize({
+    gtmId: googleTagManager,
+  })
+}
 
 export interface Settings {
   googleTagManager: string
@@ -30,6 +49,9 @@ const initialState: {
 
 initialState.settings = JSON.parse(localStorage.getItem('settings'))
 
+initializeFacebookPixel()
+initializeGoogleTagManager()
+
 const settingsSlice = createSlice({
   name: 'settings',
   initialState,
@@ -37,6 +59,10 @@ const settingsSlice = createSlice({
     refreshSettings: (state, action: PayloadAction<Settings>) => {
       localStorage.setItem('settings', JSON.stringify(action.payload))
       state.settings = action.payload
+      initialState.settings = action.payload
+
+      initializeFacebookPixel()
+      initializeGoogleTagManager()
     },
   },
 })
