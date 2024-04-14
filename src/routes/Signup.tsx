@@ -197,7 +197,7 @@ export default function Signup() {
                       displayMode ? 'text-white' : 'text-black'
                     }`}
                   >
-                    {displayMode ? 'Dark mode' : 'Light mode'}
+                    Dark mode
                   </span>
 
                   <input

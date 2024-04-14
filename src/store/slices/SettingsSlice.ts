@@ -59,7 +59,7 @@ const settingsSlice = createSlice({
     refreshSettings: (state, action: PayloadAction<Settings>) => {
       localStorage.setItem('settings', JSON.stringify(action.payload))
       state.settings = action.payload
-      initialState.settings = action.payload
+      // initialState.settings = action.payload
 
       initializeFacebookPixel()
       initializeGoogleTagManager()
