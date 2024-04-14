@@ -117,14 +117,26 @@ export default function ShowEditors() {
   if (loading) return <Loading />
 
   return (
-    <div>
+    <div className='w-full max-w-5xl mx-auto my-6'>
       <ShowUsersModal
         fetchEditors={fetchEditors}
         fetchUsers={fetchUsers}
         users={users}
       />
 
-      <div className='overflow-x-auto justify-center max-w-min mx-auto md:pr-20'>
+      <button
+        className='btn btn-primary mb-6'
+        onClick={async () => {
+          await fetchUsers()
+          ;(
+            document.getElementById('users_modal') as HTMLDialogElement
+          )?.showModal()
+        }}
+      >
+        Add Editor
+      </button>
+
+      <div>
         {editors.length == 0 ? (
           <div className='flex flex-col w-72 md:w-max items-center'>
             <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400 mb-8'>
@@ -133,34 +145,10 @@ export default function ShowEditors() {
                 You can start by adding a new editor using the button below.
               </span>
             </p>
-
-            <button
-              className='btn btn-primary'
-              onClick={async () => {
-                await fetchUsers()
-                ;(
-                  document.getElementById('users_modal') as HTMLDialogElement
-                )?.showModal()
-              }}
-            >
-              Add Editor
-            </button>
           </div>
         ) : (
           <>
-            <button
-              className='btn btn-primary'
-              onClick={async () => {
-                await fetchUsers()
-                ;(
-                  document.getElementById('users_modal') as HTMLDialogElement
-                )?.showModal()
-              }}
-            >
-              Add editor
-            </button>
-
-            <table className='w-full max-w-5xl mx-auto table bg-white dark:bg-darkmode-gray my-6'>
+            <table className='table w-full bg-white dark:bg-darkmode-gray'>
               <thead>
                 <tr>
                   <th></th>
@@ -177,14 +165,14 @@ export default function ShowEditors() {
                     key={user.id}
                     className='hover'
                   >
-                    <td>{index + 1}</td>
+                    <td>{index + 1}.</td>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.createdAt.split('T')[0]}</td>
                     <td>{user.isAuthorized ? 'Authorized' : 'Unauthorized'}</td>
                     <td>
                       <button
-                        className='btn btn-ghost'
+                        className='btn btn-sm btn-primary'
                         onClick={() => handleRemoveEditor(user.id)}
                       >
                         Remove editor

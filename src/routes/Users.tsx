@@ -116,7 +116,7 @@ export default function ShowUsers() {
     )
 
   return (
-    <div>
+    <div className='w-full max-w-5xl mx-auto'>
       {users.length == 0 ? (
         <div className='flex flex-col w-72 md:w-max items-center'>
           <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400'>
@@ -127,56 +127,59 @@ export default function ShowUsers() {
           </p>
         </div>
       ) : (
-        <table className='w-full max-w-5xl mx-auto table bg-white dark:bg-darkmode-gray my-6'>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Date created</th>
-              <th>Authorization</th>
-              <th>Allow/Revoke</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user, index) => (
-              <tr
-                className='hover'
-                key={user.id}
-              >
-                <td>{index + 1}.</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td className='hidden md:table-cell '>
-                  {user.createdAt.split('T')[0]}
-                </td>
-                <td>{user.isAuthorized ? 'Authorized' : 'Unauthorized'}</td>
-                <td>
-                  <button
-                    className={
-                      user.isAuthorized
-                        ? 'btn btn-ghost btn-sm'
-                        : 'btn btn-primary btn-sm'
-                    }
-                    onClick={() =>
-                      user.isAuthorized
-                        ? handleRevoke(user.id)
-                        : handleAuthorize(user.id)
-                    }
-                  >
-                    {loading ? (
-                      <span className='loading loading-spinner loading-md'></span>
-                    ) : user.isAuthorized ? (
-                      'Revoke access'
-                    ) : (
-                      'Allow access'
-                    )}{' '}
-                  </button>
-                </td>
+        <>
+          <div></div>
+          <table className='table w-full bg-white dark:bg-darkmode-gray'>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Date created</th>
+                <th>Authorization</th>
+                <th>Allow/Revoke</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr
+                  className='hover'
+                  key={user.id}
+                >
+                  <td>{index + 1}.</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td className='hidden md:table-cell '>
+                    {user.createdAt.split('T')[0]}
+                  </td>
+                  <td>{user.isAuthorized ? 'Authorized' : 'Unauthorized'}</td>
+                  <td>
+                    <button
+                      className={
+                        user.isAuthorized
+                          ? 'btn btn-ghost btn-sm'
+                          : 'btn btn-primary btn-sm'
+                      }
+                      onClick={() =>
+                        user.isAuthorized
+                          ? handleRevoke(user.id)
+                          : handleAuthorize(user.id)
+                      }
+                    >
+                      {loading ? (
+                        <span className='loading loading-spinner loading-md'></span>
+                      ) : user.isAuthorized ? (
+                        'Revoke access'
+                      ) : (
+                        'Allow access'
+                      )}{' '}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
       )}
     </div>
   )
