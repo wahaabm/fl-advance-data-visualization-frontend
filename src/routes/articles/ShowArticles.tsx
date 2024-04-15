@@ -225,12 +225,12 @@ export default function ShowArticles() {
                 <h1 className='text-xl font-bold'>Pinned Articles</h1>
               </div>
 
-              <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+              <div className='flex flex-wrap gap-2'>
                 {pinnedArticles.map((article) => (
                   <div
                     key={article.id}
                     id={article.id.toString()}
-                    className='card w-full max-w-xl bg-base-100 shadow-md overflow-auto article'
+                    className='card w-full h-full max-w-72 max-h-72 bg-base-100 shadow-md overflow-auto article'
                   >
                     <div className='card-body'>
                       <h2 className='card-title text-3xl text'>
@@ -278,14 +278,14 @@ export default function ShowArticles() {
             </div>
           )}
 
-          <hr className='my-12 dark:border-gray-900' />
+          <hr className='my-6 dark:border-gray-900' />
 
-          <div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6'>
+          <div className='flex flex-wrap gap-2'>
             {articles.map((article) => (
               <div
                 key={article.id}
                 id={article.id.toString()}
-                className='card w-full max-w-xl bg-base-100 shadow-md overflow-auto article'
+                className='card w-full h-full max-w-72 max-h-72 bg-base-100 shadow-md overflow-auto article'
               >
                 <div className='card-body'>
                   <h2 className='card-title text-3xl text'> {article.title}</h2>

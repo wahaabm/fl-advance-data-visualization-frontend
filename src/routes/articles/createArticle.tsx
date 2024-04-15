@@ -9,6 +9,7 @@ export default function CreateArticle() {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const editorRef = useRef<any>(null)
+  const [loading, setLoading] = useState(true)
   const [title, setTitle] = useState('')
   const [pinned, setPinned] = useState(false)
   const [published, setPublished] = useState(false)
@@ -18,8 +19,10 @@ export default function CreateArticle() {
 
   const handleSave = async () => {
     if (editorRef.current) {
-      console.log(editorRef.current.getContent())
       const editor = editorRef.current.getContent()
+
+      setLoading(true)
+
       try {
         const response = await fetch(`${HOST}/admin/article`, {
           method: 'POST',
@@ -41,7 +44,10 @@ export default function CreateArticle() {
         navigate('/articles')
       } catch (error) {
         console.log(error)
+        alert(error)
       }
+
+      setLoading(false)
     }
   }
 
@@ -182,8 +188,13 @@ export default function CreateArticle() {
           <button
             className='btn btn-primary'
             onClick={handleSave}
+            disabled={loading}
           >
-            Save Article
+            {loading ? (
+              <span className='loading loading-spinner loading-md'></span>
+            ) : (
+              'Save Article'
+            )}{' '}
           </button>
         </div>
       </div>

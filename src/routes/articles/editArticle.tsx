@@ -66,6 +66,9 @@ export default function EditArticle() {
   const handleSave = async () => {
     if (editorRef.current) {
       const editor = editorRef.current.getContent()
+
+      setLoading(true)
+
       try {
         const response = await fetch(`${HOST}/admin/article/${id}`, {
           method: 'PUT',
@@ -87,7 +90,10 @@ export default function EditArticle() {
         navigate('/articles')
       } catch (error) {
         console.log(error)
+        alert(error)
       }
+
+      setLoading(false)
     }
   }
 
@@ -193,10 +199,15 @@ export default function EditArticle() {
             Cancel
           </button>
           <button
-            className='btn btn-primary mt-2 self-baseline'
+            className='btn btn-primary'
             onClick={handleSave}
+            disabled={loading}
           >
-            Update Article
+            {loading ? (
+              <span className='loading loading-spinner loading-md'></span>
+            ) : (
+              'Save Article'
+            )}{' '}
           </button>
         </div>
       </div>
