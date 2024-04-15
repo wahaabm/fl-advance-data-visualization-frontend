@@ -72,13 +72,13 @@ export default function ShowCharts() {
             return dateValue
           }),
           y: chart.data.map((item: chartItem) => parseFloat(item[key])),
-          type: 'scatter',
+          type: 'lines',
           mode: 'lines+markers',
           marker: {
-            size: 10,
+            size: 3,
           },
           line: {
-            width: 3,
+            width: 2,
           },
           name: key,
         }))
@@ -108,21 +108,23 @@ export default function ShowCharts() {
             },
           },
           line: {
-            width: 3,
+            width: 1,
           },
           margin: {
-            l: 50,
-            r: 70,
-            b: 70,
-            t: 10,
-            pad: 4,
+            t: 0,
+            r: 0,
+            b: 80,
+            l: 20,
+            pad: 0,
           },
           xaxis: {
-            title: 'Date',
+            // title: 'Date',
             color: !displayMode ? 'black' : 'white',
+            // tick0: '1979-01-01', // Set the starting date for ticks
+            // dtick: 'M6', // Set the interval for showing dates (M1 for monthly)
           },
           yaxis: {
-            title: 'Values',
+            // title: 'Values',
             color: !displayMode ? 'black' : 'white',
           },
         },
@@ -361,13 +363,19 @@ export default function ShowCharts() {
                         key={chart.chartId}
                         className='carousel-item w-full rounded-lg bg-base-100 shadow-md mt-6 dark:bg-black'
                       >
-                        <div className='p-2 w-full'>
+                        <div className='block p-2 w-full'>
                           <Plot
                             key={chart.chartId}
-                            style={{ marginTop: '10px' }}
+                            style={{ marginTop: '10px', width: '100%' }}
                             data={chart.data}
-                            layout={chart.layout}
-                            config={chartConfig}
+                            layout={{
+                              ...chart.layout,
+                              dragmode: false,
+                            }}
+                            config={{
+                              ...chartConfig,
+                              modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+                            }}
                           />
                           <div className='card-actions justify-between mt-4'>
                             {(role === 'ADMIN_USER' ||
