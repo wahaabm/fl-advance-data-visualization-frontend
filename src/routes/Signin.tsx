@@ -125,17 +125,7 @@ export default function Signin() {
                 />
               </div>
               <div className='flex items-center justify-between'>
-                <div>
-                  <a href=''>
-                    <p
-                      className={`underline text-sm ${
-                        displayMode ? 'text-white' : 'text-black'
-                      }`}
-                    >
-                      Forgot your password?
-                    </p>
-                  </a>
-                </div>
+                <div></div>
                 <div className='flex gap-x-1 items-center'>
                   <input
                     type='checkbox'
