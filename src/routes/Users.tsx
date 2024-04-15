@@ -219,9 +219,9 @@ export default function ShowUsers() {
                 <button
                   className='btn btn-primary'
                   onClick={handleBulkAuthorize}
-                  disabled={loading || selectedIds.length === 0}
+                  disabled={bulkLoading || selectedIds.length === 0}
                 >
-                  {loading ? (
+                  {bulkLoading ? (
                     <span className='loading loading-spinner loading-md'></span>
                   ) : (
                     'Allow Selected Users'
@@ -231,9 +231,9 @@ export default function ShowUsers() {
                 <button
                   className='btn btn-primary'
                   onClick={allowAllUsers}
-                  disabled={loading}
+                  disabled={bulkLoading}
                 >
-                  {loading ? (
+                  {bulkLoading ? (
                     <span className='loading loading-spinner loading-md'></span>
                   ) : (
                     'Allow All Users'
@@ -243,9 +243,9 @@ export default function ShowUsers() {
                 <button
                   className='btn btn-primary'
                   onClick={revokeAllUsers}
-                  disabled={loading}
+                  disabled={bulkLoading}
                 >
-                  {loading ? (
+                  {bulkLoading ? (
                     <span className='loading loading-spinner loading-md'></span>
                   ) : (
                     'Revoke All Users'

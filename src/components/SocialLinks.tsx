@@ -4,7 +4,7 @@ import { useAppSelector } from '../hooks/hooks'
 
 export default function SocialLinks() {
   const settings = useAppSelector((state) => state.settings.settings)
-  const [displayMode, setDisplayMode] = useState<boolean>(() => {
+  const [displayMode] = useState<boolean>(() => {
     const localDisplayMode = localStorage.getItem('displayMode')
     return localDisplayMode === 'dark' ? true : false
   })
