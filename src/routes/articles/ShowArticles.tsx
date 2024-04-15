@@ -203,7 +203,7 @@ export default function ShowArticles() {
                 You can start by creating a new article using the button below.
               </p>
               <button
-                className='btn btn-primary mt-5 mx-auto'
+                className='btn btn-primary mt-6 mx-auto'
                 onClick={() => navigate('/create-article')}
               >
                 <span>Create new</span>

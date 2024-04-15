@@ -310,7 +310,7 @@ export default function ShowCharts() {
                 You can start by uploading a new chart using the button below.
               </p>
               <button
-                className='btn btn-primary'
+                className='btn btn-primary mt-6 mx-auto'
                 onClick={() =>
                   (
                     document.getElementById('my_modal_1') as HTMLDialogElement
