@@ -18,7 +18,9 @@ interface Props {
 export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
   const [formData, setFormData] = useState<Record<string, any>>({})
   const [error, setError] = useState('')
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target

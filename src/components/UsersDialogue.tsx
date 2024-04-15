@@ -24,7 +24,9 @@ export default function ShowUsersModal({
 }: Props) {
   const token = localStorage.getItem('token')
   const dispatch = useAppDispatch()
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
 
   const handleMakeEditor = async (id: string) => {
     try {

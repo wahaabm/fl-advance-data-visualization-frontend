@@ -12,7 +12,9 @@ export default function CreateArticle() {
   const [title, setTitle] = useState('')
   const [pinned, setPinned] = useState(false)
   const [published, setPublished] = useState(false)
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
 
   const handleSave = async () => {
     if (editorRef.current) {

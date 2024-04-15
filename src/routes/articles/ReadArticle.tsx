@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import Loading from '../../utils/Loading'
+import Loading from '../../components/Loading'
 
 interface articleData {
   authorId: number
@@ -18,7 +18,9 @@ export default function ReadArticle() {
   const token = localStorage.getItem('token')
   const [loading, setLoading] = useState(true)
   const { id } = useParams() // Get the id from the URL params
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
 
   const fetchArticle = async () => {
     try {

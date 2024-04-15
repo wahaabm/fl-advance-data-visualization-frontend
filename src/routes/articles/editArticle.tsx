@@ -1,7 +1,7 @@
 import { Editor } from '@tinymce/tinymce-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
-import Loading from '../../utils/Loading'
+import Loading from '../../components/Loading'
 
 interface articleData {
   authorId: number
@@ -25,7 +25,9 @@ export default function EditArticle() {
   const [title, setTitle] = useState('')
   const [pinned, setPinned] = useState(false)
   const [published, setPublished] = useState(false)
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
 
   const fetchArticle = async () => {
     try {

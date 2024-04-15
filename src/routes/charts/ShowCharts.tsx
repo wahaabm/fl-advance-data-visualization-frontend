@@ -6,8 +6,8 @@ import { useAppSelector } from '../../hooks/hooks'
 
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import AddChartData from '../../components/AddChartData'
+import Loading from '../../components/Loading'
 import UploadDialogue from '../../components/UploadDialogue'
-import Loading from '../../utils/Loading'
 
 interface chartItem {
   [key: string]: string
@@ -40,7 +40,9 @@ export default function ShowCharts() {
   const activeChartId = useRef<number>()
   const toc = useRef<HTMLUListElement>(null)
   const [selectedChart, setSelectedChart] = useState<chartData | null>(null)
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
   const Plot = createPlotlyComponent(Plotly)
   const [displayMode, setTitle, setDescription] = useOutletContext() as [
     boolean,

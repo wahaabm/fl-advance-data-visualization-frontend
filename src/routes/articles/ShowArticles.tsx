@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import Loading from '../../components/Loading'
 import { useAppSelector } from '../../hooks/hooks'
-import Loading from '../../utils/Loading'
 
 interface articleData {
   authorId: number
@@ -22,7 +22,9 @@ export default function ShowArticles() {
   const role = useAppSelector((state) => state.auth.role)
   const userId = useAppSelector((state) => state.auth.userId)
   const [loading, setLoading] = useState(true)
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
   const [, setTitle, setDescription] = useOutletContext() as [
     Boolean,
     Function,

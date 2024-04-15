@@ -15,7 +15,9 @@ export default function Signup() {
   const [successMessage, setSuccessMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
 
   const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()

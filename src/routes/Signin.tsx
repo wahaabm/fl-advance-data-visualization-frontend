@@ -18,7 +18,9 @@ export default function Signin() {
   })
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
 
   async function handleSignIn(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()

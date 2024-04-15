@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import Loading from '../../components/Loading'
 import { useAppDispatch } from '../../hooks/hooks'
 import { logout } from '../../store/slices/AuthSlice'
 import { refreshSettings } from '../../store/slices/SettingsSlice'
-import Loading from '../../utils/Loading'
 
 export default function SettingsForm() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
   const [loading, setLoading] = useState(false)
   const [settings, setSettings] = useState({
     googleTagManager: '',

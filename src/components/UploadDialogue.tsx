@@ -7,7 +7,9 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [file, setFile] = useState<File>()
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()

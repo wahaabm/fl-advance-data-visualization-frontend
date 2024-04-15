@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import Loading from '../components/Loading'
 import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import { authorizeUser, logout, revokeUser } from '../store/slices/AuthSlice'
-import Loading from '../utils/Loading'
 interface user {
   id: string
   email: string
@@ -22,7 +22,9 @@ export default function ShowUsers() {
   const [selectedIds, setSelectedIds] = useState<Array<string>>([])
   const [loading, setLoading] = useState(false)
   const [bulkLoading, setBulkLoading] = useState(false)
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
   const [, setTitle, setDescription] = useOutletContext() as [
     boolean,
     Function,

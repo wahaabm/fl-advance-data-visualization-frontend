@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import Loading from '../../components/Loading'
 import ShowUsersModal from '../../components/UsersDialogue'
 import { useAppDispatch } from '../../hooks/hooks'
 import { logout, revokeUser } from '../../store/slices/AuthSlice'
-import Loading from '../../utils/Loading'
 
 interface user {
   id: string
@@ -22,7 +22,9 @@ export default function ShowEditors() {
   const [editors, setEditors] = useState<user[]>([])
   const [loading, setLoading] = useState(false)
   const [users, setUsers] = useState<user[]>([])
-  const HOST = import.meta.env.VITE_REACT_API_URL
+  const HOST = import.meta.env.DEV
+    ? 'http://localhost:3000'
+    : import.meta.env.VITE_REACT_API_URL
   const [, setTitle, setDescription] = useOutletContext() as [
     Boolean,
     Function,
