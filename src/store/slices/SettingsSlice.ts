@@ -47,7 +47,7 @@ const initialState: {
   },
 }
 
-initialState.settings = JSON.parse(localStorage.getItem('settings'))
+initialState.settings = JSON.parse(localStorage.getItem('settings') || '{}')
 
 initializeFacebookPixel()
 initializeGoogleTagManager()
