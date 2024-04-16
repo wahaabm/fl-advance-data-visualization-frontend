@@ -100,7 +100,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className='flex flex-col md:px-10 mx-auto justify-between navbar border-b-2 border-white dark:border-gray-500 p-2 fixed top-0 z-10 bg-base-300 dark:text-gray-200 w-full left-0 md:flex-row gap-4'>
+      <div className='flex flex-col md:px-10 mx-auto justify-between navbar p-2 fixed top-0 z-10 bg-base-300 dark:text-gray-200 w-full left-0 md:flex-row gap-4 shadow-sm'>
         <a
           className='flex flex-col justify-center'
           href='/'
@@ -113,7 +113,7 @@ export default function Dashboard() {
           <div>Macrobourse</div>
         </a>
 
-        <div className='flex-col flex-1 text-center'>
+        <div className='flex-col flex-1 text-center hidden md:block'>
           <h1 className='text-2xl font-bold'>{title}</h1>
           <p>{description}</p>
         </div>
@@ -212,7 +212,7 @@ export default function Dashboard() {
         <Outlet context={[displayMode, setTitle, setDescription]} />
       </div>
 
-      <footer className='flex flex-row justify-between footer items-center p-4 bg-base-300 fixed bottom-0 border-white border-t-2 dark:border-gray-500'>
+      <footer className='flex flex-row justify-between footer items-center p-4 bg-base-300 md:fixed bottom-0 shadow-sm'>
         <aside className='items-center flex flex-row'>
           <img
             src='/finallogo.svg'

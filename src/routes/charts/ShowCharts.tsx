@@ -410,6 +410,25 @@ export default function ShowCharts() {
                 )}
               </div>
             </div>
+
+            <div className='md:hidden fixed top-32 left-0 right-0 z-999'>
+              <div className='w-full md:max-w-60 text-center mb-8'>
+                <div>
+                  <div className='p-2 text-xl text-white bg-black md:rounded-t-lg'>
+                    Quadrant
+                  </div>
+                  <div className='flex justify-stretch'>
+                    <div className='w-full bg-gradient-to-r from-red-500 to-red-200 border border-gray-500 p-2 font-semibold dark:text-white md:rounded-bl-lg'>
+                      {settings.previous}
+                    </div>
+                    <div className='w-full bg-gradient-to-r from-violet-500 to-blue-300 border border-gray-500 p-2 font-semibold dark:text-white md:rounded-br-lg'>
+                      {settings.actual}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className='gap-y-5 fixed top-44 right-0 hidden md:block md:w-1/4'>
               <div>
                 <div className='w-full md:max-w-60 text-center mb-8'>
