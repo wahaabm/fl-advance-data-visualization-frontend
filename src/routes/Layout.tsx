@@ -108,13 +108,13 @@ export default function Dashboard() {
           <img
             src='/finallogo.svg'
             alt='Macrobourse Logo'
-            width={96}
+            width={64}
           />
-          <div className='text-lg md:text-lg'>Macrobourse</div>
+          <div>Macrobourse</div>
         </a>
 
         <div className='flex-col flex-1 text-center'>
-          <h1 className='text-3xl font-bold'>{title}</h1>
+          <h1 className='text-2xl font-bold'>{title}</h1>
           <p>{description}</p>
         </div>
 
@@ -145,7 +145,7 @@ export default function Dashboard() {
           </div>
 
           <div className='dropdown dropdown-end self-end'>
-            <div className='flex flex-row-reverse md:flex-row gap-x-5 items-center text-lg'>
+            <div className='flex flex-row-reverse md:flex-row gap-x-5 items-center'>
               <div>Hello, {userName}</div>
               <div
                 tabIndex={0}

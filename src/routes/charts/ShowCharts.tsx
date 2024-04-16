@@ -302,13 +302,13 @@ export default function ShowCharts() {
     <div>
       <UploadDialogue fetchCharts={fetchCharts} />
       {chartData.length == 0 ? (
-        <div className='flex flex-col w-72 md:w-full items-center mx-auto md:pr-20'>
-          <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400 mt-20'>
+        <div className='flex flex-col w-72 md:w-full items-center mx-auto md:pr-20 mt-12'>
+          <p className='text-lg md:text-xl text-center'>
             No charts are currently available. <br />
           </p>
           {(role === 'ADMIN_USER' || role === 'EDITOR_USER') && (
             <>
-              <p className='text-lg md:text-xl text-center text-gray-600 dark:text-gray-400'>
+              <p className='text-center text-gray-600 dark:text-gray-400'>
                 You can start by uploading a new chart using the button below.
               </p>
               <button
@@ -329,7 +329,7 @@ export default function ShowCharts() {
           {/* <div>
             <div className='w-full md:max-w-60 text-center mx-auto mb-8'>
               <div>
-                <div className='p-2 text-2xl text-white bg-black rounded-t-3xl'>
+                <div className='p-2 text-xl text-white bg-black rounded-t-3xl'>
                   Quadrant
                 </div>
                 <div className='flex justify-stretch'>
@@ -353,7 +353,7 @@ export default function ShowCharts() {
                       id={chart.chartId.toString()}
                       key={chart.chartId}
                     >
-                      <h2 className='card-title text-3xl leading-none'>
+                      <h2 className='card-title text-xl leading-none'>
                         {' '}
                         {chart.title}
                       </h2>
@@ -414,7 +414,7 @@ export default function ShowCharts() {
               <div>
                 <div className='w-full md:max-w-60 text-center mb-8'>
                   <div>
-                    <div className='p-2 text-2xl text-white bg-black rounded-t-lg'>
+                    <div className='p-2 text-xl text-white bg-black rounded-t-lg'>
                       Quadrant
                     </div>
                     <div className='flex justify-stretch'>
@@ -443,14 +443,14 @@ export default function ShowCharts() {
               )}
               <div className='mt-6'>
                 <ul
-                  className='max-w-md space-y-1 text-black list-none list-inside dark:text-gray-400'
+                  className='max-w-md space-y-2 text-black list-none list-inside dark:text-gray-400'
                   ref={toc}
                 >
                   {chartData.map((chart) => (
                     <li
                       key={chart.chartId}
                       id={`li-${chart.chartId}`}
-                      className={`uppercase hover:cursor-pointer list-item ${
+                      className={`hover:cursor-pointer list-item ${
                         activeChartId.current === chart.chartId ? 'active' : ''
                       }`}
                       onClick={() => scrollToChart(chart.chartId.toString())}

@@ -143,9 +143,9 @@ export default function ShowEditors() {
       <div>
         {editors.length == 0 ? (
           <div>
-            <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400 mb-8'>
+            <p className='text-lg md:text-xl text-center mt-8'>
               No editors are currently available. <br />
-              <span className='text-lg md:text-xl text-center text-gray-600 dark:text-gray-400'>
+              <span className='text-center text-gray-600 dark:text-gray-400'>
                 You can start by adding a new editor using the button below.
               </span>
             </p>

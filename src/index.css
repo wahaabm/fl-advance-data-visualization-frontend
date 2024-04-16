@@ -26,7 +26,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: transparent;
+  background-color: lightgray;
   border-radius: 3px;
 }
 
@@ -35,7 +35,7 @@ body {
 }
 
 .list-item:not(.active):hover:before {
-  background-color: lightgray;
+  background-color: gray;
 }
 
 select {
@@ -47,5 +47,5 @@ option {
 }
 
 .btn {
-  @apply shadow-md;
+  @apply shadow-sm;
 }

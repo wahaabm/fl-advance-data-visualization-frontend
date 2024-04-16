@@ -56,7 +56,7 @@ export default function ShowUsersModal({
     >
       <div className='modal-box'>
         <div className='overflow-x-auto'>
-          <p className='font-bold text-2xl text-center'>Available Users</p>
+          <p className='font-bold text-xl text-center'>Available Users</p>
           <br />
           <table className='table'>
             <thead>

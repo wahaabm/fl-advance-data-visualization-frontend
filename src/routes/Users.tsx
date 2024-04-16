@@ -203,10 +203,10 @@ export default function ShowUsers() {
   return (
     <div className='w-full max-w-5xl mx-auto'>
       {users.length == 0 ? (
-        <div>
-          <p className='text-lg md:text-3xl text-center text-gray-600 dark:text-gray-400'>
+        <div className='mt-12'>
+          <p className='text-lg md:text-xl text-center'>
             No users are currently available. <br />
-            <span className='text-lg md:text-xl text-center text-gray-600 dark:text-gray-400'>
+            <span className='text-center text-gray-600 dark:text-gray-400'>
               New users will be listed here for approval or role upgrade.
             </span>
           </p>

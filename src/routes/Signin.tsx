@@ -80,7 +80,7 @@ export default function Signin() {
           </div>
           <div>
             <p
-              className={`text-3xl md:text-5xl text-center ${
+              className={`text-xl md:text-5xl text-center ${
                 displayMode ? 'text-white' : 'text-black'
               }`}
             >

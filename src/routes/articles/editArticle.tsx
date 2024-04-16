@@ -20,7 +20,7 @@ export default function EditArticle() {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const editorRef = useRef<any>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const { id } = useParams()
   const [title, setTitle] = useState('')
   const [pinned, setPinned] = useState(false)
@@ -102,7 +102,7 @@ export default function EditArticle() {
   return (
     <>
       <div className='max-w-3xl mx-auto'>
-        <div className='text-3xl mt-2 mb-5 text-left'>Edit an article</div>
+        <div className='text-xl mt-2 mb-5 text-left'>Edit an article</div>
 
         <div className='form-control'>
           <span className='label'>Title: </span>
