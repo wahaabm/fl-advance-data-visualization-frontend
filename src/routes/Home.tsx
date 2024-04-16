@@ -1,10 +1,12 @@
+import PaperformEmbed from '../components/PaperformEmbed'
+
 export default function Home() {
   return (
     <div>
-      <div
-        data-paperform-id='macrobourse'
-        data-takeover='1'
-      ></div>
+      <PaperformEmbed
+        formSlug='macrobourse'
+        showSpinner={true}
+      />
     </div>
   )
 }
