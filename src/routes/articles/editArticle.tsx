@@ -153,8 +153,8 @@ export default function EditArticle() {
               editorRef.current = editor
             }}
             initialValue={article?.content}
+            licenseKey='gpl'
             init={{
-              licenseKey: 'gpl',
               height: 500,
               width: '100%',
               menubar: false,

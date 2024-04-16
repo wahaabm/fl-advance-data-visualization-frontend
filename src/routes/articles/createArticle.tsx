@@ -107,8 +107,8 @@ export default function CreateArticle() {
               editorRef.current = editor
             }}
             initialValue='<h2><strong>Start writing your article here</strong></h2>'
+            licenseKey='gpl'
             init={{
-              licenseKey: 'gpl',
               image_caption: true,
               height: 500,
               width: '100%',
