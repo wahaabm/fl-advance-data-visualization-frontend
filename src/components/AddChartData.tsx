@@ -50,21 +50,17 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
+
     if (error) {
       return
     }
-    const formDataToSubmit: Record<string, any> = {}
-    const hasError = false
-    for (const [key, value] of Object.entries(formData)) {
-      formDataToSubmit[key] = value
-    }
-    if (hasError) {
-      return
-    }
+
+    formData.date = Date.parse(formData.date)
+
     try {
       const res = await fetch(`${HOST}/admin/chart/${chart.chartId}`, {
         method: 'PUT',
-        body: JSON.stringify({ formDataToSubmit }),
+        body: JSON.stringify(formData),
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,

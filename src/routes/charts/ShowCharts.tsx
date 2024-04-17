@@ -60,29 +60,32 @@ export default function ShowCharts() {
     if (!charts || !Array.isArray(charts) || charts.length === 0) {
       return null
     }
-    const chartObjects = charts.map((chart) => {
-      const dataKeys = Object.keys(chart.data[0]).map((key) =>
-        key.toLowerCase()
-      )
 
+    const chartObjects = charts.map((chart) => {
+      const dataKeys = Object.keys(chart.data[0])
       const dataSeries = dataKeys
         .filter((key) => key !== 'date')
-        .map((key) => ({
-          x: chart.data.map((item: chartItem) => {
-            const dateValue = item['Date'] || item['date']
+        .map((key) => {
+          const x = chart.data.map((item: chartItem) => {
+            const dateValue = new Date(item['date'])
             return dateValue
-          }),
-          y: chart.data.map((item: chartItem) => parseFloat(item[key])),
-          type: 'lines',
-          mode: 'lines+markers',
-          marker: {
-            size: 3,
-          },
-          line: {
-            width: 2,
-          },
-          name: key,
-        }))
+          })
+
+          const y = chart.data.map((item: chartItem) => parseFloat(item[key]))
+          return {
+            x,
+            y,
+            type: 'lines',
+            mode: 'lines+markers',
+            marker: {
+              size: 3,
+            },
+            line: {
+              width: 2,
+            },
+            name: key,
+          }
+        })
 
       return {
         dataKeys: dataKeys,
@@ -150,12 +153,15 @@ export default function ShowCharts() {
         } else if (response.status === 403) {
           navigate('/login')
         } else {
-          throw new Error('Failed to fetch articles')
+          throw new Error('Failed to fetch charts')
         }
+
         return
       }
+
       const charts = await response.json()
       const parsedData = parseChartData(charts)
+
       if (parsedData == null) {
         setChartData([])
       } else {
@@ -220,9 +226,11 @@ export default function ShowCharts() {
       const confirmed = window.confirm(
         'Are you sure you want to delete this chart?'
       )
+
       if (!confirmed) {
         return
       }
+
       try {
         const url = `${HOST}/admin/chart/${id}`
         const response = await fetch(url, {
