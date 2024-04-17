@@ -32,7 +32,7 @@ const App: React.FC = () => {
   useEffect(() => {
     setInterval(() => {
       fetchSettings()
-    }, 5000)
+    }, 60000)
   }, [dispatch])
 
   return <RouterProvider router={router} />
