@@ -381,7 +381,7 @@ export default function ShowCharts() {
                 {chartData &&
                   chartData.map((chart) => (
                     <div
-                      className='card h-full w-full overflow-auto'
+                      className='card rounded-none h-full w-full overflow-auto'
                       id={chart.chartId.toString()}
                       key={chart.chartId}
                     >
