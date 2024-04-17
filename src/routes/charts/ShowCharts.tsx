@@ -117,15 +117,38 @@ export default function ShowCharts() {
           margin: {
             t: 0,
             r: 0,
-            b: 90,
+            b: 40,
             l: 20,
             pad: 0,
           },
           xaxis: {
+            // autotick: true,
             // title: 'Date',
             color: !displayMode ? 'black' : 'white',
+            tickformat: '%b %Y',
             // tick0: '1979-01-01', // Set the starting date for ticks
-            // dtick: 'M6', // Set the interval for showing dates (M1 for monthly)
+            // dtick: 'M3', // Set the interval for showing dates (M1 for monthly)
+            rangeselector: {
+              buttons: [
+                {
+                  count: 6,
+                  step: 'month',
+                  stepmode: 'backward',
+                  label: 'Last 6 Month',
+                },
+                {
+                  step: 'month',
+                  count: 12,
+                  stepmode: 'backward',
+                  label: 'Last Year',
+                },
+                {
+                  step: 'all',
+                  label: 'All',
+                  active: true,
+                },
+              ],
+            },
           },
           yaxis: {
             // title: 'Values',
@@ -354,11 +377,11 @@ export default function ShowCharts() {
           </div> */}
           <div>
             <div className='flex flex-col w-full md:w-3/4'>
-              <div className='grid grid-cols-1 md:grid-cols-1 gap-6'>
+              <div className='block w-full'>
                 {chartData &&
                   chartData.map((chart) => (
                     <div
-                      className='carousel-vertical h-full w-full overflow-auto my-4 chart'
+                      className='card h-full w-full overflow-auto'
                       id={chart.chartId.toString()}
                       key={chart.chartId}
                     >
@@ -370,12 +393,17 @@ export default function ShowCharts() {
                       <div
                         id={chart.chartId.toString()}
                         key={chart.chartId}
-                        className='carousel-item w-full rounded-lg bg-base-100 shadow-md mt-6 dark:bg-black'
+                        className='card-body w-full rounded-lg bg-base-100 shadow-md dark:bg-black'
                       >
-                        <div className='block p-2 w-full'>
+                        <div className='block w-full'>
                           <Plot
                             key={chart.chartId}
-                            style={{ marginTop: '10px', width: '100%' }}
+                            style={{
+                              marginTop: '10px',
+                              marginBottom: '10px',
+                              width: '100%',
+                              display: 'block',
+                            }}
                             data={chart.data}
                             layout={{
                               ...chart.layout,
@@ -386,7 +414,8 @@ export default function ShowCharts() {
                               modeBarButtonsToRemove: ['lasso2d', 'select2d'],
                             }}
                           />
-                          <div className='card-actions justify-between mt-4'>
+                          <br />
+                          <div className='card-actions justify-between'>
                             {(role === 'ADMIN_USER' ||
                               (role === 'EDITOR_USER' &&
                                 chart.authorId == Number(userId))) && (
