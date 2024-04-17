@@ -2,12 +2,11 @@
 import Plotly from 'plotly.js-cartesian-dist'
 import { useEffect, useRef, useState } from 'react'
 import createPlotlyComponent from 'react-plotly.js/factory'
-import { useAppSelector } from '../../hooks/hooks'
-
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import AddChartData from '../../components/AddChartData'
 import Loading from '../../components/Loading'
 import UploadDialogue from '../../components/UploadDialogue'
+import { useAppSelector } from '../../hooks/hooks'
 
 interface chartItem {
   [key: string]: string
@@ -62,10 +61,12 @@ export default function ShowCharts() {
       return null
     }
     const chartObjects = charts.map((chart) => {
-      const dataKeys = Object.keys(chart.data[0])
+      const dataKeys = Object.keys(chart.data[0]).map((key) =>
+        key.toLowerCase()
+      )
 
       const dataSeries = dataKeys
-        .filter((key) => key.toLowerCase() !== 'date')
+        .filter((key) => key !== 'date')
         .map((key) => ({
           x: chart.data.map((item: chartItem) => {
             const dateValue = item['Date'] || item['date']
@@ -113,7 +114,7 @@ export default function ShowCharts() {
           margin: {
             t: 0,
             r: 0,
-            b: 80,
+            b: 90,
             l: 20,
             pad: 0,
           },

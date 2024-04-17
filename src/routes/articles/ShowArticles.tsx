@@ -221,13 +221,13 @@ export default function ShowArticles() {
   if (articles.length == 0) {
     return (
       <>
-        <div className='flex flex-col w-72 md:w-full mt-20 items-center mx-auto md:pr-20'>
-          <p className='text-lg md:text-xl text-center text-gray-600 dark:text-gray-400'>
+        <div className='flex flex-col w-72 md:w-full items-center mx-auto md:pr-20 mt-12'>
+          <p className='text-lg md:text-xl text-center'>
             No articles are currently available. <br />
           </p>
           {(role == 'ADMIN_USER' || role === 'EDITOR_USER') && (
             <>
-              <p className='text-lg md:text-xl text-center text-gray-600 dark:text-gray-400'>
+              <p className='text-center text-gray-600 dark:text-gray-400'>
                 You can start by creating a new article using the button below.
               </p>
               <button
