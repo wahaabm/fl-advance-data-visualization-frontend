@@ -27,7 +27,7 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
         },
       })
       if (res.ok) {
-        await res.json()
+        // await res.json()
         ;(document.getElementById('my_modal_1') as HTMLDialogElement).close()
       } else {
         console.error('Failed to upload CSV file')
