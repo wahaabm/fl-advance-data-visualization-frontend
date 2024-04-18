@@ -46,8 +46,6 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
       return
     }
 
-    formData.date = Date.parse(formData.date)
-
     try {
       const res = await fetch(`${HOST}/admin/chart/${chart.chartId}`, {
         method: 'PUT',

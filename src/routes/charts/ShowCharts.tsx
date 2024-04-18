@@ -377,7 +377,7 @@ export default function ShowCharts() {
           </div> */}
           <div>
             <div className='flex flex-col w-full md:w-3/4'>
-              <div className='block w-full'>
+              <div className='block w-full pt-6'>
                 {chartData &&
                   chartData.map((chart) => (
                     <div
