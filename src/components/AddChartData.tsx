@@ -24,7 +24,6 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    let parsedValue: number
 
     if (name === 'date') {
       try {
@@ -32,19 +31,11 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
       } catch (err) {
         setError(`Invalid date provided`)
       }
-    } else {
-      parsedValue = parseFloat(value)
-
-      if (isNaN(parsedValue) && value !== '' && parsedValue < 0) {
-        setError(`Invalid value for ${name}`)
-      } else {
-        setError('')
-      }
     }
 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: parsedValue !== undefined ? parsedValue : value,
+      [name]: value,
     }))
   }
 
@@ -94,71 +85,67 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
       <div className='modal-box'>
         <h3 className='font-bold text-lg'>Add Chart Data</h3>
         <form onSubmit={handleSubmit}>
-          <>
-            <label className='form-control'>
-              <div className='label'>
-                <span className='label-text'>Date</span>
-              </div>
-
-              <input
-                type='date'
-                placeholder='Date'
-                className='input input-bordered'
-                name='date'
-                id='date'
-                value={formData['date'] || ''}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            {chart.dataKeys
-              .filter((field) => field.toLowerCase() !== 'date')
-              .map((field, index) => (
-                <div key={index}>
-                  <label className='form-control'>
-                    <div className='label'>
-                      <span className='label-text'>
-                        {field.charAt(0).toUpperCase() + field.slice(1)}
-                      </span>
-                    </div>
-
-                    <input
-                      type={field === 'date' ? 'date' : 'number'}
-                      placeholder={field}
-                      className='input input-bordered'
-                      name={field}
-                      id={field}
-                      value={formData[field] || ''}
-                      onChange={handleChange}
-                      required
-                    />
-                  </label>
-                </div>
-              ))}
-            {error && <p className='text-red-500'>{error}</p>}{' '}
-            {/* Display error message */}
-            <div className='flex flex-row gap-x-2 mt-8 justify-center'>
-              <button
-                className='btn btn-primary'
-                type='submit'
-              >
-                Add Data
-              </button>
-              <button
-                className='btn  '
-                type='button'
-                onClick={() =>
-                  (
-                    document.getElementById(
-                      'add_chart_data'
-                    ) as HTMLDialogElement
-                  )?.close()
-                }
-              >
-                Cancel
-              </button>
+          <label className='form-control'>
+            <div className='label'>
+              <span className='label-text'>Date</span>
             </div>
-          </>
+
+            <input
+              type='date'
+              placeholder='Date'
+              className='input input-bordered'
+              name='date'
+              id='date'
+              value={formData['date'] || ''}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          {chart.dataKeys
+            .filter((field) => field.toLowerCase() !== 'date')
+            .map((field, index) => (
+              <div key={index}>
+                <label className='form-control'>
+                  <div className='label'>
+                    <span className='label-text'>
+                      {field.charAt(0).toUpperCase() + field.slice(1)}
+                    </span>
+                  </div>
+
+                  <input
+                    type={field === 'date' ? 'date' : 'number'}
+                    placeholder={field}
+                    className='input input-bordered'
+                    name={field}
+                    id={field}
+                    value={formData[field] || ''}
+                    onChange={handleChange}
+                    required={field === 'cpi' ? false : true}
+                  />
+                </label>
+              </div>
+            ))}
+          {error && <p className='text-red-500'>{error}</p>}{' '}
+          {/* Display error message */}
+          <div className='flex flex-row gap-x-2 mt-8 justify-center'>
+            <button
+              className='btn btn-primary'
+              type='submit'
+            >
+              Add Data
+            </button>
+            <button
+              className='btn  '
+              type='button'
+              onClick={() =>
+                (
+                  document.getElementById('add_chart_data') as HTMLDialogElement
+                )?.close()
+              }
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </dialog>
