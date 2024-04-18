@@ -381,21 +381,21 @@ export default function ShowCharts() {
                 {chartData &&
                   chartData.map((chart) => (
                     <div
-                      className='card rounded-none h-full w-full overflow-auto'
+                      className='card bg-base-100 shadow-md dark:bg-black full w-full overflow-auto mb-6 md:mb-12'
                       id={chart.chartId.toString()}
                       key={chart.chartId}
                     >
-                      <h2 className='card-title text-xl leading-none'>
-                        {' '}
-                        {chart.title}
-                      </h2>
-                      <p>{chart.description}</p>
+                      <div className='card-body'>
+                        <h2 className='card-title'>{chart.title}</h2>
+                        <p>{chart.description}</p>
+                      </div>
+
                       <div
                         id={chart.chartId.toString()}
                         key={chart.chartId}
-                        className='card-body w-full rounded-lg bg-base-100 shadow-md dark:bg-black'
+                        className='w-full'
                       >
-                        <div className='block w-full'>
+                        <div className='block w-full p-4'>
                           <Plot
                             key={chart.chartId}
                             style={{
@@ -414,8 +414,10 @@ export default function ShowCharts() {
                               modeBarButtonsToRemove: ['lasso2d', 'select2d'],
                             }}
                           />
+
                           <br />
-                          <div className='card-actions justify-between'>
+
+                          <div>
                             {(role === 'ADMIN_USER' ||
                               (role === 'EDITOR_USER' &&
                                 chart.authorId == Number(userId))) && (
