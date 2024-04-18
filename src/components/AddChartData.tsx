@@ -56,7 +56,7 @@ export default function AddChartData({ chart, onClose, fetchCharts }: Props) {
         },
       })
       if (res.ok) {
-        await res.json()
+        // await res.json()
         ;(
           document.getElementById('add_chart_data') as HTMLDialogElement
         ).close()
