@@ -1,20 +1,20 @@
-import { useAppDispatch } from '../hooks/hooks'
-import { authorizeUser } from '../store/slices/AuthSlice'
+import { useAppDispatch } from '../hooks/hooks';
+import { authorizeUser } from '../store/slices/AuthSlice';
 
 interface user {
-  id: string
-  email: string
-  name: string
-  role: string
-  isAuthorized: boolean
-  createdAt: string
-  updatedAt: string
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  isAuthorized: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Props {
-  fetchEditors: () => void
-  fetchUsers: () => void
-  users: user[]
+  fetchEditors: () => void;
+  fetchUsers: () => void;
+  users: user[];
 }
 
 export default function ShowUsersModal({
@@ -22,11 +22,11 @@ export default function ShowUsersModal({
   fetchUsers,
   users,
 }: Props) {
-  const token = localStorage.getItem('token')
-  const dispatch = useAppDispatch()
+  const token = localStorage.getItem('token');
+  const dispatch = useAppDispatch();
   const HOST = import.meta.env.DEV
     ? 'http://localhost:3000'
-    : import.meta.env.VITE_REACT_API_URL
+    : import.meta.env.VITE_REACT_API_URL;
 
   const handleMakeEditor = async (id: string) => {
     try {
@@ -35,30 +35,30 @@ export default function ShowUsersModal({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
+      });
       if (res.ok) {
-        dispatch(authorizeUser())
-        fetchUsers()
+        dispatch(authorizeUser());
+        fetchUsers();
       } else {
-        throw new Error('Forbidden')
+        throw new Error('Forbidden');
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     } finally {
-      fetchEditors()
+      fetchEditors();
     }
-  }
+  };
 
   return (
     <dialog
-      id='users_modal'
-      className='modal'
+      id="users_modal"
+      className="modal"
     >
-      <div className='modal-box'>
-        <div className='overflow-x-auto'>
-          <p className='font-bold text-xl text-center'>Available Users</p>
+      <div className="modal-box">
+        <div className="overflow-x-auto">
+          <p className="font-bold text-xl text-center">Available Users</p>
           <br />
-          <table className='table'>
+          <table className="table">
             <thead>
               <tr>
                 <th>#</th>
@@ -75,7 +75,7 @@ export default function ShowUsersModal({
                   <td>{user.email}</td>
                   <td>
                     <button
-                      className='btn btn-sm'
+                      className="btn btn-sm"
                       onClick={() => handleMakeEditor(user.id)}
                     >
                       Make editor
@@ -88,16 +88,16 @@ export default function ShowUsersModal({
         </div>
 
         <button
-          className='btn mt-8'
+          className="btn mt-8"
           onClick={() => {
-            ;(
+            (
               document.getElementById('users_modal') as HTMLDialogElement
-            )?.close()
+            )?.close();
           }}
         >
           Close
         </button>
       </div>
     </dialog>
-  )
+  );
 }

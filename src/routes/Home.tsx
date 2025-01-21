@@ -1,12 +1,12 @@
-import PaperformEmbed from '../components/PaperformEmbed'
+import PaperformEmbed from '../components/PaperformEmbed';
 
 export default function Home() {
   return (
     <div>
       <PaperformEmbed
-        formSlug='macrobourse'
+        formSlug="macrobourse"
         showSpinner={true}
       />
     </div>
-  )
+  );
 }

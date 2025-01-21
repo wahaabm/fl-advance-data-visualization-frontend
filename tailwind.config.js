@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 
-import forms from '@tailwindcss/forms'
-import typography from '@tailwindcss/typography'
-import daisyui from 'daisyui'
-import defaultTheme from 'tailwindcss/defaultTheme'
+import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
+import daisyui from 'daisyui';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -28,4 +28,4 @@ export default {
     darkTheme: 'dark',
     lightTheme: 'light',
   },
-}
+};

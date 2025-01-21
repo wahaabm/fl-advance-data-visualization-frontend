@@ -1,17 +1,17 @@
-import { createBrowserRouter } from 'react-router-dom'
-import ApprovalWaiting from './ApprovalWaiting'
-import Home from './Home'
-import Layout from './Layout'
-import Signin from './Signin'
-import Signup from './Signup'
-import ShowUsers from './Users'
-import ReadArticle from './articles/ReadArticle'
-import ShowArticles from './articles/ShowArticles'
-import CreateArticle from './articles/createArticle'
-import EditArticle from './articles/editArticle'
-import ShowCharts from './charts/ShowCharts'
-import ShowEditors from './editors/Editors'
-import Settings from './settings/Index'
+import { createBrowserRouter } from 'react-router';
+import ApprovalWaiting from './ApprovalWaiting';
+import Home from './Home';
+import Layout from './Layout';
+import Signin from './Signin';
+import Signup from './Signup';
+import ShowUsers from './Users';
+import ReadArticle from './articles/ReadArticle';
+import ShowArticles from './articles/ShowArticles';
+import CreateArticle from './articles/createArticle';
+import EditArticle from './articles/editArticle';
+import ShowCharts from './charts/ShowCharts';
+import ShowEditors from './editors/Editors';
+import Settings from './settings/Index';
 
 const router = createBrowserRouter([
   {
@@ -68,6 +68,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-])
+]);
 
-export default router
+export default router;

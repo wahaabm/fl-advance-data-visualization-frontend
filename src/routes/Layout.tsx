@@ -1,190 +1,190 @@
-import { jwtDecode } from 'jwt-decode'
-import { useEffect, useState } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import SocialLinks from '../components/SocialLinks'
-import { useAppDispatch, useAppSelector } from '../hooks/hooks'
-import { logout } from '../store/slices/AuthSlice'
+import { jwtDecode } from 'jwt-decode';
+import { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router';
+import SocialLinks from '../components/SocialLinks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { logout } from '../store/slices/AuthSlice';
 
 export default function Dashboard() {
   const [displayMode, setDisplayMode] = useState<boolean>(() => {
-    const localDisplayMode = localStorage.getItem('displayMode')
-    return localDisplayMode === 'dark' ? true : false
-  })
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const location = useLocation()
-  const [selectedOption, setSelectedOption] = useState(location.pathname)
-  const navigate = useNavigate()
-  const role = useAppSelector((state) => state.auth.role)
-  const userName = useAppSelector((state) => state.auth.userName)
-  const dispatch = useAppDispatch()
-  const token = localStorage.getItem('token')
+    const localDisplayMode = localStorage.getItem('displayMode');
+    return localDisplayMode === 'dark' ? true : false;
+  });
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const location = useLocation();
+  const [selectedOption, setSelectedOption] = useState(location.pathname);
+  const navigate = useNavigate();
+  const role = useAppSelector((state) => state.auth.role);
+  const userName = useAppSelector((state) => state.auth.userName);
+  const dispatch = useAppDispatch();
+  const token = localStorage.getItem('token');
 
   const gotoSettings = () => {
-    setSelectedOption('Settings')
-    setTitle('Settings Dashboard')
-    setDescription('Manage and view site settings.')
-    navigate('/settings')
-  }
+    setSelectedOption('Settings');
+    setTitle('Settings Dashboard');
+    setDescription('Manage and view site settings.');
+    navigate('/settings');
+  };
 
   const handleSignOut = () => {
-    const confirmed = window.confirm('Are you sure you want to logout?')
-    if (!confirmed) return
+    const confirmed = window.confirm('Are you sure you want to logout?');
+    if (!confirmed) return;
     else {
-      dispatch(logout())
-      navigate('/login')
+      dispatch(logout());
+      navigate('/login');
     }
-  }
+  };
 
   useEffect(() => {
-    localStorage.setItem('displayMode', displayMode ? 'dark' : 'light')
+    localStorage.setItem('displayMode', displayMode ? 'dark' : 'light');
     document.documentElement.setAttribute(
       'data-theme',
-      displayMode ? 'dark' : 'light'
-    )
-    document.documentElement.classList.toggle('dark', displayMode)
-  }, [displayMode])
+      displayMode ? 'dark' : 'light',
+    );
+    document.documentElement.classList.toggle('dark', displayMode);
+  }, [displayMode]);
 
   useEffect(() => {
     if (!token) {
-      navigate('/login')
+      navigate('/login');
     } else {
-      const decodedToken = jwtDecode(token)
-      const currentTime = Date.now() / 1000
+      const decodedToken = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
       if (decodedToken.exp! < currentTime) {
-        console.log('Token is expired')
-        localStorage.removeItem('token')
-        navigate('/login')
+        console.log('Token is expired');
+        localStorage.removeItem('token');
+        navigate('/login');
       } else {
         console.log(
           location.pathname.substring(1).charAt(0).toUpperCase() +
-            location.pathname.substring(2)
-        )
+            location.pathname.substring(2),
+        );
         setSelectedOption(
           location.pathname.substring(1).charAt(0).toUpperCase() +
-            location.pathname.substring(2)
-        )
+            location.pathname.substring(2),
+        );
       }
     }
-  }, [token, navigate, location.pathname])
+  }, [token, navigate, location.pathname]);
 
   const handleSelectChange = (event) => {
-    const value = event.target.value
+    const value = event.target.value;
     if (value === 'Articles') {
-      setTitle('Articles dashboard')
-      setDescription('Manage and view all articles at a glance.')
-      navigate('/articles')
+      setTitle('Articles dashboard');
+      setDescription('Manage and view all articles at a glance.');
+      navigate('/articles');
     } else if (value === 'Charts') {
-      setTitle('Charts dashboard')
+      setTitle('Charts dashboard');
       setDescription(
-        'Manage and visualize data and insights through interactive charts.'
-      )
-      navigate('/charts')
+        'Manage and visualize data and insights through interactive charts.',
+      );
+      navigate('/charts');
     } else if (
       value === 'Users' &&
       (role === 'ADMIN_USER' || role === 'EDITOR_USER')
     ) {
-      setTitle('Users dashboard')
-      setDescription('Monitor and manage user authorization and profiles.')
-      navigate('/users')
+      setTitle('Users dashboard');
+      setDescription('Monitor and manage user authorization and profiles.');
+      navigate('/users');
     } else if (value === 'Editors' && role === 'ADMIN_USER') {
-      setTitle('Editors dashboard')
-      setDescription('Grant or revoke editor rights for users with ease.')
-      navigate('/editors')
+      setTitle('Editors dashboard');
+      setDescription('Grant or revoke editor rights for users with ease.');
+      navigate('/editors');
     } else if (value === 'Settings' && role === 'ADMIN_USER') {
-      setTitle('Settings')
-      setDescription('Setup site links and settings')
-      navigate('/settings')
+      setTitle('Settings');
+      setDescription('Setup site links and settings');
+      navigate('/settings');
     }
-  }
+  };
 
   return (
     <div>
-      <div className='flex flex-col md:px-10 mx-auto justify-between navbar p-2 fixed top-0 z-10 bg-base-300 dark:text-gray-200 w-full left-0 md:flex-row gap-4 shadow-sm'>
+      <div className="flex flex-col md:px-10 mx-auto justify-between navbar p-2 fixed top-0 z-10 bg-base-300 dark:text-gray-200 w-full left-0 md:flex-row gap-4 shadow-sm">
         <a
-          className='flex flex-col justify-center'
-          href='/'
+          className="flex flex-col justify-center"
+          href="/"
         >
           <img
-            src='/finallogo.svg'
-            alt='Macrobourse Logo'
+            src="/finallogo.svg"
+            alt="Macrobourse Logo"
             width={64}
           />
           <div>Macrobourse</div>
         </a>
 
-        <div className='flex-col flex-1 text-center hidden md:block'>
-          <h1 className='text-2xl font-bold'>{title}</h1>
+        <div className="flex-col flex-1 text-center hidden md:block">
+          <h1 className="text-2xl font-bold">{title}</h1>
           <p>{description}</p>
         </div>
 
-        <div className='flex md:flex-col-reverse gap-2'>
+        <div className="flex md:flex-col-reverse gap-2">
           <div>
-            <label className='form-control min-w-48'>
+            <label className="form-control min-w-48">
               {/* <div className="label">
                 <p className="label-text">Key categories</p>
               </div> */}
               <select
                 value={selectedOption} // Add this line to set the value based on selectedOption
-                className='select select-bordered md:select-md '
+                className="select select-bordered md:select-md "
                 onChange={handleSelectChange}
               >
-                <option value='Articles'>Articles</option>
-                <option value='Charts'>Charts</option>
+                <option value="Articles">Articles</option>
+                <option value="Charts">Charts</option>
                 {(role === 'ADMIN_USER' || role === 'EDITOR_USER') && (
-                  <option value='Users'>Users</option>
+                  <option value="Users">Users</option>
                 )}
                 {role === 'ADMIN_USER' && (
-                  <option value='Editors'>Editors</option>
+                  <option value="Editors">Editors</option>
                 )}
                 {role === 'ADMIN_USER' && (
-                  <option value='Settings'>Settings</option>
+                  <option value="Settings">Settings</option>
                 )}
               </select>
             </label>
           </div>
 
-          <div className='dropdown dropdown-end self-end'>
-            <div className='flex flex-row-reverse md:flex-row gap-x-5 items-center'>
+          <div className="dropdown dropdown-end self-end">
+            <div className="flex flex-row-reverse md:flex-row gap-x-5 items-center">
               <div>Hello, {userName}</div>
               <div
                 tabIndex={0}
-                role='button'
-                className='btn btn-ghost btn-circle avatar'
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
               >
-                <div className='w-10 rounded-full'>
+                <div className="w-10 rounded-full">
                   <img
-                    alt='Tailwind CSS Navbar component'
-                    src='https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
+                    alt="Tailwind CSS Navbar component"
+                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                   />
                 </div>
               </div>
             </div>
             <ul
               tabIndex={0}
-              className='mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52'
+              className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
               <li>
-                <label className='label cursor-pointer'>
-                  <span className='label-text'>Dark mode</span>
+                <label className="label cursor-pointer">
+                  <span className="label-text">Dark mode</span>
                   <input
-                    type='checkbox'
-                    className='toggle'
+                    type="checkbox"
+                    className="toggle"
                     onChange={() => {
-                      const newDisplayMode = !displayMode
-                      setDisplayMode(newDisplayMode)
+                      const newDisplayMode = !displayMode;
+                      setDisplayMode(newDisplayMode);
                       document.documentElement.setAttribute(
                         'data-theme',
-                        newDisplayMode ? 'dark' : 'light'
-                      )
+                        newDisplayMode ? 'dark' : 'light',
+                      );
                       document.documentElement.classList.toggle(
                         'dark',
-                        displayMode
-                      )
+                        displayMode,
+                      );
                       localStorage.setItem(
                         'displayMode',
-                        displayMode ? 'dark' : 'light'
-                      )
+                        displayMode ? 'dark' : 'light',
+                      );
                     }}
                     checked={displayMode}
                   />
@@ -197,7 +197,7 @@ export default function Dashboard() {
               </li>
               <li>
                 <a
-                  type='button'
+                  type="button"
                   onClick={handleSignOut}
                 >
                   Logout
@@ -208,15 +208,15 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className='container mx-auto py-72 md:py-36 px-6'>
+      <div className="container mx-auto py-72 md:py-36 px-6">
         <Outlet context={[displayMode, setTitle, setDescription]} />
       </div>
 
-      <footer className='flex flex-row justify-between footer items-center p-4 bg-base-300 md:fixed bottom-0 shadow-sm'>
-        <aside className='items-center flex flex-row'>
+      <footer className="flex flex-row justify-between footer items-center p-4 bg-base-300 md:fixed bottom-0 shadow-sm">
+        <aside className="items-center flex flex-row">
           <img
-            src='/finallogo.svg'
-            alt='Macrobourse Logo'
+            src="/finallogo.svg"
+            alt="Macrobourse Logo"
             width={96}
           />
 
@@ -226,5 +226,5 @@ export default function Dashboard() {
         <SocialLinks />
       </footer>
     </div>
-  )
+  );
 }

@@ -1,16 +1,21 @@
-import { useState } from 'react'
-import { FaFacebookF, FaLinkedin, FaXTwitter, FaYoutube } from 'react-icons/fa6'
-import { useAppSelector } from '../hooks/hooks'
+import { useState } from 'react';
+import {
+  FaFacebookF,
+  FaLinkedin,
+  FaXTwitter,
+  FaYoutube,
+} from 'react-icons/fa6';
+import { useAppSelector } from '../hooks/hooks';
 
 export default function SocialLinks() {
-  const settings = useAppSelector((state) => state.settings.settings)
+  const settings = useAppSelector((state) => state.settings.settings);
   const [displayMode] = useState<boolean>(() => {
-    const localDisplayMode = localStorage.getItem('displayMode')
-    return localDisplayMode === 'dark' ? true : false
-  })
+    const localDisplayMode = localStorage.getItem('displayMode');
+    return localDisplayMode === 'dark' ? true : false;
+  });
 
   return (
-    <div className='flex gap-x-1 mt-2'>
+    <div className="flex gap-x-1 mt-2">
       <a href={settings.twitter}>
         <FaXTwitter
           style={{
@@ -44,5 +49,5 @@ export default function SocialLinks() {
         />
       </a>
     </div>
-  )
+  );
 }

@@ -1,22 +1,22 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react';
 
 interface Prop {
-  fetchCharts: () => void
+  fetchCharts: () => void;
 }
 const UploadDialogue = ({ fetchCharts }: Prop) => {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [file, setFile] = useState<File>()
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [file, setFile] = useState<File>();
   const HOST = import.meta.env.DEV
     ? 'http://localhost:3000'
-    : import.meta.env.VITE_REACT_API_URL
+    : import.meta.env.VITE_REACT_API_URL;
 
   const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault()
-    const formData = new FormData()
-    formData.append('title', title)
-    formData.append('description', description)
-    formData.append('csvFile', file!)
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('csvFile', file!);
 
     try {
       const res = await fetch(`${HOST}/admin/csv`, {
@@ -25,91 +25,91 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-      })
+      });
       if (res.ok) {
         // await res.json()
-        ;(document.getElementById('my_modal_1') as HTMLDialogElement).close()
+        (document.getElementById('my_modal_1') as HTMLDialogElement).close();
       } else {
-        console.error('Failed to upload CSV file')
-        alert('Failed to upload chart')
-        ;(document.getElementById('my_modal_1') as HTMLDialogElement).close()
+        console.error('Failed to upload CSV file');
+        alert('Failed to upload chart');
+        (document.getElementById('my_modal_1') as HTMLDialogElement).close();
       }
     } catch (error) {
-      ;(document.getElementById('my_modal_1') as HTMLDialogElement).close()
-      console.error('Error:', error)
+      (document.getElementById('my_modal_1') as HTMLDialogElement).close();
+      console.error('Error:', error);
     } finally {
-      fetchCharts()
+      fetchCharts();
     }
-  }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files![0]
+    const selectedFile = event.target.files![0];
     // Check if the file type is CSV
     if (selectedFile && selectedFile.type === 'text/csv') {
-      setFile(selectedFile)
+      setFile(selectedFile);
     } else {
       // Reset the file input if the selected file is not a CSV
-      event.target.value = ''
-      setFile(undefined)
-      alert('Please select a CSV file.')
+      event.target.value = '';
+      setFile(undefined);
+      alert('Please select a CSV file.');
     }
-  }
+  };
 
   return (
     <dialog
-      id='my_modal_1'
-      className='modal'
+      id="my_modal_1"
+      className="modal"
     >
-      <div className='modal-box'>
-        <h3 className='font-bold text-xl text-center'>Upload csv</h3>
+      <div className="modal-box">
+        <h3 className="font-bold text-xl text-center">Upload csv</h3>
         <form
-          className='w-full'
+          className="w-full"
           onSubmit={handleSubmit}
         >
-          <label className='form-control'>
-            <div className='label'>
-              <span className='label-text'>Title</span>
+          <label className="form-control">
+            <div className="label">
+              <span className="label-text">Title</span>
             </div>
             <input
-              type='text'
-              placeholder='Type here'
+              type="text"
+              placeholder="Type here"
               onChange={(e) => setTitle(e.target.value)}
-              className='input input-bordered  '
+              className="input input-bordered  "
               required
             />
           </label>
-          <label className='form-control'>
-            <div className='label'>
-              <span className='label-text'>Description</span>
+          <label className="form-control">
+            <div className="label">
+              <span className="label-text">Description</span>
             </div>
             <textarea
               onChange={(e) => setDescription(e.target.value)}
-              className='textarea textarea-bordered'
-              placeholder='Description related to plot'
+              className="textarea textarea-bordered"
+              placeholder="Description related to plot"
               required
             ></textarea>
           </label>
-          <label className='form-control'>
-            <div className='label'>
-              <span className='label-text'>Pick a file</span>
+          <label className="form-control">
+            <div className="label">
+              <span className="label-text">Pick a file</span>
             </div>
             <input
-              type='file'
-              className='file-input'
+              type="file"
+              className="file-input"
               onChange={handleFileChange}
               required
             />
           </label>
-          <div className='flex flex-row gap-x-2 mt-8 justify-center'>
+          <div className="flex flex-row gap-x-2 mt-8 justify-center">
             <button
-              className='btn btn-primary'
-              type='submit'
+              className="btn btn-primary"
+              type="submit"
             >
               Submit
             </button>
             <button
-              className='btn '
-              type='button'
+              className="btn "
+              type="button"
               onClick={() =>
                 (
                   document.getElementById('my_modal_1') as HTMLDialogElement
@@ -122,7 +122,7 @@ const UploadDialogue = ({ fetchCharts }: Prop) => {
         </form>
       </div>
     </dialog>
-  )
-}
+  );
+};
 
-export default UploadDialogue
+export default UploadDialogue;

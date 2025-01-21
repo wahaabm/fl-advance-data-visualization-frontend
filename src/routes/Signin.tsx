@@ -1,33 +1,33 @@
-import { FormEvent, useState } from 'react'
-import { FaUserPlus } from 'react-icons/fa6'
-import { useNavigate } from 'react-router-dom'
-import SocialLinks from '../components/SocialLinks'
-import { useAppDispatch } from '../hooks/hooks'
-import { updateLoggedinState } from '../store/slices/AuthSlice'
-import { refreshSettings } from '../store/slices/SettingsSlice'
+import { FormEvent, useState } from 'react';
+import { FaUserPlus } from 'react-icons/fa6';
+import { useNavigate } from 'react-router';
+import SocialLinks from '../components/SocialLinks';
+import { useAppDispatch } from '../hooks/hooks';
+import { updateLoggedinState } from '../store/slices/AuthSlice';
+import { refreshSettings } from '../store/slices/SettingsSlice';
 
 export default function Signin() {
-  const [rememberMeChecked, setRememberMeChecked] = useState(true)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [rememberMeChecked, setRememberMeChecked] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [displayMode, setDisplayMode] = useState<boolean>(() => {
-    const localDisplayMode = localStorage.getItem('displayMode')
-    return localDisplayMode === 'dark' ? true : false
-  })
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
+    const localDisplayMode = localStorage.getItem('displayMode');
+    return localDisplayMode === 'dark' ? true : false;
+  });
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const HOST = import.meta.env.DEV
     ? 'http://localhost:3000'
-    : import.meta.env.VITE_REACT_API_URL
+    : import.meta.env.VITE_REACT_API_URL;
 
   async function handleSignIn(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     try {
       if (email == '' || password == '') {
-        throw new Error('All fields are required')
+        throw new Error('All fields are required');
       }
       const response = await fetch(`${HOST}/auth/login`, {
         method: 'POST',
@@ -36,28 +36,28 @@ export default function Signin() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-      })
+      });
 
       if (!response.ok) {
-        const responseData = await response.json()
-        throw new Error(responseData.message)
+        const responseData = await response.json();
+        throw new Error(responseData.message);
       }
 
-      const data = await response.json()
-      dispatch(updateLoggedinState(data.token))
-      dispatch(refreshSettings(data.settings))
-      navigate('/charts')
+      const data = await response.json();
+      dispatch(updateLoggedinState(data.token));
+      dispatch(refreshSettings(data.settings));
+      navigate('/charts');
     } catch (error) {
-      console.error(error)
-      setError(error.message)
+      console.error(error);
+      setError(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   const handleRememberMeClick = () => {
-    setRememberMeChecked((prevChecked) => !prevChecked)
-  }
+    setRememberMeChecked((prevChecked) => !prevChecked);
+  };
 
   return (
     <div
@@ -65,16 +65,16 @@ export default function Signin() {
         displayMode ? 'bg-darkmode-black' : 'bg-gray-200'
       }`}
     >
-      <div className='flex flex-col w-11/12 max-w-lg justify-center items-center self-center z-10'>
+      <div className="flex flex-col w-11/12 max-w-lg justify-center items-center self-center z-10">
         <div
           className={`px-3 py-5 md:px-10 ${
             displayMode ? 'bg-darkmode-gray' : 'bg-white'
           } mx-auto rounded-xl w-full`}
         >
-          <div className='flex justify-center'>
+          <div className="flex justify-center">
             <img
-              src='/finallogo.svg'
-              alt='Macrobourse Logo'
+              src="/finallogo.svg"
+              alt="Macrobourse Logo"
               width={320}
             />
           </div>
@@ -87,7 +87,7 @@ export default function Signin() {
               Macrobourse
             </p>
           </div>
-          <div className='mb-4 mt-10'>
+          <div className="mb-4 mt-10">
             <p
               className={`text-xl text-center ${
                 displayMode ? 'text-white' : 'text-black'
@@ -97,7 +97,7 @@ export default function Signin() {
             </p>
           </div>
           <form onSubmit={handleSignIn}>
-            <div className='space-y-3'>
+            <div className="space-y-3">
               <div>
                 <input
                   className={`w-full text-base px-4 py-2  rounded-lg focus:outline-none focus:border-green-400 ${
@@ -105,8 +105,8 @@ export default function Signin() {
                       ? 'bg-darkmode-input text-white'
                       : 'bg-gray-200 text-black'
                   }`}
-                  type='email'
-                  placeholder='Email address'
+                  type="email"
+                  placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -118,17 +118,17 @@ export default function Signin() {
                       ? 'bg-darkmode-input text-white'
                       : 'bg-gray-200 text-black'
                   }`}
-                  type='password'
-                  placeholder='Password'
+                  type="password"
+                  placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div className='flex items-center justify-between'>
+              <div className="flex items-center justify-between">
                 <div></div>
-                <div className='flex gap-x-1 items-center'>
+                <div className="flex gap-x-1 items-center">
                   <input
-                    type='checkbox'
+                    type="checkbox"
                     checked={rememberMeChecked}
                     className={`checkbox size-5 ${
                       displayMode ? 'bg-darkmode-black' : 'bg-white'
@@ -146,19 +146,19 @@ export default function Signin() {
                 </div>
               </div>
               {error && (
-                <div className='text-red-500 font-bold text-sm text-center'>
+                <div className="text-red-500 font-bold text-sm text-center">
                   {error}
                 </div>
               )}
 
               <div>
                 <button
-                  type='submit'
+                  type="submit"
                   disabled={loading}
-                  className='w-full flex justify-center bg-login-green  hover:bg-green-600 text-black p-2  rounded-lg tracking-wide font-semibold  shadow-md cursor-pointer transition ease-in duration-200'
+                  className="w-full flex justify-center bg-login-green  hover:bg-green-600 text-black p-2  rounded-lg tracking-wide font-semibold  shadow-md cursor-pointer transition ease-in duration-200"
                 >
                   {loading ? (
-                    <span className='loading loading-spinner loading-md'></span>
+                    <span className="loading loading-spinner loading-md"></span>
                   ) : (
                     'Login'
                   )}
@@ -174,12 +174,12 @@ export default function Signin() {
                 <button
                   onClick={() => navigate('/register')}
                   disabled={loading}
-                  className='gap-x-2 mt-2 w-full flex items-center justify-center bg-signup-blue  hover:bg-blue-900 text-gray-100 p-2  rounded-lg tracking-wide font-semibold  shadow-md cursor-pointer transition ease-in duration-200'
+                  className="gap-x-2 mt-2 w-full flex items-center justify-center bg-signup-blue  hover:bg-blue-900 text-gray-100 p-2  rounded-lg tracking-wide font-semibold  shadow-md cursor-pointer transition ease-in duration-200"
                 >
                   <FaUserPlus />
                   Sign up
                 </button>
-                <div className='label flex flex-row justify-end gap-x-3 mt-5'>
+                <div className="label flex flex-row justify-end gap-x-3 mt-5">
                   <span
                     className={`label-text ${
                       displayMode ? 'text-white' : 'text-black'
@@ -189,15 +189,15 @@ export default function Signin() {
                   </span>
 
                   <input
-                    type='checkbox'
-                    className='toggle'
+                    type="checkbox"
+                    className="toggle"
                     onChange={() => {
-                      const newDisplayMode = !displayMode
-                      setDisplayMode(newDisplayMode)
+                      const newDisplayMode = !displayMode;
+                      setDisplayMode(newDisplayMode);
                       localStorage.setItem(
                         'displayMode',
-                        newDisplayMode ? 'dark' : 'light'
-                      )
+                        newDisplayMode ? 'dark' : 'light',
+                      );
                     }}
                     checked={displayMode}
                   />
@@ -207,7 +207,7 @@ export default function Signin() {
           </form>
         </div>
       </div>
-      <div className='flex flex-col justify-center items-center self-center z-10'>
+      <div className="flex flex-col justify-center items-center self-center z-10">
         <p className={`mt-2 ${displayMode ? 'text-white' : 'text-black'}`}>
           FIND Macrobourse
         </p>
@@ -215,5 +215,5 @@ export default function Signin() {
         <SocialLinks />
       </div>
     </div>
-  )
+  );
 }

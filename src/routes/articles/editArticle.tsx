@@ -1,33 +1,33 @@
-import { Editor } from '@tinymce/tinymce-react'
-import { useEffect, useRef, useState } from 'react'
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom'
-import Loading from '../../components/Loading'
+import { Editor } from '@tinymce/tinymce-react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useOutletContext, useParams } from 'react-router';
+import Loading from '../../components/Loading';
 
 interface articleData {
-  authorId: number
-  id: number
-  title: string
-  content: string
-  createdAt: string
-  updatedAt: string
-  published: boolean
+  authorId: number;
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  published: boolean;
 }
 
 export default function EditArticle() {
-  const [displayMode, ,] = useOutletContext() as [Boolean, Function, Function]
+  const [displayMode, ,] = useOutletContext() as [Boolean, Function, Function];
 
-  const [article, setArticle] = useState<articleData>()
-  const navigate = useNavigate()
-  const token = localStorage.getItem('token')
-  const editorRef = useRef<any>(null)
-  const [loading, setLoading] = useState(false)
-  const { id } = useParams()
-  const [title, setTitle] = useState('')
-  const [pinned, setPinned] = useState(false)
-  const [published, setPublished] = useState(false)
+  const [article, setArticle] = useState<articleData>();
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  const editorRef = useRef<any>(null);
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+  const [title, setTitle] = useState('');
+  const [pinned, setPinned] = useState(false);
+  const [published, setPublished] = useState(false);
   const HOST = import.meta.env.DEV
     ? 'http://localhost:3000'
-    : import.meta.env.VITE_REACT_API_URL
+    : import.meta.env.VITE_REACT_API_URL;
 
   const fetchArticle = async () => {
     try {
@@ -35,39 +35,39 @@ export default function EditArticle() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
+      });
 
       if (!response.ok) {
         if (response.status === 405) {
-          navigate('/waiting')
+          navigate('/waiting');
         } else if (response.status === 403) {
-          navigate('/login')
+          navigate('/login');
         } else {
-          throw new Error('Failed to fetch articles')
+          throw new Error('Failed to fetch articles');
         }
-        return
+        return;
       }
-      const data = await response.json()
-      setArticle(data)
-      setTitle(data.title)
-      setPinned(data.pinned)
-      setPublished(data.published)
+      const data = await response.json();
+      setArticle(data);
+      setTitle(data.title);
+      setPinned(data.pinned);
+      setPublished(data.published);
     } catch (error) {
-      console.error('Error fetching articles:', error)
+      console.error('Error fetching articles:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchArticle()
-  }, [])
+    fetchArticle();
+  }, []);
 
   const handleSave = async () => {
     if (editorRef.current) {
-      const editor = editorRef.current.getContent()
+      const editor = editorRef.current.getContent();
 
-      setLoading(true)
+      setLoading(true);
 
       try {
         const response = await fetch(`${HOST}/admin/article/${id}`, {
@@ -82,78 +82,78 @@ export default function EditArticle() {
             published: published,
             pinned: pinned,
           }),
-        })
+        });
         if (response.status == 403) {
-          navigate('/login')
-          return
+          navigate('/login');
+          return;
         }
-        navigate('/articles')
+        navigate('/articles');
       } catch (error) {
-        console.log(error)
-        alert(error)
+        console.log(error);
+        alert(error);
       }
 
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  if (loading) return <Loading />
+  if (loading) return <Loading />;
 
   return (
     <>
-      <div className='max-w-3xl mx-auto'>
-        <div className='text-xl mt-2 mb-5 text-left'>Edit an article</div>
+      <div className="max-w-3xl mx-auto">
+        <div className="text-xl mt-2 mb-5 text-left">Edit an article</div>
 
-        <div className='form-control'>
-          <span className='label'>Title: </span>
+        <div className="form-control">
+          <span className="label">Title: </span>
           <input
-            type='text'
+            type="text"
             value={title}
-            className='input input-bordered '
+            className="input input-bordered "
             required
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
 
-        <div className='form-control'>
-          <label className='label cursor-pointer'>
-            <span className='label-text'>Is Pinned?</span>
+        <div className="form-control">
+          <label className="label cursor-pointer">
+            <span className="label-text">Is Pinned?</span>
             <input
-              type='checkbox'
+              type="checkbox"
               checked={pinned}
-              placeholder='Title of article'
-              className='checkbox'
+              placeholder="Title of article"
+              className="checkbox"
               required
               onChange={(e) => setPinned(e.target.checked)}
             />
           </label>
         </div>
 
-        <div className='form-control'>
-          <label className='label cursor-pointer'>
-            <span className='label-text'>Is Published?</span>
+        <div className="form-control">
+          <label className="label cursor-pointer">
+            <span className="label-text">Is Published?</span>
             <input
-              type='checkbox'
+              type="checkbox"
               checked={published}
-              placeholder='Title of article'
-              className='checkbox'
+              placeholder="Title of article"
+              className="checkbox"
               required
               onChange={(e) => setPublished(e.target.checked)}
             />
           </label>
         </div>
 
-        <div className='form-control'>
-          <span className='label'>Article:</span>
+        <div className="form-control">
+          <span className="label">Article:</span>
           <Editor
             key={displayMode + ''}
             tinymceScriptSrc={'/tinymce/tinymce.min.js'}
             onInit={(evt, editor) => {
-              evt
-              editorRef.current = editor
+              evt;
+              editorRef.current = editor;
             }}
             initialValue={article?.content}
-            licenseKey='gpl'
+            licenseKey="gpl"
             init={{
               height: 500,
               width: '100%',
@@ -191,20 +191,20 @@ export default function EditArticle() {
           />
         </div>
 
-        <div className='flex flex-row justify-end gap-x-2 mt-6'>
+        <div className="flex flex-row justify-end gap-x-2 mt-6">
           <button
-            className='btn btn-ghost mt-2 self-baseline'
+            className="btn btn-ghost mt-2 self-baseline"
             onClick={() => navigate(-1)}
           >
             Cancel
           </button>
           <button
-            className='btn btn-primary'
+            className="btn btn-primary"
             onClick={handleSave}
             disabled={loading}
           >
             {loading ? (
-              <span className='loading loading-spinner loading-md'></span>
+              <span className="loading loading-spinner loading-md"></span>
             ) : (
               'Save Article'
             )}{' '}
@@ -212,5 +212,5 @@ export default function EditArticle() {
         </div>
       </div>
     </>
-  )
+  );
 }
